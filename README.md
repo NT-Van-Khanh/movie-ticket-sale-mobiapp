@@ -11,7 +11,9 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 - **Backend**: -
 - **Database**: MySQL/Firebase
 - **Payment Integration**: -
-  
+
+## UI Design:
+
 ## Getting Started
 1. Clone the repository:
 2. Open the project in Android Studio
