@@ -37,7 +37,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/img_movie_example"/>
+                    android:src="@drawable/dtmv_captainamerica"/>
             </androidx.cardview.widget.CardView>
             <TextView
                 android:id="@+id/txtMovieTitle"
