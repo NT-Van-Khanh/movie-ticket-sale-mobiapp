@@ -13,6 +13,11 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 - **Payment Integration**: -
 
 ## UI Design:
+1. Page Home
+   ![image](https://github.com/user-attachments/assets/ef16fa62-4a7a-43ff-8534-6304bebf02cf)
+
+3. Page detail movie
+   ![image](https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54)
 
 ## Getting Started
 1. Clone the repository:
