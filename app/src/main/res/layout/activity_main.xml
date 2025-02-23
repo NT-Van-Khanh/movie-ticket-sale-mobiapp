@@ -19,7 +19,7 @@
         android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
         app:itemIconTint="?android:colorAccent"
-        app:labelVisibilityMode="unlabeled"
+        app:labelVisibilityMode="labeled"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
