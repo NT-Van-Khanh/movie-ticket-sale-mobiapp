@@ -51,39 +51,44 @@
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/lnLayoutContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_marginTop="5dp"
         app:singleSelection="true"
         app:checkedButton="@id/btnCurrentMovies"
-        android:layout_below="@id/slidePoster">
+        android:layout_below="@id/slidePoster"
+        android:layout_marginHorizontal="10dp">
             <com.google.android.material.button.MaterialButton
                 style="@style/MyButtonStyle"
                 android:id="@+id/btnCurrentMovies"
-                android:layout_width="125dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAlignment="textStart"
+                android:layout_weight="1"
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:text="Đang chiếu"
-                android:paddingStart="10dp"
-                android:paddingHorizontal="5dp"/>
+                android:paddingHorizontal="5dp"
+                app:strokeColor="#EDE9F0"
+                app:strokeWidth="1dp"
+                />
             <com.google.android.material.button.MaterialButton
                 style="@style/MyButtonStyle"
                 android:id="@+id/btnUpcomingMovies"
-                android:layout_width="125dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Sắp chiếu"
                 android:textStyle="bold"
                 android:textSize="18sp"
-                android:paddingStart="10dp"
-                android:textAlignment="textStart"
-                android:paddingHorizontal="5dp"/>
+                android:paddingHorizontal="5dp"
+                app:strokeColor="#EDE9F0"
+                app:strokeWidth="1dp"/>
     </com.google.android.material.button.MaterialButtonToggleGroup>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewCurrentMovies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lnLayoutContainer">
+        android:layout_below="@id/lnLayoutContainer"
+        android:layout_marginStart="10dp">
     </androidx.recyclerview.widget.RecyclerView>
 
 </RelativeLayout>

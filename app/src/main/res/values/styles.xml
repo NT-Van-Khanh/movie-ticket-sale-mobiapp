@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="MyButtonStyle" parent="Widget.Material3.Button.TextButton">
-        <item name="android:textColor">#244752</item> <!-- Màu chữ -->
+        <item name="android:textColor">#675C83</item> <!-- Màu chữ -->
         <item name="rippleColor">@android:color/transparent</item> <!-- Xóa hiệu ứng ripple khi bấm -->
         <item name="shapeAppearance"> @style/ShapeAppearance.Material3.SmallComponent</item>
     </style>
