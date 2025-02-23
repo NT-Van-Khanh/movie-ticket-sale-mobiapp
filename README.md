@@ -14,12 +14,10 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 
 ## UI Design:
 1. Page Home   
-<img src="https://github.com/user-attachments/assets/ef16fa62-4a7a-43ff-8534-6304bebf02cf" width="200" height="120">
-   ![image](https://github.com/user-attachments/assets/ef16fa62-4a7a-43ff-8534-6304bebf02cf)
+<img src="https://github.com/user-attachments/assets/ef16fa62-4a7a-43ff-8534-6304bebf02cf" width="200">
 
 2. Page detail movie
-<img src="https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54" width="200" height="120">
-   ![image](https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54)
+<img src="https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54" width="200">
 
 ## Getting Started
 1. Clone the repository:
