@@ -38,16 +38,27 @@
                 android:contentDescription="Notifications"/>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/slidePoster"
+    <RelativeLayout
+        android:id="@+id/consLayout"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:layout_below="@+id/toolbar"
-        android:paddingStart="36dp"
-        android:paddingEnd="36dp"
-        android:overScrollMode="never"
-        android:clipToPadding="false"
-        android:clipChildren="false" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/slidePoster"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:paddingStart="36dp"
+            android:paddingEnd="36dp"
+            android:overScrollMode="never"
+            android:clipToPadding="false"
+            android:clipChildren="false" />
+        <ProgressBar
+            android:id="@+id/progressBarLoadPosters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/lnLayoutContainer"
         android:layout_width="match_parent"
@@ -55,7 +66,7 @@
         android:layout_marginTop="5dp"
         app:singleSelection="true"
         app:checkedButton="@id/btnCurrentMovies"
-        android:layout_below="@id/slidePoster"
+        android:layout_below="@id/consLayout"
         android:layout_marginHorizontal="10dp">
             <com.google.android.material.button.MaterialButton
                 style="@style/MyButtonStyle"
@@ -67,7 +78,7 @@
                 android:textSize="18sp"
                 android:text="Đang chiếu"
                 android:paddingHorizontal="5dp"
-                app:strokeColor="#EDE9F0"
+                app:strokeColor="#DCD5E2"
                 app:strokeWidth="1dp"
                 />
             <com.google.android.material.button.MaterialButton
@@ -80,16 +91,25 @@
                 android:textStyle="bold"
                 android:textSize="18sp"
                 android:paddingHorizontal="5dp"
-                app:strokeColor="#EDE9F0"
+                app:strokeColor="#DCD5E2"
                 app:strokeWidth="1dp"/>
     </com.google.android.material.button.MaterialButtonToggleGroup>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcViewCurrentMovies"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lnLayoutContainer"
-        android:layout_marginStart="10dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_below="@id/lnLayoutContainer">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcViewCurrentMovies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="5dp">
+        </androidx.recyclerview.widget.RecyclerView>
+        <ProgressBar
+            android:id="@+id/progressBarLoadMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
 
 </RelativeLayout>
 

@@ -95,15 +95,13 @@ public class HomeFragment extends Fragment {
         btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
 
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
-//        rcViewUpcomingMovies = root.findViewById(R.id.rcViewUpcomingMovies);
         // Truyền dữ liệu cho poster
         currentPosters = Arrays.asList(R.drawable.pt_captainamerica,R.drawable.pt_shopeepay,R.drawable.pt_zalopay);
         setDataSliderAdapter(currentPosters);
 
-        //Truyền dữ liệu cho các movie đang chiếu
+        //Lấy dữ liệu cho các movie đang chiếu
         currentMovies = getExampleMovies();
-//        setDataForCurrentMovies(currentMovies);
-        //Truyền dữ liệu cho các movie sắp chiếu
+        //Lấy dữ liệu cho các movie sắp chiếu
         upcomingMovies = getExampleUpcomingMovies();
 
         currentMovieAdapter = new MovieAdapter(currentMovies);
@@ -134,6 +132,7 @@ public class HomeFragment extends Fragment {
     }
 
     private final Handler sliderHandler = new Handler();
+
     private final Runnable sliderRunnable = new Runnable() {
         @Override
         public void run() {
