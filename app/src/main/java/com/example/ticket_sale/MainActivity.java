@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.ticket_sale.fragment.HistoryFragment;
 import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieDetailFragment;
+import com.example.ticket_sale.fragment.MovieTheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
 import com.example.ticket_sale.fragment.TheatersFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -22,7 +23,6 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
-
     NavigationBarView bottomNavigationView;
     Fragment selectedFragment;
 
@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
             int itemId = menuItem.getItemId();
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
-            } else if (itemId == R.id.nav_theaters) {
+            } else if (itemId == R.id.nav_movie_theaters) {
+                selectedFragment = new MovieTheaterFragment();
+            } else if (itemId == R.id.nav_movies){
                 selectedFragment = new MovieDetailFragment();
-            } else if (itemId == R.id.nav_history) {
-                selectedFragment = new HistoryFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }

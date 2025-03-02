@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -36,8 +35,8 @@ public class HomeFragment extends Fragment {
     private RecyclerView rcViewMovies;
 
     private PosterAdapter posterAdapter;
-    private MovieAdapter currentMovieAdapter;
-    private MovieAdapter upcomingMovieAdapter;
+//    private MovieAdapter currentMovieAdapter;
+//    private MovieAdapter upcomingMovieAdapter;
 
     private List<Integer> currentPosters;
     private List<Movie> currentMovies;
@@ -90,13 +89,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+        init(root);
+        setButtonListener();
+
+        return root;
+    }
+
+    void init(View root){
         slidePoster = root.findViewById(R.id.slidePoster);
         btnCurrentMovies = root.findViewById(R.id.btnCurrentMovies);
         btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
-
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
-        // Truyền dữ liệu cho poster
+
         currentPosters = Arrays.asList(R.drawable.pt_captainamerica,R.drawable.pt_shopeepay,R.drawable.pt_zalopay);
+        // Truyền dữ liệu cho poster
         setDataSliderAdapter(currentPosters);
 
         //Lấy dữ liệu cho các movie đang chiếu
@@ -104,12 +110,9 @@ public class HomeFragment extends Fragment {
         //Lấy dữ liệu cho các movie sắp chiếu
         upcomingMovies = getExampleUpcomingMovies();
 
-        currentMovieAdapter = new MovieAdapter(currentMovies);
-        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
-
-        setButtonListener();
-//        setDataForUpcomingMovies(upcomingMovies);
-        return root;
+//        currentMovieAdapter = new MovieAdapter(currentMovies);
+//        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
+        //        setDataForUpcomingMovies(upcomingMovies);
     }
 
     private List<Movie> getExampleUpcomingMovies() {
@@ -196,7 +199,7 @@ public class HomeFragment extends Fragment {
 
     private void setButtonListener(){
         rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-        rcViewMovies.setAdapter(currentMovieAdapter);
+        rcViewMovies.setAdapter(new MovieAdapter(currentMovies));
         btnCurrentMovies.setOnClickListener(v -> {
             rcViewMovies.setAdapter(new MovieAdapter(currentMovies));
         });

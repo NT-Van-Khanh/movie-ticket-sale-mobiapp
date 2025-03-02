@@ -5,8 +5,17 @@
     <string name="home_fragment">home fragment</string>
     <string name="profile_fragment">profile fragment</string>
     <string name="str_search">Tìm kiếm</string>
-    <string name="home">Trang chủ</string>
-    <string name="theaters">Xuất chiếu</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_movie">Xuất chiếu</string>
     <string name="history">Giao dịch</string>
     <string name="title_movie_theater">Rạp phim</string>
+    <string name="title_account">Tài khoản</string>
+    <string-array name="provinces">
+        <item>Hà Nội</item>
+        <item>Hồ Chí Minh</item>
+        <item>Bến Tre</item>
+        <item>Cần Thơ</item>
+        <item>Đà Nẵng</item>
+        <item>Tiền Giang</item>
+    </string-array>
 </resources>
