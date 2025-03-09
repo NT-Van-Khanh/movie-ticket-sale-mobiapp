@@ -22,6 +22,9 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 3. Page cinema list
 <img src="https://github.com/user-attachments/assets/b6253c1b-80ff-4a93-8fee-0e4071b895d1" width="200">
 
+4. Page show movies and movie showtimes by theater
+<img src="https://github.com/user-attachments/assets/8ac1e82f-db2a-417a-b631-3072bafe570d" width="200">
+
 ## Getting Started
 1. Clone the repository:
 2. Open the project in Android Studio
