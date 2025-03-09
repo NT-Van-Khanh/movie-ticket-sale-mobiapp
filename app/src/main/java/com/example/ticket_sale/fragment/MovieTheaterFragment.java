@@ -14,12 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.ticket_sale.ChooseMovieFragment;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieTheaterAdapter;
 import com.example.ticket_sale.model.MovieTheater;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,10 +83,7 @@ public class MovieTheaterFragment extends Fragment {
         movieTheaters = getExampleMovieTheaters();
         init(root);
 
-        movieTheaterAdapter = new MovieTheaterAdapter(movieTheaters, position -> {
-            Toast.makeText(getContext(), "Bạn chọn: " + movieTheaters.get(position).getName(), Toast.LENGTH_SHORT).show();
-            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,  new ChooseMovieFragment()).commit();
-        });
+        movieTheaterAdapter = new MovieTheaterAdapter(movieTheaters, this::onItemClick);
 
         rcViewMovieTheaters.setAdapter(movieTheaterAdapter);
 
@@ -121,7 +116,6 @@ public class MovieTheaterFragment extends Fragment {
         MovieTheater mt4 = new MovieTheater("MT4","Rạp Mỹ Tho","Lý Thường Kiệt, Phường 5, Mỹ Tho, Tiền Giang",R.drawable.cinema4,1);
         MovieTheater mt5 = new MovieTheater("MT5","Rạp Bến Nghé","Đinh Tiên Hoàng, Bến Nghé, Quận 1, Hồ Chí Minh",R.drawable.cinema5,1);
         MovieTheater mt6 = new MovieTheater("MT6","Rạp Trương Định","Trương Định, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh",R.drawable.cinema6,1);
-        Log.e("MovieTheaterFragment",mt1.toString());
         return Arrays.asList(mt1,mt2,mt3,mt4,mt5,mt6);
     }
     private void initBtnChooseProvince(){
@@ -133,5 +127,21 @@ public class MovieTheaterFragment extends Fragment {
                         btnChooseProvince.setText(provinces[which]);
                     }).show();
         });
+    }
+
+    private void onItemClick(int position) {
+//        Toast.makeText(getContext(), "Bạn chọn: " + movieTheaters.get(position).getName(), Toast.LENGTH_SHORT).show();
+        MovieTheater movieTheater = movieTheaters.get(position);
+        MovieShowtimeFragment movieShowtimeFragment = new MovieShowtimeFragment();
+
+        Bundle bundle  = new Bundle();
+        bundle.putString("theaterId",movieTheater.getId());
+        bundle.putString("theaterName",movieTheater.getName());
+        bundle.putString("theaterAddress",movieTheater.getAddress());
+
+        movieShowtimeFragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,movieShowtimeFragment).commit();
     }
 }

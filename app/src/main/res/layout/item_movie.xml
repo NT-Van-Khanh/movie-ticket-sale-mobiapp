@@ -64,7 +64,7 @@
                 android:gravity="center_vertical|end"
                 android:paddingEnd="2dp">
                 <TextView
-                    android:id="@+id/txtRating"
+                    android:id="@+id/txtMovieRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="9.5"
@@ -84,7 +84,7 @@
                     android:textColor="#FFFFFF"
                     android:paddingVertical="4dp"
                     android:paddingHorizontal="5dp"
-                    android:background="@drawable/shape_border"
+                    android:background="@drawable/bgd_movie_age"
                     android:gravity="center"/>
             </LinearLayout>
 

@@ -4,22 +4,37 @@ public class Movie {
     private String id;
     private String title;
     private String content;
+    private Integer time;
     private Integer age;
     private String actor;
     private String director;
-    private Integer time;
     private Integer imageResId;
-    private Float rate;
+    private Float rating;
+    private String language;
+
     public Movie() {
     }
 
-    public Movie(String id, Integer imageResId, String title, Integer time, Integer age,Float rate) {
+    public Movie(String id, Integer imageResId, String title, Integer time, Integer age,Float rating) {
         this.id = id;
         this.imageResId = imageResId;
         this.title = title;
         this.time = time;
         this.age = age;
-        this.rate = rate;
+        this.rating = rating;
+    }
+
+    public Movie(String id, String title, String content,Integer time, Integer age, Integer imageResId, Float rating, String language) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.age = age;
+        this.actor = actor;
+        this.director = director;
+        this.time = time;
+        this.imageResId = imageResId;
+        this.rating = rating;
+        this.language = language;
     }
 
     public String getId() {
@@ -86,11 +101,19 @@ public class Movie {
         this.imageResId = imageResId;
     }
 
-    public Float getRate() {
-        return rate;
+    public Float getRating() {
+        return rating;
     }
 
-    public void setRate(Float rate) {
-        this.rate = rate;
+    public void setRating(Float rating) {
+        this.rating = rating;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

@@ -11,6 +11,7 @@
     <string name="title_movie_theater">Rạp phim</string>
     <string name="title_account">Tài khoản</string>
     <string-array name="provinces">
+        <item>Tất cả tỉnh thành</item>
         <item>Hà Nội</item>
         <item>Hồ Chí Minh</item>
         <item>Bến Tre</item>

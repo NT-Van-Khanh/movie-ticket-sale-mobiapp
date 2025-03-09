@@ -1,6 +1,5 @@
 package com.example.ticket_sale.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapte
     @NonNull
     @Override
     public MovieTheaterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_theater_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_movie_theater,parent,false);
         return new MovieTheaterViewHolder(view);
     }
 
