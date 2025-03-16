@@ -1,5 +1,6 @@
 package com.example.ticket_sale.fragment;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,8 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.model.Movie;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,7 +22,20 @@ import com.example.ticket_sale.R;
  * create an instance of this fragment.
  */
 public class MovieDetailFragment extends Fragment {
+    ImageView imgMoviePoster;
+    TextView txtMovieRating;
+    TextView txtMovieTitle;
+    TextView txtMovieAge;
+    TextView txtMovieDuration;
+    TextView txtMovieOpeningDate;
 
+    TextView txtMovieGenre;
+    TextView txtMovieDirector;
+    TextView txtMovieActor;
+    TextView txtMovieFormat; //movie format
+
+    TextView txtMovieContent;
+    VideoView vidMovieTrailer;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,6 +80,42 @@ public class MovieDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
+        initView(root);
+        if(getArguments() == null) return root;
+
+        Movie movie = getArguments().getParcelable("movie");
+        if (movie == null) return root;
+
+        setDataForView(movie);
+        return root;
     }
+
+    private void setDataForView(Movie movie){
+        imgMoviePoster.setImageResource(movie.getImageResId());
+        txtMovieTitle.setText(movie.getTitle());
+        txtMovieAge.setText(String.format("T%d",movie.getAge()));
+        txtMovieDuration.setText(String.format("%d phút",movie.getDuration()));
+        txtMovieOpeningDate.setText(movie.getOpeningDate());
+        txtMovieGenre.setText(movie.getGenre());
+        txtMovieActor.setText(movie.getActor());
+        txtMovieDirector.setText(movie.getDirector());
+        txtMovieFormat.setText(movie.getLanguage());
+        txtMovieContent.setText(movie.getContent());
+    }
+
+    private void initView(View root){
+        imgMoviePoster = root.findViewById(R.id.imgMoviePoster);
+        txtMovieTitle = root.findViewById(R.id.txtMovieTitle);
+        txtMovieAge = root.findViewById(R.id.txtMovieAge);
+        txtMovieDuration = root.findViewById(R.id.txtMovieDuration);
+        txtMovieOpeningDate = root.findViewById(R.id.txtMovieOpeningDate);
+        txtMovieGenre = root.findViewById(R.id.txtMovieGenre);
+        txtMovieActor = root.findViewById(R.id.txtMovieActor);
+        txtMovieDirector = root.findViewById(R.id.txtMovieDirector);
+        txtMovieFormat = root.findViewById(R.id.txtMovieFormat);
+        txtMovieContent = root.findViewById(R.id.txtMovieContent);
+        vidMovieTrailer = root.findViewById(R.id.vidMovieTrailer);
+    }
+
 }

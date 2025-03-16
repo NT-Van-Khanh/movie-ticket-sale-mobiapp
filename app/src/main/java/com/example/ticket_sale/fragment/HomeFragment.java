@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieAdapter;
@@ -42,7 +43,8 @@ public class HomeFragment extends Fragment {
     private List<Movie> currentMovies;
     private List<Movie> upcomingMovies;
 
-
+    ProgressBar pgbLoadMovies;
+    ProgressBar pgbLoadSliders;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,17 +91,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        init(root);
+        initView(root);
         setButtonListener();
-
+        pgbLoadSliders.setVisibility(View.GONE);
+        pgbLoadMovies.setVisibility(View.GONE);
         return root;
     }
 
-    void init(View root){
+    void initView(View root){
         slidePoster = root.findViewById(R.id.slidePoster);
         btnCurrentMovies = root.findViewById(R.id.btnCurrentMovies);
         btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
+        pgbLoadSliders = root.findViewById(R.id.progressBarLoadPosters);
+        pgbLoadMovies = root.findViewById(R.id.progressBarLoadMovies);
 
         currentPosters = Arrays.asList(R.drawable.pt_captainamerica,R.drawable.pt_shopeepay,R.drawable.pt_zalopay);
         // Truyền dữ liệu cho poster
@@ -107,8 +112,10 @@ public class HomeFragment extends Fragment {
 
         //Lấy dữ liệu cho các movie đang chiếu
         currentMovies = getExampleMovies();
+
         //Lấy dữ liệu cho các movie sắp chiếu
         upcomingMovies = getExampleUpcomingMovies();
+
 
 //        currentMovieAdapter = new MovieAdapter(currentMovies);
 //        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
@@ -199,14 +206,27 @@ public class HomeFragment extends Fragment {
 
     private void setButtonListener(){
         rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-        rcViewMovies.setAdapter(new MovieAdapter(currentMovies));
+        rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
         btnCurrentMovies.setOnClickListener(v -> {
-            rcViewMovies.setAdapter(new MovieAdapter(currentMovies));
+            rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
         });
 
         btnUpcomingMovies.setOnClickListener(v -> {
-            rcViewMovies.setAdapter(new MovieAdapter(upcomingMovies));
+            rcViewMovies.setAdapter(new MovieAdapter(upcomingMovies,this::openMovieDetail));
         });
     }
 
+    private void openMovieDetail(Movie movie) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("movie", movie);
+
+        MovieDetailFragment detailFragment = new MovieDetailFragment();
+        detailFragment.setArguments(bundle);
+
+        // Chuyển đến MovieDetailFragment
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit();
+    }
 }
