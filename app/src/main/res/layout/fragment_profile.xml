@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.ProfileFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.ProfileFragment"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="center_horizontal">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:src="@drawable/logo"
+        android:layout_marginTop="30dp"/>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/profile_fragment" />
+        android:layout_height="wrap_content"
+        android:text="Xin chào!"
+        android:textAlignment="center"
+        android:textColor="#1E2E3D"
+        android:fontFamily="sans-serif-black"
+        android:textSize="18dp"
+        android:layout_marginTop="2dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="18dp">
+        <Button
+            android:id="@+id/btnRedirectLogin"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:text="Đăng nhập"
+            app:backgroundTint="@null"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
+            android:background="@drawable/bgd_btn_login"
+            android:layout_marginEnd="15dp"/>
 
-</FrameLayout>
+        <Button
+            android:id="@+id/btnRedirectRegister"
+            android:layout_width="140dp"
+            android:layout_height="45dp"
+            android:text="Đăng ký"
+            android:textColor="#FFD301"
+            android:textSize="18sp"
+            app:backgroundTint="@null"
+            android:background="@drawable/bgd_btn_another_login"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="1.5dp"
+            android:background="#BABABA"/>
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

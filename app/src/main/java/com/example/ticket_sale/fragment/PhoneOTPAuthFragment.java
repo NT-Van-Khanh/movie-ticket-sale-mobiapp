@@ -1,6 +1,5 @@
 package com.example.ticket_sale.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,16 +7,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
-import com.example.ticket_sale.LoginActivity;
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.RegisterActivity;
 
-public class ProfileFragment extends Fragment {
-    Button btnRedirectRegister;
-    Button btnRedirectLogin;
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link PhoneOTPAuthFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class PhoneOTPAuthFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +26,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ProfileFragment() {
+    public PhoneOTPAuthFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +36,11 @@ public class ProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment PhoneOTPAuthFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static PhoneOTPAuthFragment newInstance(String param1, String param2) {
+        PhoneOTPAuthFragment fragment = new PhoneOTPAuthFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,26 +60,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_profile, container, false);
-        init(v);
-        return v;
-    }
-
-    void init(View v){
-        btnRedirectLogin = v.findViewById(R.id.btnRedirectLogin);
-        btnRedirectRegister = v.findViewById(R.id.btnRedirectRegister);
-
-        btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnRedirectRegister.setOnClickListener(v1 -> {
-            Intent intent = new Intent(getActivity(), RegisterActivity.class);
-            startActivity(intent);
-        });
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_phone_otp_auth, container, false);
     }
 }

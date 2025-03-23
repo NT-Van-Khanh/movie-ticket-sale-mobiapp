@@ -8,22 +8,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 
-import com.example.ticket_sale.fragment.RegisterUserFragment;
+import com.example.ticket_sale.fragment.ResetPasswordFragment;
 
-public class RegisterActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_reset_password);
+
         fragmentContainer = findViewById(R.id.fragment_container);
 
-        if(savedInstanceState ==null){
+        if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new RegisterUserFragment())
+                    .replace(R.id.fragment_container, new ResetPasswordFragment())
                     .commit();
         }
 
@@ -32,11 +32,5 @@ public class RegisterActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-    public void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)  // Cho phép quay lại bước trước
-                .commit();
     }
 }

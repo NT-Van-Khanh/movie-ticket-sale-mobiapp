@@ -1,6 +1,5 @@
 package com.example.ticket_sale.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,16 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.example.ticket_sale.LoginActivity;
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.RegisterActivity;
 
-public class ProfileFragment extends Fragment {
-    Button btnRedirectRegister;
-    Button btnRedirectLogin;
-
-
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ResetPasswordFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ResetPasswordFragment extends Fragment {
+    TextView txtGoBack;
+    EditText edtPhoneOrMail;
+    Button btnNext;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,7 +31,7 @@ public class ProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ProfileFragment() {
+    public ResetPasswordFragment() {
         // Required empty public constructor
     }
 
@@ -38,11 +41,11 @@ public class ProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
+     * @return A new instance of fragment ResetPasswordFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
+    public static ResetPasswordFragment newInstance(String param1, String param2) {
+        ResetPasswordFragment fragment = new ResetPasswordFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -62,26 +65,22 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.fragment_profile, container, false);
-        init(v);
+        View v = inflater.inflate(R.layout.fragment_reset_password, container, false);
+        initViews(v);
         return v;
     }
 
-    void init(View v){
-        btnRedirectLogin = v.findViewById(R.id.btnRedirectLogin);
-        btnRedirectRegister = v.findViewById(R.id.btnRedirectRegister);
+    private void initViews(View v) {
+        txtGoBack = v.findViewById(R.id.txtGoBack);
+        edtPhoneOrMail = v.findViewById(R.id.edtPhoneOrEmail);
+        btnNext = v.findViewById(R.id.btnNext);
 
-        btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
+
+        txtGoBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                ResetPasswordFragment.this.requireActivity().finish();
             }
-        });
-
-        btnRedirectRegister.setOnClickListener(v1 -> {
-            Intent intent = new Intent(getActivity(), RegisterActivity.class);
-            startActivity(intent);
         });
     }
 }
