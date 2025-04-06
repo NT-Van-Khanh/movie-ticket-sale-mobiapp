@@ -30,12 +30,13 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    private ViewPager2 slidePoster;
+    private ViewPager2 bannerSlider;
     private Button btnCurrentMovies;
     private Button btnUpcomingMovies;
+    private Button btnMoreMovies;
     private RecyclerView rcViewMovies;
-
     private PosterAdapter posterAdapter;
+
 //    private MovieAdapter currentMovieAdapter;
 //    private MovieAdapter upcomingMovieAdapter;
 
@@ -92,34 +93,32 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         initView(root);
-        setButtonListener();
         pgbLoadSliders.setVisibility(View.GONE);
         pgbLoadMovies.setVisibility(View.GONE);
         return root;
     }
 
-    void initView(View root){
-        slidePoster = root.findViewById(R.id.slidePoster);
+    private void initView(View root){
+        bannerSlider = root.findViewById(R.id.slidePoster);
         btnCurrentMovies = root.findViewById(R.id.btnCurrentMovies);
         btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
+        btnMoreMovies = root.findViewById(R.id.btnMoreMovies);
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
         pgbLoadSliders = root.findViewById(R.id.progressBarLoadPosters);
         pgbLoadMovies = root.findViewById(R.id.progressBarLoadMovies);
 
         currentPosters = Arrays.asList(R.drawable.pt_captainamerica,R.drawable.pt_shopeepay,R.drawable.pt_zalopay);
-        // Truyền dữ liệu cho poster
-        setDataSliderAdapter(currentPosters);
+        bannerSlider.setAdapter(new PosterAdapter(currentPosters));
+        setAnimationForSlider();
 
-        //Lấy dữ liệu cho các movie đang chiếu
+        //Lấy dữ liệu cho các movie đang chiếu và movie sắp chiếu
         currentMovies = getExampleMovies();
-
-        //Lấy dữ liệu cho các movie sắp chiếu
         upcomingMovies = getExampleUpcomingMovies();
+        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
+        rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
 
+        setButtonListener();
 
-//        currentMovieAdapter = new MovieAdapter(currentMovies);
-//        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
-        //        setDataForUpcomingMovies(upcomingMovies);
     }
 
     private List<Movie> getExampleUpcomingMovies() {
@@ -146,12 +145,12 @@ public class HomeFragment extends Fragment {
     private final Runnable sliderRunnable = new Runnable() {
         @Override
         public void run() {
-            if (slidePoster != null && slidePoster.getAdapter() != null) {
-                int currentItem = slidePoster.getCurrentItem();
-                int itemCount = slidePoster.getAdapter().getItemCount();
+            if (bannerSlider != null && bannerSlider.getAdapter() != null) {
+                int currentItem = bannerSlider.getCurrentItem();
+                int itemCount = bannerSlider.getAdapter().getItemCount();
 
                 // Chuyển sang slide tiếp theo hoặc quay về đầu nếu hết
-                slidePoster.setCurrentItem((currentItem + 1) % itemCount, true);
+                bannerSlider.setCurrentItem((currentItem + 1) % itemCount, true);
             }
             sliderHandler.postDelayed(this, 5000); // Lặp lại sau 5 giây
         }
@@ -169,19 +168,17 @@ public class HomeFragment extends Fragment {
         sliderHandler.removeCallbacks(sliderRunnable); // Dừng lại khi thoát Activity
     }
 
-    private void setDataSliderAdapter(List<Integer> posters){
-        posterAdapter = new PosterAdapter(posters);
-        slidePoster.setAdapter(posterAdapter);
-        slidePoster.setPageTransformer((page, position) -> {
+    private void setAnimationForSlider(){
+        bannerSlider.setPageTransformer((page, position) -> {
             page.setAlpha(0.7f + (1 - Math.abs(position)) * 0.3f);
             page.setScaleY(0.8f + (1 - Math.abs(position)) * 0.2f);
         });
 
-        slidePoster.setClipToPadding(false);
-        slidePoster.setClipChildren(false);
-        slidePoster.setOffscreenPageLimit(3); // Load trước 3 slide để cuộn mượt hơn
+        bannerSlider.setClipToPadding(false);
+        bannerSlider.setClipChildren(false);
+        bannerSlider.setOffscreenPageLimit(3); // Load trước 3 slide để cuộn mượt hơn
 
-        RecyclerView recyclerView = (RecyclerView) slidePoster.getChildAt(0);
+        RecyclerView recyclerView = (RecyclerView) bannerSlider.getChildAt(0);
         recyclerView.setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
         if (recyclerView.getOnFlingListener() != null) {
             recyclerView.setOnFlingListener(null);
@@ -205,14 +202,18 @@ public class HomeFragment extends Fragment {
 //    }
 
     private void setButtonListener(){
-        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-        rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
         btnCurrentMovies.setOnClickListener(v -> {
             rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
         });
 
         btnUpcomingMovies.setOnClickListener(v -> {
             rcViewMovies.setAdapter(new MovieAdapter(upcomingMovies,this::openMovieDetail));
+        });
+
+        btnMoreMovies.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new MovieFragment())
+                .addToBackStack(null).commit();
         });
     }
 

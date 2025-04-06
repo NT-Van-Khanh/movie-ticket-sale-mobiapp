@@ -5,13 +5,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.MovieTheater;
-
 import java.util.List;
 
 public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapter.MovieTheaterViewHolder> {

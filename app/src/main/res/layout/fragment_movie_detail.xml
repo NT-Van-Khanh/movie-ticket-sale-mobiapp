@@ -5,38 +5,38 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.MovieDetailFragment">
-
-<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-    <com.google.android.material.appbar.AppBarLayout
+   <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="45dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:gravity="center_vertical">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_go_back"/>
+            android:gravity="center_vertical"
+            app:contentInsetStart="5dp">
             <TextView
-                android:id="@+id/txtPageName"
+                android:id="@+id/txtGoBack"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Phim"
+                android:drawablePadding="-1dp"
+                android:text="Quay lại"
+                android:textColor="#47475D"
                 android:gravity="center_vertical"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#2A2B2C"/>
+                app:drawableLeftCompat="@drawable/ic_go_back" />
+<!--            android:text="Thông tin phim"-->
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appBar">
+        android:layout_height="match_parent"
+        android:layout_below="@id/appBar"
+        android:scrollbars="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,11 +57,19 @@
 
             </androidx.cardview.widget.CardView>
             <LinearLayout
+                android:id="@+id/layoutDetailMovie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:paddingTop="8dp">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingTop="8dp">
+                android:paddingTop="5dp">
+
                 <TextView
                     android:id="@+id/txtMovieTitle"
                     android:layout_width="0dp"
@@ -89,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginBottom="5dp"
+                android:paddingVertical="2dp"
                 android:gravity="center_vertical">
                 <ImageView
                     android:layout_width="18dp"
@@ -121,12 +130,7 @@
                     android:layout_height="wrap_content"
                     android:text="14/02/2025"/>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/layoutDetailMovie"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="8dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,6 +140,7 @@
                         android:layout_width="78dp"
                         android:layout_height="wrap_content"
                         android:text="Thể loại: "
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="16sp" />
                     <TextView
                         android:id="@+id/txtMovieGenre"
@@ -154,6 +159,7 @@
                         android:layout_width="78dp"
                         android:layout_height="wrap_content"
                         android:text="Đạo diễn:"
+                        android:fontFamily="sans-serif-medium"
                         android:textSize="16sp"/>
                     <TextView
                         android:id="@+id/txtMovieDirector"
@@ -169,9 +175,10 @@
                     android:paddingTop="5dp"
                     android:paddingStart="2dp">
                 <TextView
-                    android:layout_width="78dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:text="Diễn viên:"
+                    android:fontFamily="sans-serif-medium"
                     android:textSize="16sp"/>
                 <TextView
                     android:id="@+id/txtMovieActor"
@@ -188,10 +195,11 @@
                     android:paddingStart="2dp"
                     android:paddingTop="5dp">
                     <TextView
-                        android:layout_width="78dp"
+                        android:layout_width="80dp"
                         android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
                         android:text="Ngôn ngữ:"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
                     <TextView
                         android:id="@+id/txtMovieFormat"
                         android:layout_width="wrap_content"
@@ -242,6 +250,10 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
+<!--            <TextView-->
+<!--                android:text="TESST"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="2000dp"/>-->
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

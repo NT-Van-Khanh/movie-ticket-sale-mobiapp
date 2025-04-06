@@ -1,10 +1,13 @@
 package com.example.ticket_sale.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.ticket_sale.LoginActivity;
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.RegisterActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,9 +25,10 @@ import com.example.ticket_sale.R;
  * create an instance of this fragment.
  */
 public class RegisterUserFragment extends Fragment {
-    TextView txtGoBack;
-    Button btnNext;
-    Button btnRedirectLogin;
+    private View.OnClickListener btnNextListener;
+    private TextView txtGoBack;
+    private Button btnNext;
+    private Button btnRedirectLogin;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -54,6 +59,17 @@ public class RegisterUserFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
+//    @Override
+//    public void onAttach(@NonNull Context context) {
+//        super.onAttach(context);
+//        if(context instanceof View.OnClickListener){
+//            btnNextListener = (View.OnClickListener) context;
+//        }else{
+//            throw new RuntimeException(context.toString() + "must implement FragmentNavigationListener");
+//        }
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +102,11 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
+        if (btnNextListener != null) {
+            btnNext.setOnClickListener(btnNextListener);
+        }else{
+            Log.e("btnNext.setOnClickListener", "btnNext OnClickListernet is null");
+        }
         btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,5 +114,14 @@ public class RegisterUserFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+
+    public static RegisterUserFragment newInstance() {
+        return new RegisterUserFragment();
+    }
+
+    public void setBtnNextListener(View.OnClickListener listener) {
+        this.btnNextListener = listener;
     }
 }

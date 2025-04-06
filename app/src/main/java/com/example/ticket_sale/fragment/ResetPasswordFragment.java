@@ -1,7 +1,9 @@
 package com.example.ticket_sale.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -19,9 +21,10 @@ import com.example.ticket_sale.R;
  * create an instance of this fragment.
  */
 public class ResetPasswordFragment extends Fragment {
-    TextView txtGoBack;
-    EditText edtPhoneOrMail;
-    Button btnNext;
+    private TextView txtGoBack;
+    private EditText edtPhoneOrMail;
+    private Button btnNext;
+    private View.OnClickListener btnNextListener;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -53,6 +56,17 @@ public class ResetPasswordFragment extends Fragment {
         return fragment;
     }
 
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof View.OnClickListener){
+            btnNextListener = (View.OnClickListener) context;
+        }else{
+            throw new RuntimeException(context.toString() + "must implement FragmentNavigationListener");
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,5 +96,18 @@ public class ResetPasswordFragment extends Fragment {
                 ResetPasswordFragment.this.requireActivity().finish();
             }
         });
+
+        if (btnNextListener != null) {
+            btnNext.setOnClickListener(btnNextListener);
+        }
     }
+
+    public static ResetPasswordFragment newInstance() {
+        return new ResetPasswordFragment();
+    }
+
+    public void setButtonListener(View.OnClickListener listener) {
+        this.btnNextListener = listener;
+    }
+
 }

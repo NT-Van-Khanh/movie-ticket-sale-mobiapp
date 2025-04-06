@@ -111,17 +111,19 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
         <Button
+            android:id="@+id/btnMoreMovies"
             android:layout_below="@id/rcViewCurrentMovies"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             app:backgroundTint="@null"
             android:text="Xem thêm"
+            android:textColor="@color/white"
             android:textSize="16sp"
-            android:textColor="#707DA4"
-            android:layout_marginHorizontal="6dp"
-            android:fontFamily="sans-serif-medium"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-black"
             android:drawableRight="@drawable/ic_arrow_right"
-            android:background="@drawable/bgd_btn_showmore"/>
+            android:background="@drawable/bgd_btn_login"/>
     </RelativeLayout>
 
 </RelativeLayout>

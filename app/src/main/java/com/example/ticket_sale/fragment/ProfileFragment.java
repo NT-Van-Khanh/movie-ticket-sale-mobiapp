@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +15,20 @@ import android.widget.Button;
 import com.example.ticket_sale.LoginActivity;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.RegisterActivity;
+import com.example.ticket_sale.adapter.SettingAdapter;
+import com.example.ticket_sale.model.SettingItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProfileFragment extends Fragment {
     Button btnRedirectRegister;
     Button btnRedirectLogin;
-
-
+    RecyclerView rcViewSettings;
+    RecyclerView rcViewContacts;
+    SettingAdapter settingAdapter;
+    List<SettingItem> settingItems;
+    List<SettingItem> contactItems;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,6 +80,11 @@ public class ProfileFragment extends Fragment {
     void init(View v){
         btnRedirectLogin = v.findViewById(R.id.btnRedirectLogin);
         btnRedirectRegister = v.findViewById(R.id.btnRedirectRegister);
+        rcViewSettings = v.findViewById(R.id.rcViewSettings);
+        rcViewContacts = v.findViewById(R.id.rcViewContacts);
+        settingItems = initSettingsItem();
+        contactItems = initContactsItem();
+        settingAdapter = new SettingAdapter(settingItems, getContext());
 
         btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,5 +98,29 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), RegisterActivity.class);
             startActivity(intent);
         });
+
+        rcViewSettings.setAdapter(settingAdapter);
+        rcViewSettings.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        rcViewContacts.setAdapter(new SettingAdapter(contactItems, getContext()));
+        rcViewContacts.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+    }
+
+    private List<SettingItem> initSettingsItem(){
+        List<SettingItem> settingItems = new ArrayList<>();
+        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Hồ sơ cá nhân","DetailProfileFragment",R.drawable.ic_profile ));
+        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Lịch sử mua hàng","HistoryFragment",R.drawable.ic_history ));
+        return settingItems;
+    }
+    private List<SettingItem> initContactsItem(){
+        List<SettingItem> settingItems = new ArrayList<>();
+        settingItems.add(new SettingItem(SettingItem.TYPE_PHONE,"Liên hệ qua số điện thoại: 0123456789","0123456789",R.drawable.ic_call));
+        settingItems.add(new SettingItem(SettingItem.TYPE_EMAIL, "Liên hệ qua email: testmail@gmail.com","testmail@gmail.com",R.drawable.ic_email));
+        settingItems.add(new SettingItem(SettingItem.TYPE_WEB, "Thông tin về chúng tôi","https://www.galaxycine.vn/ve-chung-toi/",R.drawable.ic_store));
+        settingItems.add(new SettingItem(SettingItem.TYPE_WEBVIEW, "Điều khoản sử dụng","https://vnexpress.net/",R.drawable.ic_article));
+        settingItems.add(new SettingItem(SettingItem.TYPE_WEBVIEW, "Chính sách bảo mật","https://vnexpress.net/",R.drawable.ic_encrypted));
+        settingItems.add(new SettingItem(SettingItem.TYPE_WEBVIEW, "Chính sách thanh toán","https://vnexpress.net/",R.drawable.ic_card));
+        settingItems.add(new SettingItem(SettingItem.TYPE_WEBVIEW, "Câu hỏi thường gặp","https://vnexpress.net/",R.drawable.ic_help));
+        return settingItems;
     }
 }

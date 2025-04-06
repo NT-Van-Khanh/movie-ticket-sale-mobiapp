@@ -22,6 +22,7 @@ import com.example.ticket_sale.model.Movie;
  * create an instance of this fragment.
  */
 public class MovieDetailFragment extends Fragment {
+    TextView txtGoBack;
     ImageView imgMoviePoster;
     TextView txtMovieRating;
     TextView txtMovieTitle;
@@ -105,6 +106,9 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void initView(View root){
+        txtGoBack = root.findViewById(R.id.txtGoBack);
+        txtGoBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+
         imgMoviePoster = root.findViewById(R.id.imgMoviePoster);
         txtMovieTitle = root.findViewById(R.id.txtMovieTitle);
         txtMovieAge = root.findViewById(R.id.txtMovieAge);

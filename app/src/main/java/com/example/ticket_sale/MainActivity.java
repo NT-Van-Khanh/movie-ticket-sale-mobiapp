@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.example.ticket_sale.fragment.HistoryFragment;
 import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieDetailFragment;
+import com.example.ticket_sale.fragment.MovieFragment;
 import com.example.ticket_sale.fragment.MovieTheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
 import com.example.ticket_sale.fragment.TheatersFragment;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.nav_movie_theaters) {
                 selectedFragment = new MovieTheaterFragment();
             } else if (itemId == R.id.nav_movies){
-                selectedFragment = new MovieDetailFragment();
+                selectedFragment = new MovieFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }
