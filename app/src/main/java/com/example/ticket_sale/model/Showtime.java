@@ -1,6 +1,11 @@
 package com.example.ticket_sale.model;
 
-public class Showtime {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Showtime implements Parcelable {
     String id;
     String timeStart;
     String timeEnd;
@@ -19,6 +24,27 @@ public class Showtime {
         this.movieId = movieId;
         this.date = date;
     }
+
+    protected Showtime(Parcel in) {
+        id = in.readString();
+        timeStart = in.readString();
+        timeEnd = in.readString();
+        roomId = in.readString();
+        movieId = in.readString();
+        date = in.readString();
+    }
+
+    public static final Creator<Showtime> CREATOR = new Creator<Showtime>() {
+        @Override
+        public Showtime createFromParcel(Parcel in) {
+            return new Showtime(in);
+        }
+
+        @Override
+        public Showtime[] newArray(int size) {
+            return new Showtime[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -66,5 +92,20 @@ public class Showtime {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(timeStart);
+        dest.writeString(timeEnd);
+        dest.writeString(roomId);
+        dest.writeString(movieId);
+        dest.writeString(date);
     }
 }

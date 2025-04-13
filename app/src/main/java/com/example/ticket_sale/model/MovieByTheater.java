@@ -1,8 +1,13 @@
 package com.example.ticket_sale.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public class MovieByTheater {
+public class MovieByTheater implements Parcelable {
     private String id;
     private String title;
     private Integer time;
@@ -23,6 +28,43 @@ public class MovieByTheater {
         this.imageResId = imageResId;
         this.movieFormats = movieFormats;
     }
+
+    protected MovieByTheater(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        if (in.readByte() == 0) {
+            time = null;
+        } else {
+            time = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            age = null;
+        } else {
+            age = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            rating = null;
+        } else {
+            rating = in.readFloat();
+        }
+        if (in.readByte() == 0) {
+            imageResId = null;
+        } else {
+            imageResId = in.readInt();
+        }
+    }
+
+    public static final Creator<MovieByTheater> CREATOR = new Creator<MovieByTheater>() {
+        @Override
+        public MovieByTheater createFromParcel(Parcel in) {
+            return new MovieByTheater(in);
+        }
+
+        @Override
+        public MovieByTheater[] newArray(int size) {
+            return new MovieByTheater[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -78,5 +120,40 @@ public class MovieByTheater {
 
     public void setMovieFormats(List<MovieFormat> movieFormats) {
         this.movieFormats = movieFormats;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        if (time == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(time);
+        }
+        if (age == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(age);
+        }
+        if (rating == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeFloat(rating);
+        }
+        if (imageResId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(imageResId);
+        }
     }
 }

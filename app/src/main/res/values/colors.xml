@@ -4,5 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#616161</color>
     <color name="app_name_color">#1E2E3D</color>
-
+    <color name="seat_selected">#217C25</color>
+    <color name="seat_sold">#928080</color>
+    <color name="seat_standard">#192340</color>
+    <color name="seat_vip">#E77715</color>
+    <color name="seat_couple">#1A237E</color>
 </resources>

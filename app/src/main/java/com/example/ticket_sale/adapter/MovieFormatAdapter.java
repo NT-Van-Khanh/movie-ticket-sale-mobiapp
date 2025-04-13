@@ -1,6 +1,7 @@
 package com.example.ticket_sale.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.fragment.ChooseSeatFragment;
 import com.example.ticket_sale.model.MovieFormat;
 import com.example.ticket_sale.model.Showtime;
 
@@ -21,9 +23,13 @@ import java.util.List;
 
 public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.MovieFormatViewHolder> {
     private List<MovieFormat> movieFormats;
+    private final ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
+    private int movieIndex;
 
-    public MovieFormatAdapter(List<MovieFormat> movieFormats) {
+    public MovieFormatAdapter(List<MovieFormat> movieFormats,int movieIndex, ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
         this.movieFormats = movieFormats;
+        this.onShowtimeClickListener = onShowtimeClickListener;
+        this.movieIndex = movieIndex;
     }
 
     @NonNull
@@ -40,10 +46,10 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
         holder.txtMovieFormatName.setText(movieFormat.getName());
         ShowtimeAdapter showtimeAdapter = (ShowtimeAdapter) holder.rcMovieShowtimes.getAdapter();
         if(showtimeAdapter == null){
-            showtimeAdapter = new ShowtimeAdapter(movieFormat.getShowtimes());
+            showtimeAdapter = new ShowtimeAdapter(movieFormat.getShowtimes(), movieIndex, holder.getAdapterPosition(), onShowtimeClickListener);
             holder.rcMovieShowtimes.setAdapter(showtimeAdapter);
         }else{
-            showtimeAdapter.updateData(movieFormat.getShowtimes());
+            showtimeAdapter.updateData(movieFormat.getShowtimes(), movieIndex, holder.getAdapterPosition());
         }
 
     }
@@ -66,9 +72,10 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
         }
     }
 
-    public void updateData(List<MovieFormat> newMovieFormats){
+    public void updateData(List<MovieFormat> newMovieFormats, int movieIndex){
         this.movieFormats.clear();
         this.movieFormats.addAll(newMovieFormats);
+        this.movieIndex = movieIndex;
         notifyDataSetChanged();
     }
 
@@ -83,4 +90,5 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
 
         return Math.max(1, screenWidthPx / itemMinWidthPx);// Đảm bảo có ít nhất 1 cột
     }
+
 }

@@ -19,9 +19,11 @@ import java.util.List;
 
 public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieByTheaterViewHolder> {
     private List<MovieByTheater> moviesByTheater;
+    private ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
 
-    public MovieByTheaterAdapter(List<MovieByTheater> moviesByTheater) {
+    public MovieByTheaterAdapter(List<MovieByTheater> moviesByTheater, ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
         this.moviesByTheater = moviesByTheater;
+        this.onShowtimeClickListener = onShowtimeClickListener;
     }
 
     @NonNull
@@ -44,10 +46,10 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
         MovieFormatAdapter movieFormatAdapter = (MovieFormatAdapter) holder.rcViewMovieFormats.getAdapter();
         if(movieFormatAdapter == null){
                 Log.e("movieFormatAdapter","adapter is null");
-                movieFormatAdapter = new MovieFormatAdapter(movieByTheater.getMovieFormats());
+                movieFormatAdapter = new MovieFormatAdapter(movieByTheater.getMovieFormats(),holder.getAdapterPosition(), onShowtimeClickListener);
                 holder.rcViewMovieFormats.setAdapter(movieFormatAdapter);
         }else{
-            movieFormatAdapter.updateData(movieByTheater.getMovieFormats());
+            movieFormatAdapter.updateData(movieByTheater.getMovieFormats(),holder.getAdapterPosition());
         }
     }
 

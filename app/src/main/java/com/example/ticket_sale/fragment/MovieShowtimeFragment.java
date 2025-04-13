@@ -22,6 +22,7 @@ import com.example.ticket_sale.adapter.ShowtimeAdapter;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieByTheater;
 import com.example.ticket_sale.model.MovieFormat;
+import com.example.ticket_sale.model.MovieTheater;
 import com.example.ticket_sale.model.Showtime;
 
 import org.w3c.dom.Text;
@@ -49,6 +50,7 @@ public class MovieShowtimeFragment extends Fragment {
     private TextView txtTheaterName;
     private TextView txtTheaterAddress;
 
+    private MovieTheater movieTheater;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -100,10 +102,18 @@ public class MovieShowtimeFragment extends Fragment {
     }
 
     private void initData() {
+        if(getArguments()!= null){
+            movieTheater = new MovieTheater();
+            movieTheater.setId( getArguments().getString("theaterId"));
+            movieTheater.setName(getArguments().getString("theaterName"));
+            movieTheater.setAddress(getArguments().getString("theaterAddress"));
+//            Log.d("theater infor:", movieTheater.getId() +" "+movieTheater.getName() + " " +movieTheater.getAddress());
+        }
+
         availableDates = getAvailableDates();
         dateAdapter = new DateAdapter(availableDates, null);
         moviesByTheater = getMoviesByTheater();
-        movieByTheaterAdapter = new MovieByTheaterAdapter(moviesByTheater);
+        movieByTheaterAdapter = new MovieByTheaterAdapter(moviesByTheater, this::onItemClick);
     }
 
     private void initView(View root){
@@ -119,11 +129,9 @@ public class MovieShowtimeFragment extends Fragment {
         rcViewMoviesByTheater.setLayoutManager(new GridLayoutManager(getContext(),1));
         rcViewMoviesByTheater.setAdapter(movieByTheaterAdapter);
 
-        if (getArguments() != null) {
-            String stringArgument = getArguments().getString("theaterName");
-            txtTheaterName.setText(stringArgument);
-            stringArgument = getArguments().getString("theaterAddress");
-            txtTheaterAddress.setText(stringArgument);
+        if(movieTheater!=null){
+            txtTheaterName.setText(movieTheater.getName());
+            txtTheaterAddress.setText(movieTheater.getAddress());
         }
     }
 
@@ -158,6 +166,37 @@ public class MovieShowtimeFragment extends Fragment {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
         return availableDates;
+    }
+
+    private void onItemClick(int movieIndex, int formatIndex, int showtimeIndex) {
+        if (movieTheater == null) return;
+        MovieByTheater movieByTheater = moviesByTheater.get(movieIndex);
+        MovieFormat movieFormat = movieByTheater.getMovieFormats().get(formatIndex);
+        Showtime showtime = movieFormat.getShowtimes().get(showtimeIndex);
+
+        ChooseSeatFragment chooseSeatFragment = new ChooseSeatFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("theaterId",movieTheater.getId());
+        bundle.putString("theaterName",movieTheater.getName());
+        bundle.putString("theaterAddress",movieTheater.getAddress());
+
+        bundle.putParcelable("movieByTheater", movieByTheater);
+        bundle.putParcelable("movieFormat", movieFormat);
+        bundle.putParcelable("movieShowtime",showtime);
+//        bundle.putString("movieId", movieByTheater.getId());
+//        bundle.putString("movieTitle", movieByTheater.getTitle());
+//        bundle.putString("movieAge",movieByTheater.getAge().toString());
+//
+//        bundle.putString("movieFormatName",movieFormat.getName());
+//        bundle.putString("movieFormatId", movieFormat.getId());
+//
+//        bundle.putString("movieShowtimeId",showtime.getId());
+//        bundle.putString("movieShowtimeStart",showtime.getTimeStart());
+//        bundle.putString("movieShowtimeEnd",showtime.getTimeEnd());
+        chooseSeatFragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager() .beginTransaction()
+                .replace(R.id.fragment_container,chooseSeatFragment).commit();
+
     }
 
 }
