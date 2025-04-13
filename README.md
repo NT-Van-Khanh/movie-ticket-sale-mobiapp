@@ -22,11 +22,12 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 3. Detail movie screen
 <img src="https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54" width="200">
 
-4. Cinemas screen
+4. Screen shows theaters and movie showtimes by theater
 <img src="https://github.com/user-attachments/assets/b6253c1b-80ff-4a93-8fee-0e4071b895d1" width="200">
-
-5. Screen show movies and movie showtimes by theater
 <img src="https://github.com/user-attachments/assets/8ac1e82f-db2a-417a-b631-3072bafe570d" width="200">
+
+5. Ticket booking screens
+<img src="https://github.com/user-attachments/assets/d0aa746f-ae30-424f-9ff9-121112c11aa9" width="200">
 
 7. Auth sreens (login, register, reset password, OTP verification)
 <img src="https://github.com/user-attachments/assets/f04bb387-26bd-46b6-b1dd-b056f9cfc404" width="200">
@@ -38,12 +39,14 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 <img src="https://github.com/user-attachments/assets/ff5d94e6-d0f1-4345-a974-09e0cba3383d" width="200">
 
 ## Getting Started
-1. Clone the repository:
-2. Open the project in Android Studio
-    ```bash
+1. Clone the repository
+     ```bash
     git clone https://github.com/NT-Van-Khanh/movie-sticket-sale-mobiapp.git
     ```
+2. Open the project in Android Studio
+
 3. Sync dependencies using Gradle
+
 4. Run the application on an emulator or a real device:
    ```bash
     ./gradlew assembleDebug  # Build APK
