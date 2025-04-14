@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.ticket_sale.LoginActivity;
+import com.example.ticket_sale.activity.LoginActivity;
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.RegisterActivity;
+import com.example.ticket_sale.activity.RegisterActivity;
 import com.example.ticket_sale.adapter.SettingAdapter;
 import com.example.ticket_sale.model.SettingItem;
 

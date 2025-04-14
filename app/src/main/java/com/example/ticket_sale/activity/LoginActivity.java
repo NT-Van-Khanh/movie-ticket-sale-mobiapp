@@ -1,4 +1,4 @@
-package com.example.ticket_sale;
+package com.example.ticket_sale.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.ticket_sale.R;
 
 public class LoginActivity extends AppCompatActivity {
     TextView txtGoBack;

@@ -1,4 +1,4 @@
-package com.example.ticket_sale;
+package com.example.ticket_sale.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,14 +12,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.ticket_sale.fragment.HistoryFragment;
+import com.example.ticket_sale.R;
 import com.example.ticket_sale.fragment.HomeFragment;
-import com.example.ticket_sale.fragment.MovieDetailFragment;
 import com.example.ticket_sale.fragment.MovieFragment;
 import com.example.ticket_sale.fragment.MovieTheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
-import com.example.ticket_sale.fragment.TheatersFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {

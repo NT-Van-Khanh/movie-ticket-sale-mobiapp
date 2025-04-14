@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.WebViewActivity;
+import com.example.ticket_sale.activity.WebViewActivity;
 import com.example.ticket_sale.model.SettingItem;
 
 import java.util.List;
