@@ -49,6 +49,7 @@ public class MovieShowtimeFragment extends Fragment {
 
     private TextView txtTheaterName;
     private TextView txtTheaterAddress;
+    private TextView txtGoBack;
 
     private MovieTheater movieTheater;
     // TODO: Rename parameter arguments, choose names that match
@@ -119,6 +120,8 @@ public class MovieShowtimeFragment extends Fragment {
     private void initView(View root){
         txtTheaterName = root.findViewById(R.id.txtMovieTheaterName);
         txtTheaterAddress = root.findViewById(R.id.txtMovieTheaterAddress);
+        txtGoBack = root.findViewById(R.id.txtGoBack);
+        txtGoBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         rcViewDates = root.findViewById(R.id.rcViewDates);
         rcViewMoviesByTheater = root.findViewById(R.id.rcViewMoviesByTheater);
@@ -195,7 +198,9 @@ public class MovieShowtimeFragment extends Fragment {
 //        bundle.putString("movieShowtimeEnd",showtime.getTimeEnd());
         chooseSeatFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager() .beginTransaction()
-                .replace(R.id.fragment_container,chooseSeatFragment).commit();
+                .replace(R.id.fragment_container,chooseSeatFragment)
+                .addToBackStack(null)
+                .commit();
 
     }
 

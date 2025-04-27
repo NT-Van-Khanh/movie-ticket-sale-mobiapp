@@ -3,7 +3,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#616161</color>
-    <color name="app_name_color">#1E2E3D</color>
+    <color name="dark_gray">#565656</color>
+    <color name="app_primary">#1E2E3D</color><!-- màu chủ đạo -->
+    <color name="app_accent">#FFCD01</color><!-- màu nhấn -->
+    <color name="app_accent_text">#ED8E00</color><!-- màu nhấn text -->
+    <color name="app_otp_text">#76705D</color>
+
     <color name="seat_selected">#217C25</color>
     <color name="seat_sold">#928080</color>
     <color name="seat_standard">#192340</color>

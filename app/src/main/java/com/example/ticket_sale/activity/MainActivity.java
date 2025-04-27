@@ -1,6 +1,7 @@
 package com.example.ticket_sale.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -13,15 +14,19 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.data.ApiServiceFactory;
+import com.example.ticket_sale.data.repository.AuthRepository;
+import com.example.ticket_sale.data.repository.UserRepository;
 import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieFragment;
 import com.example.ticket_sale.fragment.MovieTheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
+import com.example.ticket_sale.util.debug.ApiTester;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     FrameLayout fragmentContainer;
-    NavigationBarView bottomNavigationView;
+    private NavigationBarView bottomNavigationView;
     Fragment selectedFragment;
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
+        ApiTester apiTester = new ApiTester(this,this);
+//        apiTester.testAllApis();
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -64,3 +73,24 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
+
+//        try{
+//            authRepository.auth("caocuong", "123123123")
+//                    .observe(this, tokenMap -> {
+//                        if (tokenMap != null&& tokenMap.containsKey("accessToken")) {
+//                            String token = tokenMap.get("accessToken");
+//                            userRepository.getUserById("cd664219-042d-4ffc-b851-5bbba4005d8b", token)
+//                                    .observe(this, user -> {
+//                                        if (user != null && user.getData() != null) {
+//                                            Log.e("Dữ liệu user", user.getData().toString());
+//                                        } else {
+//                                            Log.e("Dữ liệu user", "Không tìm thấy người dùng!");
+//                                        }
+//                                    });
+//                        } else {
+//                            Log.e("authRepository.auth", "Không lấy được token!");
+//                        }
+//                    });
+//        }catch (Exception e){
+//            Log.e("userRepository.getUserById","Error when get User Info");
+//        }

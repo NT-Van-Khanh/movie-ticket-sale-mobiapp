@@ -142,6 +142,8 @@ public class MovieTheaterFragment extends Fragment {
         movieShowtimeFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container,movieShowtimeFragment).commit();
+                .replace(R.id.fragment_container,movieShowtimeFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

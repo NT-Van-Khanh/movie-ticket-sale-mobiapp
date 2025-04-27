@@ -1,11 +1,5 @@
 package com.example.ticket_sale.model;
 
-import android.content.res.ColorStateList;
-
-import androidx.core.content.ContextCompat;
-
-import com.example.ticket_sale.R;
-
 public class Seat {
     private String id;
 //    private String type;

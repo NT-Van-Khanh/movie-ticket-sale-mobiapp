@@ -14,19 +14,22 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:background="#FEFDFF"
         android:gravity="center_vertical"
-        android:layout_marginBottom="2dp">
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_go_back"/>
+        android:layout_marginBottom="2dp"
+        android:contentInsetStart="2dp"
+        android:paddingStart="0dp">
         <TextView
+            android:id="@+id/txtGoBack"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Suất chiếu"
+            android:paddingHorizontal="5dp"
+            app:backgroundTint="@null"
+            android:drawableLeft="@drawable/ic_go_back"
+            android:drawablePadding="-2dp"
             android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#2A2B2C"/>
+            android:text="Suất chiếu"
+            android:textColor="#2A2B2C"
+            android:textSize="20dp"
+            android:textStyle="bold"/>
     </Toolbar>
     <LinearLayout
         android:layout_width="match_parent"

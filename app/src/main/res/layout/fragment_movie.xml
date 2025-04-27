@@ -18,7 +18,7 @@
             android:text="Phim đang chiếu"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/app_name_color"/>
+            android:textColor="@color/app_primary"/>
     </Toolbar>
 
     <LinearLayout

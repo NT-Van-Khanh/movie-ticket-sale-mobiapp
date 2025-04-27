@@ -1,15 +1,12 @@
 package com.example.ticket_sale.fragment;
 
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.MovieByTheater;
@@ -32,7 +30,7 @@ import java.util.List;
 
 public class ChooseSeatFragment extends Fragment {
     private TextView txtTheaterName;
-    private TextView txtRoom;
+    private TextView txtScreen;
     private TextView txtTimeFrame;
     private TextView txtMovieName;
     private TextView txtSeatsSelected;
@@ -40,7 +38,7 @@ public class ChooseSeatFragment extends Fragment {
     private Button btnNext;
     private LinearLayout lnlSeatRowName;
     private GridLayout gdlSeats;
-
+    private TextView txtGoBack;
 //    private List<List<Seat>> seats;
     private List<Seat> selectedSeats;
     private Seat[][] seats;
@@ -92,7 +90,7 @@ public class ChooseSeatFragment extends Fragment {
 
     private void initViews(View v){
         txtTheaterName = v.findViewById(R.id.txtTheaterName);
-        txtRoom = v.findViewById(R.id.txtRoom);
+        txtScreen = v.findViewById(R.id.txtScreen);
         txtTimeFrame = v.findViewById(R.id.txtTimeFrame);
         txtMovieName = v.findViewById(R.id.txtMovieName);
         txtSeatsSelected = v.findViewById(R.id.txtSeatSelected);
@@ -101,7 +99,38 @@ public class ChooseSeatFragment extends Fragment {
         lnlSeatRowName = v.findViewById(R.id.lnlSeatRowName);
         gdlSeats = v.findViewById(R.id.gdlSeats);
         btnNext = v.findViewById(R.id.btnNext);
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectedSeats == null || selectedSeats.size()<1){
+                    Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG);
+                    return;
+                }
+                Bundle b = new Bundle();
+                b.putString("theaterId",theater.getId());
+                b.putString("theaterName",theater.getName());
+                b.putString("theaterAddress",theater.getAddress());
 
+                b.putParcelable("movieByTheater", movieByTheater);
+                b.putParcelable("movieFormat", movieFormat);
+                b.putParcelable("movieShowtime", showtime);
+                ChooseFoodFragment chooseFoodFragment = new ChooseFoodFragment();
+                chooseFoodFragment.setArguments(b);
+                getParentFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //hieu ung chuyen fragment
+                        .replace(R.id.fragment_container, chooseFoodFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        txtGoBack = v.findViewById(R.id.txtGoBack);
+        txtGoBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
         if( theater != null){
             txtTheaterName.setText(theater.getName());
         }

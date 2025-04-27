@@ -19,8 +19,6 @@ import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieAdapter;
 import com.example.ticket_sale.adapter.PosterAdapter;
 import com.example.ticket_sale.model.Movie;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

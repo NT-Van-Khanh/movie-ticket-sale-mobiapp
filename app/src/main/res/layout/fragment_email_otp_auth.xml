@@ -15,6 +15,7 @@ android:orientation="vertical">
     android:contentInsetStart="0dp"
     android:paddingStart="0dp">
     <TextView
+        android:id="@+id/txtGoBack"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:paddingHorizontal="5dp"
@@ -72,8 +73,8 @@ android:orientation="vertical">
     android:paddingVertical="18dp"
     android:gravity="center">
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"
@@ -82,8 +83,8 @@ android:orientation="vertical">
         android:background="@drawable/bgd_edt_otp"
         android:textColor="#6E697A"/>
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"
@@ -92,8 +93,8 @@ android:orientation="vertical">
         android:background="@drawable/bgd_edt_otp"
         android:textColor="#6E697A"/>
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"
@@ -102,8 +103,8 @@ android:orientation="vertical">
         android:background="@drawable/bgd_edt_otp"
         android:textColor="#6E697A"/>
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"
@@ -112,8 +113,8 @@ android:orientation="vertical">
         android:background="@drawable/bgd_edt_otp"
         android:textColor="#6E697A"/>
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"
@@ -122,8 +123,8 @@ android:orientation="vertical">
         android:background="@drawable/bgd_edt_otp"
         android:textColor="#6E697A"/>
     <EditText
-        android:layout_width="34dp"
-        android:layout_height="wrap_content"
+        android:layout_width="38dp"
+        android:layout_height="46dp"
         android:layout_marginHorizontal="2dp"
         android:textAlignment="center"
         android:hint="0"

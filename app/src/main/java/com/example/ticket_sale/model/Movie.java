@@ -10,7 +10,7 @@ public class Movie implements Parcelable {
     private Integer imageResId;
     private Integer age;
     private String title;
-    private Integer duration;
+    private Integer duration;//String
     private String openingDate;    //release date
     private Float rating;
 
@@ -19,7 +19,7 @@ public class Movie implements Parcelable {
     private String director;
     private String language;//format movie
 
-    private String content;
+    private String content;//description
     private String trailerLink;
 
     public Movie() {

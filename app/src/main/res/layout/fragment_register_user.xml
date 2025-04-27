@@ -40,8 +40,8 @@
         android:text="Đăng ký tài khoản"
         android:gravity="center"
         android:textStyle="bold"
-        android:textSize="30sp"
-        android:textColor="#1E2E3D"
+        android:textSize="28sp"
+        android:textColor="@color/app_primary"
         android:layout_marginTop="30dp"/>
 
     <TextView
@@ -51,6 +51,7 @@
         android:text="Họ và tên"
         android:textSize="17sp"
         android:paddingLeft="15dp"
+        android:fontFamily="sans-serif-medium"
         android:textColor="#535359"
         android:layout_marginTop="30dp"/>
 
@@ -72,6 +73,7 @@
         android:text="Email"
         android:textSize="17sp"
         android:paddingLeft="15dp"
+        android:fontFamily="sans-serif-medium"
         android:textColor="#434349"
         android:layout_marginTop="10dp"/>
 
@@ -93,6 +95,7 @@
         android:layout_height="wrap_content"
         android:text="Số điện thoại"
         android:textSize="17sp"
+        android:fontFamily="sans-serif-medium"
         android:paddingLeft="15dp"
         android:textColor="#434349"
         android:layout_marginTop="10dp"/>
@@ -171,13 +174,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:text="TIẾP TỤC"
-        android:textSize="16sp"
-        android:textColor="#373535"
+        android:textSize="17sp"
+        android:textColor="@color/white"
         android:fontFamily="sans-serif-black"
         app:backgroundTint="@null"
         android:background="@drawable/bgd_btn_login"
         android:layout_marginHorizontal="15dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="8dp"/>
 
     <LinearLayout
         android:id="@+id/lnLayoutRedirect"

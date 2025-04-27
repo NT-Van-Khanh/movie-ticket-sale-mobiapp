@@ -44,14 +44,14 @@
             android:layout_height="wrap_content"
             android:text="Rạp Linh Trung, Thủ Đức"
             android:textSize="20dp"
-            android:textColor="#2C2A5B"
+            android:textColor="@color/app_primary"
             android:fontFamily="sans-serif-black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/txtRoom"
+                android:id="@+id/txtScreen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="5dp"
@@ -385,9 +385,10 @@
             android:textColor="#373757"
             android:textAlignment="center"
             android:paddingVertical="1dp"
-            android:layout_marginBottom="20dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="10dp"/>
         </LinearLayout>
     </ScrollView>
     <TableLayout
@@ -398,7 +399,7 @@
         android:paddingHorizontal="10dp"
         android:paddingVertical="12dp"
         android:stretchColumns="*"
-        android:layout_above="@id/lnlMovieInfo">
+        android:layout_above="@id/vMovieLine">
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -507,6 +508,13 @@
             </LinearLayout>
         </TableRow>
     </TableLayout>
+    <View
+        android:id="@+id/vMovieLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingHorizontal="2dp"
+        android:background="@drawable/bgd_group_line_shadow"
+        android:layout_above="@id/lnlMovieInfo"/>
     <LinearLayout
         android:id="@+id/lnlMovieInfo"
         android:layout_width="match_parent"
@@ -516,29 +524,29 @@
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="15dp"
         android:paddingBottom="20dp"
-        android:paddingTop="8dp"
-        android:elevation="6dp"
-        android:translationZ="6dp">
+        android:paddingTop="10dp">
         <TextView
             android:id="@+id/txtMovieName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tên phim"
             android:textSize="18dp"
+            android:textColor="@color/app_primary"
             android:fontFamily="sans-serif-black"
-            android:paddingVertical="2dp"/>
+            android:paddingVertical="1dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="2dp">
+            android:paddingVertical="1dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16dp"
                 android:fontFamily="sans-serif-medium"
+                android:paddingStart="2dp"
                 android:text="Ghế"/>
             <TextView
                 android:id="@+id/txtSeatSelected"
@@ -554,12 +562,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingVertical="6dp">
+            android:paddingVertical="5dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="17dp"
+                android:textSize="18dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Tổng tiền"/>
             <TextView
@@ -580,6 +588,7 @@
             android:fontFamily="sans-serif-black"
             android:background="@drawable/bgd_btn_accept"
             app:backgroundTint="@null"
-            android:text=" Hoàn thành thanh toán"/>
+            android:layout_marginTop="5dp"
+            android:text=" Hoàn tất thanh toán (1/3)"/>
     </LinearLayout>
 </RelativeLayout>
