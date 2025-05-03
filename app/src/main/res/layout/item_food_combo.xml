@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="160dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bgd_item_food_combo"
+    android:paddingVertical="5dp">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginEnd="8dp"
+        android:layout_centerVertical="true">
+        <ImageView
+            android:id="@+id/imgComboImage"
+            android:layout_width="124dp"
+            android:layout_height="140dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/fd_cb_popcorn1"/>
+    </androidx.cardview.widget.CardView>
+    <TextView
+        android:id="@+id/txtComboTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Combo Bắp Nước"
+        android:textSize="16dp"
+        android:textColor="#4B5462"
+        android:paddingHorizontal="2dp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/cardImage"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/bgd_group_line_shadow"
+        android:layout_toRightOf="@id/cardImage"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@id/txtComboTitle"/>
+    <TextView
+        android:id="@+id/txtComboDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="- 1 Bắp (Truyền thống/Phô mai)\n- 1 Nước tùy chọn (Pessi/CocaCola)"
+        android:paddingHorizontal="2dp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/app_otp_text"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/txtComboTitle"
+        android:layout_toEndOf="@id/cardImage"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/rlLayoutTool"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:layout_toRightOf="@id/cardImage"
+        android:background="@drawable/bgd_group_line_shadow" />
+
+    <RelativeLayout
+        android:id="@+id/rlLayoutTool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@id/cardImage"
+        android:layout_marginBottom="6dp"
+        android:paddingEnd="12dp">
+        <ImageButton
+            android:id="@+id/btnRemove"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_remove"
+            android:background="@null"/>
+        <EditText
+            android:id="@+id/edtQuantity"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
+            android:paddingVertical="0dp"
+            android:textAlignment="center"
+            android:maxLines="1"
+            android:maxLength="2"
+            android:background="@null"
+            android:text="1"
+            android:inputType="number"
+            android:layout_toEndOf="@id/btnRemove"/>
+        <ImageButton
+            android:id="@+id/btnAdd"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
+            android:background="@null"
+            android:layout_toEndOf="@id/edtQuantity"/>
+        <TextView
+            android:id="@+id/txtComboPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="52.000 Đ"
+            android:textSize="16dp"
+            android:textColor="@color/app_accent_text"
+            android:fontFamily="sans-serif-medium"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+</RelativeLayout>

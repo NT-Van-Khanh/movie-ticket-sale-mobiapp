@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white"
     tools:context=".fragment.ChooseFoodFragment">
     <Toolbar
         android:id="@+id/toolBar"
@@ -44,6 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
+        android:background="@color/white"
         android:paddingHorizontal="10dp"
         android:layout_below="@id/txtTimeLine"
         android:paddingTop="10dp">
@@ -78,48 +79,66 @@
             android:layout_marginTop="6dp"
             android:background="@drawable/bgd_group_line_shadow"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/txtTitle1"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Combo"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/app_primary"
-        android:textSize="20sp"
-        android:paddingHorizontal="8dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="2dp"
-        android:layout_below="@id/lnlTheaterInfo"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcViewCombo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:layout_below="@id/txtTitle1"/>
-    <TextView
-        android:id="@+id/txtTitle2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bắp nước"
-        android:fontFamily="sans-serif-black"
-        android:textColor="@color/app_primary"
-        android:textSize="20sp"
-        android:paddingHorizontal="8dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="2dp"
-        android:layout_below="@id/rcViewCombo"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcViewPopcorn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:layout_below="@id/txtTitle2"
-        android:layout_above="@id/vMovieLine"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/lnlTheaterInfo"
+        android:fillViewport="true"
+        android:layout_above="@id/vMovieLine">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtTitle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Combo"
+                android:fontFamily="sans-serif-black"
+                android:textColor="@color/app_primary"
+                android:background="@color/white"
+                android:textSize="20sp"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="3dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcViewCombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:layout_below="@id/txtTitle1"
+                android:nestedScrollingEnabled="false"/>
+            <TextView
+                android:id="@+id/txtTitle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rcViewCombo"
+                android:background="@color/white"
+                android:fontFamily="sans-serif-black"
+                android:paddingHorizontal="8dp"
+
+                android:paddingTop="12dp"
+                android:paddingBottom="3dp"
+                android:text="Bắp nước"
+                android:textColor="@color/app_primary"
+                android:textSize="20sp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcViewPopcorn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+
+                android:paddingBottom="20dp"
+                android:background="@color/white"
+                android:layout_below="@id/txtTitle2"
+                android:nestedScrollingEnabled="false"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
     <View
         android:id="@+id/vMovieLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="6dp"
         android:paddingHorizontal="2dp"
         android:background="@drawable/bgd_group_line_shadow"
         android:layout_above="@id/lnlMovieInfo"/>
@@ -128,6 +147,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+
+        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="15dp"
         android:paddingBottom="20dp"
@@ -160,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:textAlignment="textEnd"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif"
                 android:text="K8, K9"
                 android:textSize="16dp"/>
         </LinearLayout>
@@ -183,10 +204,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:textAlignment="textEnd"
-                android:fontFamily="sans-serif-medium"
+                android:fontFamily="sans-serif"
                 android:text="0"
                 android:textSize="16dp"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

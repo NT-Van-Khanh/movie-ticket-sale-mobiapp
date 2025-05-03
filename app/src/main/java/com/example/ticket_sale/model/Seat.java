@@ -2,8 +2,8 @@ package com.example.ticket_sale.model;
 
 public class Seat {
     private String id;
-//    private String type;
-    private String name;
+    private String title;
+    private Long price;
     private String status;
     private String description;
     private Integer slot;
@@ -11,13 +11,22 @@ public class Seat {
     public Seat() {
     }
 
-    public Seat(String id, String name, String status, String description, Integer slot, SeatType seatType) {
+    public Seat(String id, String title, String status, String description, Integer slot, SeatType seatType, Long price) {
         this.id = id;
-        this.name = name;
+        this.title = title;
         this.status = status;
         this.description = description;
         this.slot = slot;
         this.seatType = seatType;
+        this.price = price;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public SeatType getSeatType() {
@@ -37,12 +46,12 @@ public class Seat {
     }
 
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getStatus() {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:paddingVertical="6dp"
+    android:paddingHorizontal="20dp">
+    <RadioButton
+        android:id="@+id/radPayMethodChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/radio_custom"
+        android:gravity="center"
+        android:checked="true"
+        app:buttonTint="#545D79"/>
+    <ImageView
+        android:id="@+id/imgPayMethodImage"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/pm_vn_pay"
+        android:background="@drawable/bgd_item_pay_method"
+        android:padding="1dp"/>
+    <TextView
+        android:id="@+id/txtPayMethodTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Mã QR VNPay"
+        android:paddingStart="10dp"
+        android:maxLines="2"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"/>
+</LinearLayout>

@@ -25,103 +25,110 @@
             android:layout_gravity="end">
             <ImageButton
                 android:id="@+id/btnSearch"
-                android:layout_width="40dp"
+                android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_search"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Search"/>
             <ImageButton
                 android:id="@+id/btnNotify"
-                android:layout_width="40dp"
+                android:layout_width="48dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_notify"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Notifications"/>
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
-    <RelativeLayout
-        android:id="@+id/consLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar">
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/slidePoster"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="190dp"
-            android:paddingStart="36dp"
-            android:paddingEnd="36dp"
-            android:overScrollMode="never"
-            android:clipToPadding="false"
-            android:clipChildren="false" />
-        <ProgressBar
-            android:id="@+id/progressBarLoadPosters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/consLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/slidePoster"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:paddingStart="36dp"
+                    android:paddingEnd="36dp"
+                    android:overScrollMode="never"
+                    android:clipToPadding="false"
+                    android:clipChildren="false" />
+                <ProgressBar
+                    android:id="@+id/progressBarLoadPosters"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+            </RelativeLayout>
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/lnLayoutContainer"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="5dp"
-        app:singleSelection="true"
-        app:checkedButton="@id/btnCurrentMovies"
-        android:layout_below="@id/consLayout"
-        android:layout_marginHorizontal="10dp">
-            <com.google.android.material.button.MaterialButton
-                style="@style/MyButtonStyle"
-                android:id="@+id/btnCurrentMovies"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="17sp"
-                android:text="Đang chiếu"
-                app:strokeColor="#DCD5E2"
-                app:strokeWidth="1dp"  />
-            <com.google.android.material.button.MaterialButton
-                style="@style/MyButtonStyle"
-                android:id="@+id/btnUpcomingMovies"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sắp chiếu"
-                android:textSize="17sp"
-                app:strokeColor="#DCD5E2"
-                app:strokeWidth="1dp"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-    <RelativeLayout
-        android:id="@+id/rlLayoutContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lnLayoutContainer">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcViewCurrentMovies"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp">
-        </androidx.recyclerview.widget.RecyclerView>
-        <ProgressBar
-            android:id="@+id/progressBarLoadMovies"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
-        <Button
-            android:id="@+id/btnMoreMovies"
-            android:layout_below="@id/rcViewCurrentMovies"
-            android:layout_width="match_parent"
-            android:layout_height="42dp"
-            app:backgroundTint="@null"
-            android:text="Xem thêm"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-black"
-            android:drawableRight="@drawable/ic_arrow_right"
-            android:background="@drawable/bgd_btn_accept"/>
-    </RelativeLayout>
-
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/lnLayoutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                app:singleSelection="true"
+                app:checkedButton="@id/btnCurrentMovies"
+                android:layout_marginHorizontal="10dp">
+                <com.google.android.material.button.MaterialButton
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/btnCurrentMovies"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="17sp"
+                    android:text="Đang chiếu"
+                    app:strokeColor="#DCD5E2"
+                    app:strokeWidth="1dp"  />
+                <com.google.android.material.button.MaterialButton
+                    style="@style/MyButtonStyle"
+                    android:id="@+id/btnUpcomingMovies"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sắp chiếu"
+                    android:textSize="17sp"
+                    app:strokeColor="#DCD5E2"
+                    app:strokeWidth="1dp"/>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+            <RelativeLayout
+                android:id="@+id/rlLayoutContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcViewCurrentMovies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="5dp">
+                </androidx.recyclerview.widget.RecyclerView>
+                <ProgressBar
+                    android:id="@+id/progressBarLoadMovies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+                <Button
+                    android:id="@+id/btnMoreMovies"
+                    android:layout_below="@id/rcViewCurrentMovies"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    app:backgroundTint="@null"
+                    android:text="Xem thêm"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-black"
+                    android:drawableRight="@drawable/ic_arrow_right"
+                    android:background="@drawable/bgd_btn_accept"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>
 
     <!--    <LinearLayout-->

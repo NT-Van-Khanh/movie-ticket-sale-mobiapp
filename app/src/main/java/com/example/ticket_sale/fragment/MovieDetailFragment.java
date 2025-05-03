@@ -37,6 +37,7 @@ public class MovieDetailFragment extends Fragment {
 
     TextView txtMovieContent;
     VideoView vidMovieTrailer;
+    private Movie movie;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -83,26 +84,26 @@ public class MovieDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         initView(root);
-        if(getArguments() == null) return root;
+        setDataForView();
 
-        Movie movie = getArguments().getParcelable("movie");
-        if (movie == null) return root;
-
-        setDataForView(movie);
         return root;
     }
 
-    private void setDataForView(Movie movie){
+    private void setDataForView(){
+        if(getArguments() == null) return;
+        movie = getArguments().getParcelable("movie");
+        if (movie == null) return;
+
         imgMoviePoster.setImageResource(movie.getImageResId());
         txtMovieTitle.setText(movie.getTitle());
         txtMovieAge.setText(String.format("T%d",movie.getAge()));
         txtMovieDuration.setText(String.format("%d phút",movie.getDuration()));
-        txtMovieOpeningDate.setText(movie.getOpeningDate());
-        txtMovieGenre.setText(movie.getGenre());
+        txtMovieOpeningDate.setText(movie.getOpeningDate() == null ? "Đang chiếu" : movie.getOpeningDate().toString());
+//        txtMovieGenre.setText(movie.getGenre());
         txtMovieActor.setText(movie.getActor());
         txtMovieDirector.setText(movie.getDirector());
-        txtMovieFormat.setText(movie.getLanguage());
-        txtMovieContent.setText(movie.getContent());
+//        txtMovieFormat.setText(movie.getMovieFormats());
+        txtMovieContent.setText(movie.getDescription());
     }
 
     private void initView(View root){

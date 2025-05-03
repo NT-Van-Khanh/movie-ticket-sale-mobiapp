@@ -9,7 +9,7 @@ public class Showtime implements Parcelable {
     String id;
     String timeStart;
     String timeEnd;
-    String roomId;
+    String screenId;
     String movieId;
     String date;
 
@@ -20,7 +20,7 @@ public class Showtime implements Parcelable {
         this.id = id;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
-        this.roomId = roomId;
+        this.screenId = roomId;
         this.movieId = movieId;
         this.date = date;
     }
@@ -29,7 +29,7 @@ public class Showtime implements Parcelable {
         id = in.readString();
         timeStart = in.readString();
         timeEnd = in.readString();
-        roomId = in.readString();
+        screenId = in.readString();
         movieId = in.readString();
         date = in.readString();
     }
@@ -71,11 +71,11 @@ public class Showtime implements Parcelable {
     }
 
     public String getRoomId() {
-        return roomId;
+        return screenId;
     }
 
     public void setRoomId(String roomId) {
-        this.roomId = roomId;
+        this.screenId = roomId;
     }
 
     public String getMovieId() {
@@ -104,7 +104,7 @@ public class Showtime implements Parcelable {
         dest.writeString(id);
         dest.writeString(timeStart);
         dest.writeString(timeEnd);
-        dest.writeString(roomId);
+        dest.writeString(screenId);
         dest.writeString(movieId);
         dest.writeString(date);
     }

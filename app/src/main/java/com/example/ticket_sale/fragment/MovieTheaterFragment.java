@@ -135,10 +135,10 @@ public class MovieTheaterFragment extends Fragment {
         MovieShowtimeFragment movieShowtimeFragment = new MovieShowtimeFragment();
 
         Bundle bundle  = new Bundle();
-        bundle.putString("theaterId",movieTheater.getId());
-        bundle.putString("theaterName",movieTheater.getName());
-        bundle.putString("theaterAddress",movieTheater.getAddress());
-
+        bundle.putParcelable("theater",movieTheater);
+//        bundle.putString("theaterId",movieTheater.getId());
+//        bundle.putString("theaterName",movieTheater.getName());
+//        bundle.putString("theaterAddress",movieTheater.getAddress());
         movieShowtimeFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()

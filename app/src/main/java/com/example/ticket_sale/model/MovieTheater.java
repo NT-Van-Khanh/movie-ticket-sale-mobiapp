@@ -1,6 +1,11 @@
 package com.example.ticket_sale.model;
 
-public class MovieTheater {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class MovieTheater implements Parcelable {
     private String id;
     private String name;
     private String address;
@@ -56,5 +61,15 @@ public class MovieTheater {
 
     public void setActive(Integer active) {
         this.active = active;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }

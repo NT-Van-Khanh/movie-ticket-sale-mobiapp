@@ -20,10 +20,12 @@ import com.example.ticket_sale.adapter.MovieAdapter;
 import com.example.ticket_sale.adapter.MovieByTheaterAdapter;
 import com.example.ticket_sale.adapter.ShowtimeAdapter;
 import com.example.ticket_sale.model.Movie;
-import com.example.ticket_sale.model.MovieByTheater;
 import com.example.ticket_sale.model.MovieFormat;
 import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Order;
+import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Showtime;
+import com.example.ticket_sale.model.User;
 
 import org.w3c.dom.Text;
 
@@ -45,13 +47,13 @@ public class MovieShowtimeFragment extends Fragment {
     private MovieByTheaterAdapter movieByTheaterAdapter;
 
     private List<Calendar> availableDates;
-    private List<MovieByTheater> moviesByTheater;
+    private List<Movie> movies;
+    private MovieTheater theater;
 
     private TextView txtTheaterName;
     private TextView txtTheaterAddress;
     private TextView txtGoBack;
 
-    private MovieTheater movieTheater;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -103,18 +105,19 @@ public class MovieShowtimeFragment extends Fragment {
     }
 
     private void initData() {
-        if(getArguments()!= null){
-            movieTheater = new MovieTheater();
-            movieTheater.setId( getArguments().getString("theaterId"));
-            movieTheater.setName(getArguments().getString("theaterName"));
-            movieTheater.setAddress(getArguments().getString("theaterAddress"));
-//            Log.d("theater infor:", movieTheater.getId() +" "+movieTheater.getName() + " " +movieTheater.getAddress());
-        }
-
         availableDates = getAvailableDates();
         dateAdapter = new DateAdapter(availableDates, null);
-        moviesByTheater = getMoviesByTheater();
-        movieByTheaterAdapter = new MovieByTheaterAdapter(moviesByTheater, this::onItemClick);
+        movies = getMovies();
+        movieByTheaterAdapter = new MovieByTheaterAdapter(movies, this::onItemClick);
+
+        if(getArguments()== null) return;
+//            movieTheater = new MovieTheater();
+//            movieTheater.setId( getArguments().getString("theaterId"));
+//            movieTheater.setName(getArguments().getString("theaterName"));
+//            movieTheater.setAddress(getArguments().getString("theaterAddress"));
+        theater = getArguments().getParcelable("theater");
+//            Log.d("theater infor:", movieTheater.getId() +" "+movieTheater.getName() + " " +movieTheater.getAddress());
+
     }
 
     private void initView(View root){
@@ -132,13 +135,13 @@ public class MovieShowtimeFragment extends Fragment {
         rcViewMoviesByTheater.setLayoutManager(new GridLayoutManager(getContext(),1));
         rcViewMoviesByTheater.setAdapter(movieByTheaterAdapter);
 
-        if(movieTheater!=null){
-            txtTheaterName.setText(movieTheater.getName());
-            txtTheaterAddress.setText(movieTheater.getAddress());
+        if(theater!=null){
+            txtTheaterName.setText(theater.getName());
+            txtTheaterAddress.setText(theater.getAddress());
         }
     }
 
-    private List<MovieByTheater> getMoviesByTheater() {
+    private List<Movie> getMovies() {
 
         Showtime st1  = new Showtime("ST1","20:10","21:32","RV1","MV1","07/03/2025");
         Showtime st2  = new Showtime("ST2","18:10","21:32","RV1","MV1","07/03/2025");
@@ -153,13 +156,13 @@ public class MovieShowtimeFragment extends Fragment {
         List<MovieFormat> movieFormats1 = Arrays.asList(mf1, mf2);
         List<MovieFormat> movieFormats2 = Arrays.asList(mf2, mf3);
 
-        MovieByTheater mbt1 = new MovieByTheater("MV1","Bí kíp luyện rồng",123,13, 8.6F,R.drawable.mv_bi_kip_luyen_rong,movieFormats1);
-        MovieByTheater mbt2 = new MovieByTheater("MV2","The bad guys 2",113,13, 8.6F,R.drawable.mv_the_bad_guys_2,movieFormats2);
-        List<MovieByTheater> moviesByTheater = Arrays.asList(mbt2,mbt1);
-        Log.e("moviesByTheater", String.valueOf(moviesByTheater.size()));
+        Movie mbt1 = new Movie("MV1","Bí kíp luyện rồng",123,13, 8.6F,R.drawable.mv_bi_kip_luyen_rong,movieFormats1,null);
+        Movie mbt2 = new Movie("MV2","The bad guys 2",113,13, 8.6F,R.drawable.mv_the_bad_guys_2,movieFormats2,null);
+        List<Movie> movies= Arrays.asList(mbt2,mbt1);
+        Log.e("moviesByTheater", String.valueOf(movies.size()));
 //        Log.e("moviesByTheater.get(0).getMovieFormats().size", String.valueOf(moviesByTheater.get(0).getMovieFormats().get(0).getShowtimes().size()));
 //        Log.e("moviesByTheater.get(1).getMovieFormats().size", String.valueOf(moviesByTheater.get(1).getMovieFormats().get(0).getShowtimes().size()));
-        return moviesByTheater;
+        return movies;
     }
     private List<Calendar> getAvailableDates(){
         List<Calendar> availableDates = new ArrayList<>();
@@ -172,30 +175,28 @@ public class MovieShowtimeFragment extends Fragment {
     }
 
     private void onItemClick(int movieIndex, int formatIndex, int showtimeIndex) {
-        if (movieTheater == null) return;
-        MovieByTheater movieByTheater = moviesByTheater.get(movieIndex);
-        MovieFormat movieFormat = movieByTheater.getMovieFormats().get(formatIndex);
+        if (theater == null) return;
+        Movie movie = movies.get(movieIndex);
+        MovieFormat movieFormat = movie.getMovieFormats().get(formatIndex);
         Showtime showtime = movieFormat.getShowtimes().get(showtimeIndex);
-
+        if(movieFormat == null || showtime == null) return;
         ChooseSeatFragment chooseSeatFragment = new ChooseSeatFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("theaterId",movieTheater.getId());
-        bundle.putString("theaterName",movieTheater.getName());
-        bundle.putString("theaterAddress",movieTheater.getAddress());
-
-        bundle.putParcelable("movieByTheater", movieByTheater);
-        bundle.putParcelable("movieFormat", movieFormat);
-        bundle.putParcelable("movieShowtime",showtime);
-//        bundle.putString("movieId", movieByTheater.getId());
-//        bundle.putString("movieTitle", movieByTheater.getTitle());
-//        bundle.putString("movieAge",movieByTheater.getAge().toString());
+        Order order = new Order();
+        order.setUser(new User());
+        order.setScreen(new Screen("SC2","Phòng 2", theater));
+        order.setMovie(movie);
+        order.setMovieFormat(movieFormat);
+        order.setShowtime(showtime);
+        bundle.putParcelable("order", order);
+////        bundle.putString("theaterId",movieTheater.getId());
+////        bundle.putString("theaterName",movieTheater.getName());
+////        bundle.putString("theaterAddress",movieTheater.getAddress());
+////
+////        bundle.putParcelable("movieByTheater", movie);
+////        bundle.putParcelable("movieFormat", movieFormat);
+////        bundle.putParcelable("movieShowtime",showtime);
 //
-//        bundle.putString("movieFormatName",movieFormat.getName());
-//        bundle.putString("movieFormatId", movieFormat.getId());
-//
-//        bundle.putString("movieShowtimeId",showtime.getId());
-//        bundle.putString("movieShowtimeStart",showtime.getTimeStart());
-//        bundle.putString("movieShowtimeEnd",showtime.getTimeEnd());
         chooseSeatFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager() .beginTransaction()
                 .replace(R.id.fragment_container,chooseSeatFragment)

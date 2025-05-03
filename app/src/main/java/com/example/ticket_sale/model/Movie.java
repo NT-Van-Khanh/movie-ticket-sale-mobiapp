@@ -5,83 +5,103 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class Movie implements Parcelable {
     private String id;
-    private Integer imageResId;
-    private Integer age;
     private String title;
+    private Integer age;
     private Integer duration;//String
-    private String openingDate;    //release date
+    private LocalDate openingDate;    //release date
     private Float rating;
 
-    private String genre;
     private String actor;
     private String director;
-    private String language;//format movie
+    private String nation;
+    private String description;
 
-    private String content;//description
     private String trailerLink;
+    private String imageLink;
+    private Integer imageResId;
+
+    private List<MovieFormat> movieFormats;//format movie
+    private List<MovieType> movieTypes;
 
     public Movie() {
     }
 
-    public Movie(String id, Integer imageResId, String title, Integer duration, Integer age, Float rating) {
-        this.id = id;
-        this.imageResId = imageResId;
-        this.title = title;
-        this.duration = duration;
+    public Movie( String id, String title, Integer age, Integer duration,
+                  Integer imageResId, String nation, LocalDate openingDate, Float rating,
+                  String description, String actor, String director,
+                  List<MovieFormat> movieFormats, List<MovieType> movieTypes) {
+        this.actor = actor;
         this.age = age;
-        this.rating = rating;
-    }
-
-    public Movie(String id, Integer imageResId, Integer age, String title, Integer duration, String openingDate, Float rating,
-                 String genre, String actor, String director, String language, String content, String trailerLink) {
-        this.id = id;
-        this.imageResId = imageResId;
-        this.age = age;
-        this.title = title;
+        this.description = description;
+        this.director = director;
         this.duration = duration;
+        this.imageResId = imageResId;
+        this.movieFormats = movieFormats;
+        this.movieTypes = movieTypes;
+        this.nation = nation;
         this.openingDate = openingDate;
         this.rating = rating;
-        this.genre = genre;
-        this.actor = actor;
-        this.director = director;
-        this.language = language;
-        this.content = content;
-        this.trailerLink = trailerLink;
+        this.title = title;
+        this.id = id;
+    }
+
+    public Movie( String id, String title, Integer duration, Integer age, Float rating,
+                  Integer imageResId, List<MovieFormat> movieFormats, List<MovieType> movieTypes) {
+        this.title = title;
+        this.id = id;
+        this.rating = rating;
+        this.imageResId = imageResId;
+        this.duration = duration;
+        this.age = age;
+        this.movieFormats = movieFormats;
+    }
+
+    public Movie(String id, Integer imageResId,String title, Integer duration, Integer age,  Float rating) {
+        this.id = id;
+        this.imageResId = imageResId;
+        this.age = age;
+        this.title = title;
+        this.rating = rating;
+        this.duration = duration;
     }
 
 
     protected Movie(Parcel in) {
         id = in.readString();
-        if (in.readByte() == 0) {
-            imageResId = null;
-        } else {
-            imageResId = in.readInt();
-        }
+        title = in.readString();
         if (in.readByte() == 0) {
             age = null;
         } else {
             age = in.readInt();
         }
-        title = in.readString();
         if (in.readByte() == 0) {
             duration = null;
         } else {
             duration = in.readInt();
         }
-        openingDate = in.readString();
         if (in.readByte() == 0) {
             rating = null;
         } else {
             rating = in.readFloat();
         }
-        genre = in.readString();
         actor = in.readString();
         director = in.readString();
-        language = in.readString();
-        content = in.readString();
+        nation = in.readString();
+        description = in.readString();
         trailerLink = in.readString();
+        imageLink = in.readString();
+        if (in.readByte() == 0) {
+            imageResId = null;
+        } else {
+            imageResId = in.readInt();
+        }
+        movieFormats = in.createTypedArrayList(MovieFormat.CREATOR);
+        movieTypes = in.createTypedArrayList(MovieType.CREATOR);
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
@@ -96,28 +116,12 @@ public class Movie implements Parcelable {
         }
     };
 
-    public String getId() {
-        return id;
+    public String getActor() {
+        return actor;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    public void setActor(String actor) {
+        this.actor = actor;
     }
 
     public Integer getAge() {
@@ -128,12 +132,12 @@ public class Movie implements Parcelable {
         this.age = age;
     }
 
-    public String getActor() {
-        return actor;
+    public String getDescription() {
+        return description;
     }
 
-    public void setActor(String actor) {
-        this.actor = actor;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getDirector() {
@@ -152,12 +156,60 @@ public class Movie implements Parcelable {
         this.duration = duration;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
     public Integer getImageResId() {
         return imageResId;
     }
 
     public void setImageResId(Integer imageResId) {
         this.imageResId = imageResId;
+    }
+
+    public List<MovieFormat> getMovieFormats() {
+        return movieFormats;
+    }
+
+    public void setMovieFormats(List<MovieFormat> movieFormats) {
+        this.movieFormats = movieFormats;
+    }
+
+    public List<MovieType> getMovieTypes() {
+        return movieTypes;
+    }
+
+    public void setMovieTypes(List<MovieType> movieTypes) {
+        this.movieTypes = movieTypes;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public LocalDate getOpeningDate() {
+        return openingDate;
+    }
+
+    public void setOpeningDate(LocalDate openingDate) {
+        this.openingDate = openingDate;
     }
 
     public Float getRating() {
@@ -168,20 +220,12 @@ public class Movie implements Parcelable {
         this.rating = rating;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getTitle() {
+        return title;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getOpeningDate() {
-        return openingDate;
-    }
-
-    public void setOpeningDate(String openingDate) {
-        this.openingDate = openingDate;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTrailerLink() {
@@ -192,14 +236,6 @@ public class Movie implements Parcelable {
         this.trailerLink = trailerLink;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -208,37 +244,38 @@ public class Movie implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeString(id);
-        if (imageResId == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(imageResId);
-        }
+        dest.writeString(title);
         if (age == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(age);
         }
-        dest.writeString(title);
         if (duration == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeInt(duration);
         }
-        dest.writeString(openingDate);
         if (rating == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeFloat(rating);
         }
-        dest.writeString(genre);
         dest.writeString(actor);
         dest.writeString(director);
-        dest.writeString(language);
-        dest.writeString(content);
+        dest.writeString(nation);
+        dest.writeString(description);
         dest.writeString(trailerLink);
+        dest.writeString(imageLink);
+        if (imageResId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(imageResId);
+        }
+        dest.writeTypedList(movieFormats);
+        dest.writeTypedList(movieTypes);
     }
 }

@@ -61,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-        ApiTester apiTester = new ApiTester(this,this);
+//        ApiTester apiTester = new ApiTester(this,this);
 //        apiTester.testAllApis();
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -71,6 +70,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
             return insets;
         });
+    }
+    private void hideBottomNav() {
+        bottomNavigationView.animate()
+                .translationY(bottomNavigationView.getHeight())
+                .setDuration(200);
+    }
+
+    private void showBottomNav() {
+        bottomNavigationView.animate()
+                .translationY(0)
+                .setDuration(200);
     }
 }
 

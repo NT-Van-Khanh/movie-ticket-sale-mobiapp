@@ -18,15 +18,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.model.MovieByTheater;
 import com.example.ticket_sale.model.MovieFormat;
 import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Seat;
 import com.example.ticket_sale.model.SeatType;
 import com.example.ticket_sale.model.Showtime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ChooseSeatFragment extends Fragment {
     private TextView txtTheaterName;
@@ -39,17 +40,12 @@ public class ChooseSeatFragment extends Fragment {
     private LinearLayout lnlSeatRowName;
     private GridLayout gdlSeats;
     private TextView txtGoBack;
+
 //    private List<List<Seat>> seats;
     private List<Seat> selectedSeats;
     private Seat[][] seats;
+    private Order order;
 
-    private MovieTheater theater;
-    private MovieByTheater movieByTheater;
-    private MovieFormat movieFormat;
-    private Showtime showtime;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -103,22 +99,25 @@ public class ChooseSeatFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(selectedSeats == null || selectedSeats.size()<1){
-                    Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG);
+                    Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG).show();
                     return;
                 }
-                Bundle b = new Bundle();
-                b.putString("theaterId",theater.getId());
-                b.putString("theaterName",theater.getName());
-                b.putString("theaterAddress",theater.getAddress());
 
-                b.putParcelable("movieByTheater", movieByTheater);
-                b.putParcelable("movieFormat", movieFormat);
-                b.putParcelable("movieShowtime", showtime);
                 ChooseFoodFragment chooseFoodFragment = new ChooseFoodFragment();
+                Bundle b = new Bundle();
+//                b.putString("theaterId",theater.getId());
+//                b.putString("theaterName",theater.getName());
+//                b.putString("theaterAddress",theater.getAddress());
+//
+//                b.putParcelable("movieByTheater", movieByTheater);
+//                b.putParcelable("movieFormat", movieFormat);
+//                b.putParcelable("movieShowtime", showtime);
+                order.setSeats(selectedSeats);
+                b.putParcelable("order", order);
                 chooseFoodFragment.setArguments(b);
                 getParentFragmentManager().beginTransaction()
                         .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //hieu ung chuyen fragment
-                        .replace(R.id.fragment_container, chooseFoodFragment)
+                        .add(R.id.fragment_container, chooseFoodFragment)
                         .addToBackStack(null)
                         .commit();
             }
@@ -131,21 +130,45 @@ public class ChooseSeatFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
-        if( theater != null){
-            txtTheaterName.setText(theater.getName());
+//        if( theater != null){
+//            txtTheaterName.setText(theater.getName());
+//        }
+//        if(movieByTheater != null){
+//            txtMovieName.setText(movieByTheater.getTitle());
+//        }
+//        if(movieFormat != null){
+//        }
+//
+//        if(showtime!=null){
+//            txtTimeFrame.setText( String.format("Khung giờ: %s - %s",showtime.getTimeStart(), showtime.getTimeEnd()));
+//        }
+        if( order.getScreen().getTheater() != null){
+            txtTheaterName.setText(order.getScreen().getTheater().getName());
         }
-        if(movieByTheater != null){
-            txtMovieName.setText(movieByTheater.getTitle());
+        if(order.getMovie()!= null){
+            txtMovieName.setText(order.getMovie().getTitle());
         }
-        if(movieFormat != null){
+        if(order.getMovieFormat() != null){
+        }
 
+        if(order.getShowtime()!=null){
+            txtTimeFrame.setText( String.format("Khung giờ: %s - %s",order.getShowtime().getTimeStart(), order.getShowtime().getTimeEnd()));
         }
-        if(showtime!=null){
-            txtTimeFrame.setText( String.format("Khung giờ: %s - %s",showtime.getTimeStart(), showtime.getTimeEnd()));
-        }
+        setTxtSelectedSeats();
 
         initSeatRowName(seats.length);
         initSeats(seats);
+
+    }
+
+    private void setTxtSelectedSeats() {
+        if(selectedSeats == null) {
+            txtSeatsSelected.setText("");
+            return;
+        }
+        String stringSeats = selectedSeats.stream()
+                .map(seat -> " "+ seat.getTitle()).collect(Collectors.joining());
+        txtSeatsSelected.setText(stringSeats);
 
     }
 
@@ -154,25 +177,16 @@ public class ChooseSeatFragment extends Fragment {
         seats = new Seat[10][14];
         for (int seatRow = 0; seatRow < seats.length; seatRow++) {
             for (int seatColumn = 0; seatColumn < seats[seatRow].length; seatColumn++) {
-                seats[seatRow][seatColumn] = new Seat("C1", "STANDARD", "STANDARD", "", 1, SeatType.STANDARD);
+                seats[seatRow][seatColumn] = new Seat("C1",
+                        String.format("%s%d",(char)('A'+ seatRow), seatColumn), "STANDARD",
+                        "", 1, SeatType.STANDARD, 60000L);
             }
         }
-        if(getArguments()!=null){
-            theater = new MovieTheater();
-            theater.setId(getArguments().getString("theaterId"));
-            theater.setName(getArguments().getString("theaterName"));
-            theater.setAddress(getArguments().getString("theaterAddress"));
-
-            movieFormat = getArguments().getParcelable("movieFormat");
-            movieByTheater = getArguments().getParcelable("movieByTheater");
-            showtime = getArguments().getParcelable("movieShowtime");
-
-            Log.d("theater infor:", theater.getId() +" "+theater.getName() + " " +theater.getAddress());
-        }
+        if(getArguments() == null) return;
+        order = getArguments().getParcelable("order");
     }
 
     private void initSeatRowName(int numberOfRows){
-//        int numberOfRows = (int) Math.ceil( (double) numberOfSeats / 14);
         lnlSeatRowName.removeAllViews();
         for( char rowCharacter = 'A'; rowCharacter < 'A' + numberOfRows; ++rowCharacter ){
             TextView txtRow = new TextView(getContext());
@@ -210,6 +224,7 @@ public class ChooseSeatFragment extends Fragment {
                         selectedSeats.add(clickedSeat);
                         seatView.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
                     }
+                    setTxtSelectedSeats();
                 });
 
                 gdlSeats.addView(seatView);
