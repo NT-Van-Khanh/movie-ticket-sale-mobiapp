@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Seat;
@@ -95,7 +95,7 @@ public class ChooseSeatFragment extends Fragment {
         if(screen == null) return;
         txtScreen.setText(screen.getName());
 
-        MovieTheater theater = screen.getTheater();
+        Theater theater = screen.getTheater();
         if(theater == null) return;
         txtTheaterName.setText(theater.getName());
 

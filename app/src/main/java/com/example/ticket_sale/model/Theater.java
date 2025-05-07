@@ -5,23 +5,23 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class MovieTheater implements Parcelable {
+public class Theater implements Parcelable {
     private String id;
     private String name;
     private String address;
     private Integer imageResId;
 
-    public MovieTheater() {
+    public Theater() {
     }
 
-    public MovieTheater(String id, String name, String address, Integer imageResId) {
+    public Theater(String id, String name, String address, Integer imageResId) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.imageResId = imageResId;
     }
 
-    protected MovieTheater(Parcel in) {
+    protected Theater(Parcel in) {
         id = in.readString();
         name = in.readString();
         address = in.readString();
@@ -32,15 +32,15 @@ public class MovieTheater implements Parcelable {
         }
     }
 
-    public static final Creator<MovieTheater> CREATOR = new Creator<MovieTheater>() {
+    public static final Creator<Theater> CREATOR = new Creator<Theater>() {
         @Override
-        public MovieTheater createFromParcel(Parcel in) {
-            return new MovieTheater(in);
+        public Theater createFromParcel(Parcel in) {
+            return new Theater(in);
         }
 
         @Override
-        public MovieTheater[] newArray(int size) {
-            return new MovieTheater[size];
+        public Theater[] newArray(int size) {
+            return new Theater[size];
         }
     };
 

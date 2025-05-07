@@ -1,7 +1,6 @@
 package com.example.ticket_sale.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -14,14 +13,10 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.data.ApiServiceFactory;
-import com.example.ticket_sale.data.repository.AuthRepository;
-import com.example.ticket_sale.data.repository.UserRepository;
 import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieFragment;
-import com.example.ticket_sale.fragment.MovieTheaterFragment;
+import com.example.ticket_sale.fragment.TheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
-import com.example.ticket_sale.util.debug.ApiTester;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_movie_theaters) {
-                selectedFragment = new MovieTheaterFragment();
+                selectedFragment = new TheaterFragment();
             } else if (itemId == R.id.nav_movies){
                 selectedFragment = new MovieFragment();
             } else if (itemId == R.id.nav_profile) {

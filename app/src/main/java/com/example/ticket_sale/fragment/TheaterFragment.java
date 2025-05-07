@@ -16,8 +16,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.adapter.MovieTheaterAdapter;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.adapter.TheaterAdapter;
+import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.util.mapper.TheaterMapper;
 import com.example.ticket_sale.viewmodel.TheaterViewModel;
 
@@ -27,12 +27,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class MovieTheaterFragment extends Fragment {
+public class TheaterFragment extends Fragment {
     private Button btnChooseProvince;
     private RecyclerView rcViewMovieTheaters;
-    private MovieTheaterAdapter movieTheaterAdapter;
+    private TheaterAdapter theaterAdapter;
+
     private ProgressBar pbLoadTheaters;
-    private List<MovieTheater> movieTheaters;
+    private List<Theater> movieTheaters;
     private TheaterViewModel theaterViewModel;
 
 
@@ -43,13 +44,13 @@ public class MovieTheaterFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public MovieTheaterFragment() {
+    public TheaterFragment() {
         // Required empty public constructor
     }
 
 
-    public static MovieTheaterFragment newInstance(String param1, String param2) {
-        MovieTheaterFragment fragment = new MovieTheaterFragment();
+    public static TheaterFragment newInstance(String param1, String param2) {
+        TheaterFragment fragment = new TheaterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -89,7 +90,7 @@ public class MovieTheaterFragment extends Fragment {
             }else{
                 movieTheaters = resultData.getData().stream().map(TheaterMapper::toTheater).collect(Collectors.toList());
             }
-            movieTheaterAdapter.setTheaters(movieTheaters);
+            theaterAdapter.setTheaters(movieTheaters);
             pbLoadTheaters.setVisibility(View.GONE);
         });
     }
@@ -111,18 +112,18 @@ public class MovieTheaterFragment extends Fragment {
         pbLoadTheaters  = view.findViewById(R.id.pbLoadTheaters);
         initBtnChooseProvince();
         movieTheaters = new ArrayList<>();
-        movieTheaterAdapter = new MovieTheaterAdapter(movieTheaters, this::onItemClick);
-        rcViewMovieTheaters.setAdapter(movieTheaterAdapter);
+        theaterAdapter = new TheaterAdapter(movieTheaters, this::onItemClick);
+        rcViewMovieTheaters.setAdapter(theaterAdapter);
     }
 
-    private List<MovieTheater> getExampleMovieTheaters(){
+    private List<Theater> getExampleMovieTheaters(){
 
-        MovieTheater mt1 = new MovieTheater("MT1","Rạp Linh Trung, Thủ Đức","Rạp Linh Trung, Hồ Chí Minh",R.drawable.cinema1);
-        MovieTheater mt2 = new MovieTheater("MT2","Rạp Thảo Điền, Thủ Đức","Xuân Thủy, Thảo Điền, Thủ Đức, Hồ Chí Minh",R.drawable.cinema2);
-        MovieTheater mt3 = new MovieTheater("MT3","Rạp Bến Tre","Nguyễn Huệ, Phường 4, Bến Tre",R.drawable.cinema3);
-        MovieTheater mt4 = new MovieTheater("MT4","Rạp Mỹ Tho","Lý Thường Kiệt, Phường 5, Mỹ Tho, Tiền Giang",R.drawable.cinema4);
-        MovieTheater mt5 = new MovieTheater("MT5","Rạp Bến Nghé","Đinh Tiên Hoàng, Bến Nghé, Quận 1, Hồ Chí Minh",R.drawable.cinema5);
-        MovieTheater mt6 = new MovieTheater("MT6","Rạp Trương Định","Trương Định, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh",R.drawable.cinema6);
+        Theater mt1 = new Theater("MT1","Rạp Linh Trung, Thủ Đức","Rạp Linh Trung, Hồ Chí Minh",R.drawable.cinema1);
+        Theater mt2 = new Theater("MT2","Rạp Thảo Điền, Thủ Đức","Xuân Thủy, Thảo Điền, Thủ Đức, Hồ Chí Minh",R.drawable.cinema2);
+        Theater mt3 = new Theater("MT3","Rạp Bến Tre","Nguyễn Huệ, Phường 4, Bến Tre",R.drawable.cinema3);
+        Theater mt4 = new Theater("MT4","Rạp Mỹ Tho","Lý Thường Kiệt, Phường 5, Mỹ Tho, Tiền Giang",R.drawable.cinema4);
+        Theater mt5 = new Theater("MT5","Rạp Bến Nghé","Đinh Tiên Hoàng, Bến Nghé, Quận 1, Hồ Chí Minh",R.drawable.cinema5);
+        Theater mt6 = new Theater("MT6","Rạp Trương Định","Trương Định, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh",R.drawable.cinema6);
         return Arrays.asList(mt1,mt2,mt3,mt4,mt5,mt6);
     }
 
@@ -138,7 +139,7 @@ public class MovieTheaterFragment extends Fragment {
     }
 
     private void onItemClick(int position) {
-        MovieTheater movieTheater = movieTheaters.get(position);
+        Theater movieTheater = movieTheaters.get(position);
         TheaterShowtimeFragment movieShowtimeFragment = new TheaterShowtimeFragment();
 
         Bundle bundle  = new Bundle();

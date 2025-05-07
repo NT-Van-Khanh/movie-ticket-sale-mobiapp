@@ -7,7 +7,7 @@
     android:orientation="vertical"
 
     android:background="#FBF8FF"
-    tools:context=".fragment.MovieTheaterFragment">
+    tools:context=".fragment.TheaterFragment">
     <Toolbar
         android:id="@+id/tbrMovieTheater"
         android:layout_width="match_parent"

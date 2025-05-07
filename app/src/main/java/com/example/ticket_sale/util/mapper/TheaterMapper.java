@@ -1,14 +1,13 @@
 package com.example.ticket_sale.util.mapper;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.data.dto.Theater;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Theater;
 
 public class TheaterMapper {
-    public static MovieTheater toTheater(Theater theater) {
+    public static Theater toTheater(com.example.ticket_sale.data.dto.Theater theater) {
         if (theater == null) return null;
 
-        MovieTheater movieTheater = new MovieTheater();
+        Theater movieTheater = new Theater();
         movieTheater.setId(theater.getId());
         movieTheater.setName(theater.getName());
         movieTheater.setAddress(theater.getAddress());

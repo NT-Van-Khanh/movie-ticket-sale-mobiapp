@@ -8,15 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Theater;
+
 import java.util.List;
 
-public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapter.MovieTheaterViewHolder> {
-    private List<MovieTheater> movieTheaters;
+public class TheaterAdapter extends RecyclerView.Adapter<TheaterAdapter.MovieTheaterViewHolder> {
+    private List<Theater> theaters;
     private final OnItemClickListener onItemClickListener;
 
-    public MovieTheaterAdapter(List<MovieTheater> movieTheaters, OnItemClickListener onItemClickListener) {
-        this.movieTheaters = movieTheaters;
+    public TheaterAdapter(List<Theater> theaters, OnItemClickListener onItemClickListener) {
+        this.theaters = theaters;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -29,7 +30,7 @@ public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MovieTheaterViewHolder holder, int position) {
-        MovieTheater movieTheater = movieTheaters.get(position);
+        Theater movieTheater = theaters.get(position);
         holder.txtMovieTheaterName.setText(movieTheater.getName());
         holder.txtMovieTheaterAddress.setText(movieTheater.getAddress());
         holder.imgMovieTheaterImage.setImageResource(movieTheater.getImageResId());
@@ -37,11 +38,11 @@ public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapte
 
     @Override
     public int getItemCount() {
-        return movieTheaters.size();
+        return theaters == null ? 0 : theaters.size();
     }
 
-    public void setTheaters(List<MovieTheater> movieTheaters) {
-        this.movieTheaters = movieTheaters;
+    public void setTheaters(List<Theater> movieTheaters) {
+        this.theaters = movieTheaters;
         notifyDataSetChanged();
     }
 

@@ -23,7 +23,7 @@ import com.example.ticket_sale.data.dto.MovieShowtimeDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Showtime;
@@ -52,7 +52,7 @@ public class TheaterShowtimeFragment extends Fragment {
 
     private List<Calendar> availableDates;
     private List<Movie> movies;
-    private MovieTheater theater;
+    private Theater theater;
 
 
     private TheaterShowtimeViewModel showtimeViewModel;
@@ -109,7 +109,7 @@ public class TheaterShowtimeFragment extends Fragment {
 
         getShowtimesFromAPI("2025-03-17");
 
-//            movieTheater = new MovieTheater();
+//            movieTheater = new Theater();
 //            movieTheater.setId( getArguments().getString("theaterId"));
 //            Log.d("theater infor:", movieTheater.getId() +" "+movieTheater.getName() + " " +movieTheater.getAddress());
 

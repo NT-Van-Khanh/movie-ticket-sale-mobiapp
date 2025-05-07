@@ -24,7 +24,7 @@ import com.example.ticket_sale.model.FoodCombo;
 import com.example.ticket_sale.model.FoodType;
 import com.example.ticket_sale.model.Item;
 import com.example.ticket_sale.model.Movie;
-import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Seat;
@@ -112,7 +112,7 @@ public class ChooseFoodFragment extends Fragment {
         if(screen == null) return;
         txtScreen.setText(screen.getName());
 
-        MovieTheater theater = screen.getTheater();
+        Theater theater = screen.getTheater();
         if(theater == null) return;
         txtTheaterName.setText(theater.getName());
 
@@ -222,7 +222,7 @@ public class ChooseFoodFragment extends Fragment {
 
 //        foods = getExampleFoods();
 //        combos = getExampleFoodCombos();
-//        theater = new MovieTheater();
+//        theater = new Theater();
 //        theater.setId(getArguments().getString("theaterId"));
 //        movieFormat = getArguments().getParcelable("movieFormat");
 //        movie = getArguments().getParcelable("movieByTheater");

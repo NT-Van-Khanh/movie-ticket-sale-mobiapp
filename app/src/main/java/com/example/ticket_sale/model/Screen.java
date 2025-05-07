@@ -3,18 +3,18 @@ package com.example.ticket_sale.model;
 public class Screen {
     private String id;
     private String name;
-    private MovieTheater theater;
+    private Theater theater;
     private Seat[][] seats;
     public Screen() {
     }
 
-    public Screen(String id, String name, MovieTheater theater) {
+    public Screen(String id, String name, Theater theater) {
         this.id = id;
         this.name = name;
         this.theater = theater;
     }
 
-    public Screen(String id, String name, MovieTheater theater, Seat[][] seats) {
+    public Screen(String id, String name, Theater theater, Seat[][] seats) {
         this.id = id;
         this.name = name;
         this.seats = seats;
@@ -45,11 +45,11 @@ public class Screen {
         this.name = name;
     }
 
-    public MovieTheater getTheater() {
+    public Theater getTheater() {
         return theater;
     }
 
-    public void setTheater(MovieTheater theater) {
+    public void setTheater(Theater theater) {
         this.theater = theater;
     }
 }
