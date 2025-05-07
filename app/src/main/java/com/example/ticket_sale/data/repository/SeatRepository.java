@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
-import com.example.ticket_sale.data.model.Seat;
+import com.example.ticket_sale.data.dto.Seat;
 import com.example.ticket_sale.data.network.api.SeatAPI;
 
 import java.util.List;

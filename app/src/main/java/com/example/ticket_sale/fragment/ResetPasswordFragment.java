@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.activity.LoginActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +26,7 @@ public class ResetPasswordFragment extends Fragment {
     private TextView txtGoBack;
     private EditText edtPhoneOrMail;
     private Button btnNext;
-    private View.OnClickListener btnNextListener;
+//    private View.OnClickListener btnNextListener;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,11 +62,11 @@ public class ResetPasswordFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof View.OnClickListener){
-            btnNextListener = (View.OnClickListener) context;
-        }else{
-            throw new RuntimeException(context.toString() + "must implement FragmentNavigationListener");
-        }
+//        if(context instanceof View.OnClickListener){
+//            btnNextListener = (View.OnClickListener) context;
+//        }else{
+//            throw new RuntimeException(context.toString() + "must implement FragmentNavigationListener");
+//        }
     }
 
     @Override
@@ -96,18 +98,56 @@ public class ResetPasswordFragment extends Fragment {
                 ResetPasswordFragment.this.requireActivity().finish();
             }
         });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String phoneOrMail = edtPhoneOrMail.getText().toString();
+                if(phoneOrMail.trim().isEmpty()) {
+                    Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-        if (btnNextListener != null) {
-            btnNext.setOnClickListener(btnNextListener);
-        }
+                Bundle bundle = new Bundle();
+                if(isPhone(phoneOrMail)){
+                    bundle.putString("phone",phoneOrMail);
+                    PhoneOTPAuthFragment phoneOTPAuthFragment= new PhoneOTPAuthFragment();
+                    phoneOTPAuthFragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, phoneOTPAuthFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    return;
+                }
+                if(isEmail(phoneOrMail)){
+                    bundle.putString("email",phoneOrMail);
+                    EmailOTPAuthFragment emailOTPAuthFragment= new EmailOTPAuthFragment();
+                    emailOTPAuthFragment.setArguments(bundle);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, emailOTPAuthFragment)
+                            .addToBackStack(null)
+                            .commit();
+                    return;
+                }
+                Toast.makeText(getContext(), "Email hoặc số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+//        if (btnNextListener != null) {
+//            btnNext.setOnClickListener(btnNextListener);
+//        }
     }
-
+    private boolean isPhone(String input) {
+        return input.matches("\\d{10}");
+    }
+    private boolean isEmail(String input) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches();
+    }
     public static ResetPasswordFragment newInstance() {
         return new ResetPasswordFragment();
     }
 
     public void setButtonListener(View.OnClickListener listener) {
-        this.btnNextListener = listener;
+//        this.btnNextListener = listener;
     }
 
 }

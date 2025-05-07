@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
-import com.example.ticket_sale.data.model.Bill;
+import com.example.ticket_sale.data.dto.Bill;
 import com.example.ticket_sale.data.network.api.BillAPI;
 
 import java.util.Map;

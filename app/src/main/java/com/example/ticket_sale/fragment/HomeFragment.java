@@ -9,18 +9,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieAdapter;
 import com.example.ticket_sale.adapter.PosterAdapter;
+import com.example.ticket_sale.data.dto.Slider;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.util.mapper.MovieMapper;
+import com.example.ticket_sale.viewmodel.HomeViewModel;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,13 +42,12 @@ public class HomeFragment extends Fragment {
     private Button btnMoreMovies;
     private RecyclerView rcViewMovies;
     private PosterAdapter posterAdapter;
+    private MovieAdapter movieAdapter;
+    private HomeViewModel homeViewModel;
 
-//    private MovieAdapter currentMovieAdapter;
-//    private MovieAdapter upcomingMovieAdapter;
-
-    private List<Integer> currentPosters;
-    private List<Movie> currentMovies;
-    private List<Movie> upcomingMovies;
+    private List<Slider> currentPosters = new ArrayList<>();
+    private List<Movie> currentMovies= new ArrayList<>();
+    private List<Movie> upcomingMovies= new ArrayList<>();
 
     ProgressBar pgbLoadMovies;
     ProgressBar pgbLoadSliders;
@@ -88,11 +95,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         initView(root);
-        pgbLoadSliders.setVisibility(View.GONE);
-        pgbLoadMovies.setVisibility(View.GONE);
+        initData();
         return root;
     }
 
@@ -102,38 +107,100 @@ public class HomeFragment extends Fragment {
         btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
         btnMoreMovies = root.findViewById(R.id.btnMoreMovies);
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
-        pgbLoadSliders = root.findViewById(R.id.progressBarLoadPosters);
-        pgbLoadMovies = root.findViewById(R.id.progressBarLoadMovies);
+        pgbLoadSliders = root.findViewById(R.id.pbLoadPosters);
+        pgbLoadMovies = root.findViewById(R.id.pbLoadMovies);
 
-        currentPosters = Arrays.asList(R.drawable.pt_captainamerica,R.drawable.pt_shopeepay,R.drawable.pt_zalopay);
-        bannerSlider.setAdapter(new PosterAdapter(currentPosters));
+        posterAdapter = new PosterAdapter(currentPosters);
+        bannerSlider.setAdapter(posterAdapter);
         setAnimationForSlider();
 
-        //Lấy dữ liệu cho các movie đang chiếu và movie sắp chiếu
-        currentMovies = getExampleMovies();
-        upcomingMovies = getExampleUpcomingMovies();
+        movieAdapter = new MovieAdapter(currentMovies,this::openMovieDetail);
         rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-        rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
+        rcViewMovies.setAdapter(movieAdapter);
 
         setButtonListener();
 
+
+    }
+
+    private void initData() {
+        homeViewModel = new HomeViewModel();
+        getCurrentPosterFromAPI();
+        getCurrentMovieFromAPI();
+//        getUpcomingMovieFromAPI();
+    }
+
+    private void getCurrentMovieFromAPI(){
+        movieAdapter.setMovies(new ArrayList<>());
+        pgbLoadMovies.setVisibility(View.VISIBLE);
+        homeViewModel.getCurrentMovies().observe(getViewLifecycleOwner(), dataResult ->{
+            if(dataResult == null || dataResult.getStatusCode()!=200){
+                Log.e("MovieAPI", "Failed to get movies: " + dataResult);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
+                currentMovies = getExampleMovies();
+            }else{
+                currentMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+            }
+            movieAdapter.setMovies(currentMovies);
+            pgbLoadMovies.setVisibility(View.GONE);
+        });
+    }
+
+    private void getUpcomingMovieFromAPI(){
+        movieAdapter.setMovies(new ArrayList<>());
+        pgbLoadMovies.setVisibility(View.VISIBLE);
+        homeViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), dataResult ->{
+            if(dataResult == null || dataResult.getStatusCode()!=200){
+                Log.e("MovieAPI", "Failed to get movies: " + dataResult);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
+                upcomingMovies = getExampleUpcomingMovies();
+
+            }else{
+                upcomingMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+            }
+            movieAdapter.setMovies(upcomingMovies);
+            pgbLoadMovies.setVisibility(View.GONE);
+        });
+    }
+
+    private void getCurrentPosterFromAPI(){
+        pgbLoadSliders.setVisibility(View.VISIBLE);
+        homeViewModel.getCurrentPosters().observe(getViewLifecycleOwner(), resultData ->{
+            if(resultData == null || resultData.getStatusCode()!=200){
+                Log.e("MovieAPI", "Failed to get movies: " +resultData);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu slider hiện tại", Toast.LENGTH_SHORT).show();
+                currentPosters = getExamplePosters();
+            }else{
+                currentPosters = resultData.getData();
+            }
+            posterAdapter.setPosters(currentPosters);
+            pgbLoadSliders.setVisibility(View.GONE);
+        });
+    }
+
+    private List<Slider> getExamplePosters() {
+        List<Slider> sliders = new ArrayList<>();
+        sliders.add( new Slider("SD1","New Movie","",R.drawable.pt_captainamerica,""));
+        sliders.add( new Slider("SD2","Thanh toán với ShopeePay","",R.drawable.pt_shopeepay,""));
+        sliders.add( new Slider("SD3","Thanh toán với ZaloPay","",R.drawable.pt_zalopay,""));
+        return sliders;
     }
 
     private List<Movie> getExampleUpcomingMovies() {
-        Movie mv7 = new Movie("MV7",R.drawable.mv_nhoc_quay,"Nhóc quậy",115,6, 8.9F);
-        Movie mv8 = new Movie("MV8",R.drawable.mv_emma,"Emma và vương quốc tí hon",105,6, 8.9F);
-        Movie mv9 = new Movie("MV9",R.drawable.mv_mission_impossible,"Nhiệm vụ bất khả thi: Nghiệp báo cuối cùng",105,6, 8.9F);
-        Movie mv10 = new Movie("MV10",R.drawable.mv_lang_xi_trum,"Phim xì trum",125,3, 8.9F);
+        Movie mv7 = new Movie("MV7",R.drawable.mv_nhoc_quay,"Nhóc quậy",115,6, 8.9F,"https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv8 = new Movie("MV8",R.drawable.mv_emma,"Emma và vương quốc tí hon",105,6, 8.9F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv9 = new Movie("MV9",R.drawable.mv_mission_impossible,"Nhiệm vụ bất khả thi: Nghiệp báo cuối cùng",105,6, 8.9F,"https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv10 = new Movie("MV10",R.drawable.mv_lang_xi_trum,"Phim xì trum",125,3, 8.9F,"https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
         return Arrays.asList(mv7,mv8,mv9,mv10);
     }
 
     private List<Movie> getExampleMovies() {
-        Movie mv1 = new Movie("MV1",R.drawable.mv_bi_kip_luyen_rong,"Bí kíp luyện rồng",123,13, 8.6F);
-        Movie mv2 = new Movie("MV2",R.drawable.mv_elio,"Elio Cậu bé đến từ trái đất",112,13, 8.5F);
-        Movie mv3 = new Movie("MV3",R.drawable.mv_superman,"Superman",113,13, 9.3F);
-        Movie mv4 = new Movie("MV4",R.drawable.mv_gau_thu_chu_du,"Gấu thủ chu du",98,3, 9.1F);
-        Movie mv5 = new Movie("MV5",R.drawable.mv_nu_tu_bong_toi,"Nữ tu bóng tối",114,16, 9.2F);
-        Movie mv6 = new Movie("MV6",R.drawable.mv_the_bad_guys_2,"Băng đảng quái kiệt 2",131,16, 9.0F);
+        Movie mv1 = new Movie("MV1",R.drawable.mv_bi_kip_luyen_rong,"Bí kíp luyện rồng",123,13, 8.6F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv2 = new Movie("MV2",R.drawable.mv_elio,"Elio Cậu bé đến từ trái đất",112,13, 8.5F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv3 = new Movie("MV3",R.drawable.mv_superman,"Superman",113,13, 9.3F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv4 = new Movie("MV4",R.drawable.mv_gau_thu_chu_du,"Gấu thủ chu du",98,3, 9.1F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv5 = new Movie("MV5",R.drawable.mv_nu_tu_bong_toi,"Nữ tu bóng tối",114,16, 9.2F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv6 = new Movie("MV6",R.drawable.mv_the_bad_guys_2,"Băng đảng quái kiệt 2",131,16, 9.0F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
 
         return Arrays.asList(mv1,mv2,mv3,mv4,mv5,mv6);
     }
@@ -146,9 +213,10 @@ public class HomeFragment extends Fragment {
             if (bannerSlider != null && bannerSlider.getAdapter() != null) {
                 int currentItem = bannerSlider.getCurrentItem();
                 int itemCount = bannerSlider.getAdapter().getItemCount();
-
-                // Chuyển sang slide tiếp theo hoặc quay về đầu nếu hết
-                bannerSlider.setCurrentItem((currentItem + 1) % itemCount, true);
+                if(itemCount != 0) {
+                    // Chuyển sang slide tiếp theo hoặc quay về đầu nếu hết
+                    bannerSlider.setCurrentItem((currentItem + 1) % itemCount, true);
+                }
             }
             sliderHandler.postDelayed(this, 5000); // Lặp lại sau 5 giây
         }
@@ -187,25 +255,22 @@ public class HomeFragment extends Fragment {
         snapHelper.attachToRecyclerView(recyclerView);
     }
 
-//    private void setDataForCurrentMovies(List<Movie> currentMovies){
-//        currentMovieAdapter = new MovieAdapter(currentMovies);
-//        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-//        rcViewMovies.setAdapter(currentMovieAdapter);
-//    }
-//
-//    private void setDataForUpcomingMovies(List<Movie> upcomingMovies){
-//        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
-//        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
-//        rcViewMovies.setAdapter(upcomingMovieAdapter);
-//    }
 
     private void setButtonListener(){
         btnCurrentMovies.setOnClickListener(v -> {
-            rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
+            if(currentMovies == null || currentMovies.isEmpty()){
+                getCurrentMovieFromAPI();
+            }else{
+                movieAdapter.setMovies(currentMovies);
+            }
         });
 
         btnUpcomingMovies.setOnClickListener(v -> {
-            rcViewMovies.setAdapter(new MovieAdapter(upcomingMovies,this::openMovieDetail));
+            if(upcomingMovies == null || upcomingMovies.isEmpty()){
+                getUpcomingMovieFromAPI();
+            }else{
+                movieAdapter.setMovies(upcomingMovies);
+            }
         });
 
         btnMoreMovies.setOnClickListener(v -> {
@@ -229,3 +294,16 @@ public class HomeFragment extends Fragment {
                 .commit();
     }
 }
+
+
+//    private void setDataForCurrentMovies(List<MovieDTO> currentMovies){
+//        currentMovieAdapter = new MovieAdapter(currentMovies);
+//        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
+//        rcViewMovies.setAdapter(currentMovieAdapter);
+//    }
+//
+//    private void setDataForUpcomingMovies(List<MovieDTO> upcomingMovies){
+//        upcomingMovieAdapter = new MovieAdapter(upcomingMovies);
+//        rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
+//        rcViewMovies.setAdapter(upcomingMovieAdapter);
+//    }

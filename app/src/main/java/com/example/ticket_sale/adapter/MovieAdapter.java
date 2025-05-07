@@ -17,7 +17,7 @@ import com.example.ticket_sale.model.Movie;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
-    private final List<Movie> movies;
+    private List<Movie> movies;
     private OnItemClickListener onItemClickListener;
 
     public MovieAdapter(List<Movie> movies, OnItemClickListener listener) {
@@ -76,5 +76,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 }
             });
         }
+    }
+    public void setMovies(List<Movie> newMovies) {
+        this.movies = newMovies;
+        notifyDataSetChanged(); // hoặc dùng DiffUtil để tối ưu
     }
 }

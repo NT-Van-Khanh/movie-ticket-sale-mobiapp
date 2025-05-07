@@ -1,7 +1,7 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.model.MovieShowtime;
+import com.example.ticket_sale.data.dto.MovieShowtimeDTO;
 
 import java.util.List;
 
@@ -14,12 +14,12 @@ public interface MovieShowtimeAPI {
     String BASE_PATH = "filmshowtime-service/api/filmshowtime";
 
     @GET(BASE_PATH + "/{roomId}/all")
-    Call<ApiResponse<List<MovieShowtime>>> getShowtimesByRoomId(@Path("roomId") String roomId,
-                                                               @Query("date") String date);
+    Call<ApiResponse<List<MovieShowtimeDTO>>> getShowtimesByRoomId(@Path("roomId") String roomId,
+                                                                   @Query("date") String date);
     //http://localhost:8888/filmshowtime-service/api/filmshowtime/1/all?date=2025-03-17
 
     @GET(BASE_PATH + "/get/{branchId}/{time}/{filmId}/{subId}")
-    Call<ApiResponse<List<MovieShowtime>>> getShowtimesByTheaterAndMovie(
+    Call<ApiResponse<List<MovieShowtimeDTO>>> getShowtimesByTheaterAndMovie(
             @Path("branchId") String branchId,
             @Path("time") String date,
             @Path("filmId") String filmId,

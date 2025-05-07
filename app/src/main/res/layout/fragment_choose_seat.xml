@@ -10,7 +10,7 @@
    <Toolbar
        android:id="@+id/toolbar"
        android:layout_width="match_parent"
-       android:layout_height="50dp"
+       android:layout_height="48dp"
        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
        android:layout_alignParentTop="true"
        android:contentInsetStart="0dp"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Rạp Linh Trung, Thủ Đức"
-            android:textSize="20dp"
+            android:textSize="18sp"
             android:textColor="@color/app_primary"
             android:fontFamily="sans-serif-black"/>
         <LinearLayout
@@ -74,23 +74,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/lnlTheater"
-        android:layout_above="@+id/tbLayoutSeatClasses">
+        android:layout_above="@id/lnlMovieInfo">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:paddingStart="8dp"
-            android:paddingEnd="18dp"
-            android:paddingVertical="35dp">
+            android:layout_height="wrap_content"
+            android:minHeight="325dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:minHeight="260dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="18dp"
+                android:paddingVertical="24dp">
+            <ProgressBar
+                android:id="@+id/pbLoadSeats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"/>
             <LinearLayout
                 android:id="@+id/lnlSeatRowName"
-                android:layout_width="24dp"
+                android:layout_width="26dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginEnd="2dp">
                 <TextView
                     android:layout_height="24dp"
                     android:layout_width="24dp"
@@ -146,17 +160,13 @@
                     android:layout_width="24dp"
                     android:textAlignment="center"
                     android:text="B"/>
-                <TextView
-                    android:layout_height="24dp"
-                    android:layout_width="24dp"
-                    android:textAlignment="center"
-                    android:text="A"/>
             </LinearLayout>
             <GridLayout
                 android:id="@+id/gdlSeats"
-                android:layout_width="match_parent"
+                android:layout_width="336dp"
                 android:layout_height="match_parent"
-                android:rowCount="14">
+                android:rowCount="14"
+                android:layout_toEndOf="@id/lnlSeatRowName">
                 <Space
                     android:layout_height="24dp"
                     android:layout_width="24dp"
@@ -236,28 +246,14 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_row="2"
-                    android:layout_column="2"
+                    android:layout_column="1"
                     android:src="@drawable/ic_chair"
                     app:tint="@color/seat_standard"/>
                 <ImageView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_row="3"
-                    android:layout_column="2"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_standard"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="0"
-                    android:layout_column="13"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_standard"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="0"
-                    android:layout_column="14"
+                    android:layout_column="1"
                     android:src="@drawable/ic_chair"
                     app:tint="@color/seat_standard"/>
                 <ImageView
@@ -302,20 +298,7 @@
                     android:layout_column="14"
                     android:src="@drawable/ic_chair"
                     app:tint="@color/seat_sold"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="4"
-                    android:layout_column="13"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_vip"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="4"
-                    android:layout_column="14"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_selected" />
+
                 <ImageView
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
@@ -351,29 +334,10 @@
                     android:layout_column="9"
                     android:src="@drawable/ic_chair"
                     app:tint="@color/seat_vip"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="2"
-                    android:layout_column="8"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_vip"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="3"
-                    android:layout_column="9"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_vip"/>
-                <ImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_row="3"
-                    android:layout_column="8"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_vip"/>
+
+
             </GridLayout>
-        </LinearLayout>
+        </RelativeLayout>
         <TextView
             android:id="@+id/vScreen"
             android:layout_width="match_parent"
@@ -386,128 +350,132 @@
             android:textAlignment="center"
             android:paddingVertical="1dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="10dp"/>
         </LinearLayout>
+            <TableLayout
+                android:id="@+id/tbLayoutSeatClasses"
+                android:background="#f9f9f9"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="12dp"
+                android:stretchColumns="*"
+                android:layout_marginTop="20dp"
+                android:layout_above="@id/vMovieLine">
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingVertical="5dp"
+                    android:paddingStart="50dp"
+                    android:paddingEnd="50dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="right"
+                        android:paddingEnd="20dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chair"
+                            app:tint="@color/seat_sold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Đã bán"
+                            android:paddingStart="10dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="start"
+                        android:paddingStart="20dp">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chair"
+                            app:tint="@color/seat_selected"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Đã chọn"
+                            android:paddingStart="8dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                </TableRow>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="3dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chair"
+                            app:tint="@color/seat_vip"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Ghế VIP"
+                            android:paddingStart="10dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chair"
+                            app:tint="@color/seat_couple"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Ghế đôi"
+                            android:paddingStart="10dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_chair"
+                            app:tint="@color/seat_standard"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Ghế thường"
+                            android:paddingStart="10dp"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <TableLayout
-        android:id="@+id/tbLayoutSeatClasses"
-        android:background="#f9f9f9"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="12dp"
-        android:stretchColumns="*"
-        android:layout_above="@id/vMovieLine">
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingVertical="5dp"
-            android:paddingStart="50dp"
-            android:paddingEnd="50dp">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="right"
-                android:paddingEnd="20dp">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_sold"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Đã bán"
-                    android:paddingStart="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="start"
-                android:paddingStart="20dp">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_selected"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Đã chọn"
-                    android:paddingStart="8dp"
-                    android:gravity="center"/>
-            </LinearLayout>
 
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="3dp">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_vip"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Ghế VIP"
-                    android:paddingStart="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_couple"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Ghế đôi"
-                    android:paddingStart="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_chair"
-                    app:tint="@color/seat_standard"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Ghế thường"
-                    android:paddingStart="10dp"
-                    android:gravity="center"/>
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
     <View
         android:id="@+id/vMovieLine"
         android:layout_width="match_parent"
@@ -523,14 +491,14 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="15dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="5dp"
         android:paddingTop="10dp">
         <TextView
             android:id="@+id/txtMovieName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tên phim"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textColor="@color/app_primary"
             android:fontFamily="sans-serif-black"
             android:paddingVertical="1dp"/>
@@ -544,7 +512,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="2dp"
                 android:text="Ghế"/>
@@ -556,7 +524,7 @@
                 android:textAlignment="textEnd"
                 android:fontFamily="sans-serif-medium"
                 android:text="K8, K9"
-                android:textSize="16dp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -567,7 +535,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="18dp"
+                android:textSize="17sp"
                 android:fontFamily="sans-serif-black"
                 android:text="Tổng tiền"/>
             <TextView
@@ -576,7 +544,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="textEnd"
-                android:textSize="18dp"
+                android:textSize="17sp"
                 android:fontFamily="sans-serif-black"
                 android:text="0"/>
         </LinearLayout>

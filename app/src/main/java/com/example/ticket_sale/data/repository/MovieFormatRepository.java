@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
-import com.example.ticket_sale.data.model.MovieFormat;
-import com.example.ticket_sale.data.model.MovieWrapper;
+import com.example.ticket_sale.data.dto.MovieFormat;
+import com.example.ticket_sale.data.dto.MovieWrapper;
 import com.example.ticket_sale.data.network.PageResponse;
 import com.example.ticket_sale.data.network.api.MovieFormatAPI;
 

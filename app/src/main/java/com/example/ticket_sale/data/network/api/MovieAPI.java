@@ -1,8 +1,8 @@
 package com.example.ticket_sale.data.network.api;
 
+import com.example.ticket_sale.data.dto.MovieDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.model.Movie;
-import com.example.ticket_sale.data.model.MovieType;
+import com.example.ticket_sale.data.dto.MovieType;
 
 import java.util.List;
 
@@ -14,16 +14,16 @@ public interface MovieAPI {
     String BASE_PATH = "film-service/api";
 
     @GET(BASE_PATH + "/film/all")
-    Call<ApiResponse<List<Movie>>> getAllMovies();
+    Call<ApiResponse<List<MovieDTO>>> getAllMovies();
 
     @GET(BASE_PATH + "/film/{id}")
-    Call<ApiResponse<Movie>> getMovieById(@Path("id") String id);
+    Call<ApiResponse<MovieDTO>> getMovieById(@Path("id") String id);
 
     @GET(BASE_PATH + "/film/get/sub/{subId}")
-    Call<ApiResponse<List<Movie>>> getMoviesBySubId(@Path("subId") String subId);//"1", "2",...
+    Call<ApiResponse<List<MovieDTO>>> getMoviesBySubId(@Path("subId") String subId);//"1", "2",...
 
     @GET(BASE_PATH + "/film/get/status/{status}")
-    Call<ApiResponse<List<Movie>>> getMoviesByStatus(@Path("status") String status);//"ACTIVE","COMMING_SOON", "DELETE"
+    Call<ApiResponse<List<MovieDTO>>> getMoviesByStatus(@Path("status") String status);//"ACTIVE","COMMING_SOON", "DELETE"
 
     @GET(BASE_PATH + "/typefilm/get/{id}")
     Call<ApiResponse<MovieType>> getMovieTypeById(@Path("id") String id);

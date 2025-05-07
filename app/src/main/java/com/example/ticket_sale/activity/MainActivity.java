@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
     private void hideBottomNav() {
         bottomNavigationView.animate()
                 .translationY(bottomNavigationView.getHeight())

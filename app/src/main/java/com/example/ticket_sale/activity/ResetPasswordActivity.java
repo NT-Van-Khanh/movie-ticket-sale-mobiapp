@@ -10,9 +10,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.base.BaseAuthActivity;
 import com.example.ticket_sale.fragment.ResetPasswordFragment;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseAuthActivity {
     FrameLayout fragmentContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -5,10 +5,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.ticket_sale.data.RetrofitInstance;
-import com.example.ticket_sale.data.TokenManager;
+import com.example.ticket_sale.util.TokenManager;
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.network.api.AuthenticationAPI;
 
 import java.io.IOException;

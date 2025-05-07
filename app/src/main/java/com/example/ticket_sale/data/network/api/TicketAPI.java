@@ -2,7 +2,7 @@ package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.network.PageResponse;
-import com.example.ticket_sale.data.model.Ticket;
+import com.example.ticket_sale.data.dto.Ticket;
 
 import java.util.List;
 

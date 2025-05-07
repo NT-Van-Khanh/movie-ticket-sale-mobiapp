@@ -227,7 +227,7 @@
                     android:lineSpacingExtra="1dp"
                     android:text="Sau khi gặp Tổng thống Hoa Kỳ mới đắc cử Thaddeus Ross, Sam phải đối mặt với một sự cố quy mô quốc tế.
                     \nAnh phải tìm ra ra mục đích đằng sau trước khi kẻ chủ mưu thực sự khiến cả thế giới phải khiếp sợ."/>
-                <VideoView
+                <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
                     android:id="@+id/vidMovieTrailer"
                     android:layout_width="match_parent"
                     android:layout_height="210dp"

@@ -15,7 +15,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder> {
-    private final List<Calendar> dates;
+    private List<Calendar> dates;
     private final OnDateClickListener listener;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
@@ -66,5 +66,10 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
             txtDayOfWeek = itemView.findViewById(R.id.txtDayOfWeek);
             txtDayMonth = itemView.findViewById(R.id.txtDayMonth);
         }
+    }
+
+    public void setDates(List<Calendar> newDates){
+        this.dates = newDates;
+        notifyDataSetChanged();
     }
 }

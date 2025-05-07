@@ -19,17 +19,21 @@ import com.example.ticket_sale.model.FoodCombo;
 import java.util.List;
 
 public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FComboViewHolder> {
-    private final List<FoodCombo> foodCombos;
-    private final OnItemClickListener onItemClickListener;
-    private final int maxQuantity;
+    private List<FoodCombo> foodCombos;
+    private final OnQuantityChangeListener onQuantityChangeListener;
 
-    public FoodComboAdapter(List<FoodCombo> foodCombos,int maxQuantity, OnItemClickListener onItemClickListener) {
+    public FoodComboAdapter(List<FoodCombo> foodCombos, OnQuantityChangeListener listener) {
         this.foodCombos = foodCombos;
-        this.maxQuantity = maxQuantity;
-        this.onItemClickListener = onItemClickListener;
+        this.onQuantityChangeListener = listener;
     }
 
-    public interface  OnItemClickListener{
+    public void setFoodCombos(List<FoodCombo> combos) {
+        this.foodCombos = combos;
+        notifyDataSetChanged();
+    }
+
+    public interface OnQuantityChangeListener{
+        int  getAvailableQuantity();
         void onQuantityChanged(FoodCombo food, int quantity);
     }
 
@@ -61,6 +65,7 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
         private final ImageButton btnAddQuantity;
         private final ImageButton btnSubtractQuantity;
 
+        private int currentQuantity = 0;
         private FoodCombo currentFoodCombo;
         private boolean isUpdating = false;
 
@@ -88,7 +93,7 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
             isUpdating = true;
             edtQuantity.setText("0");
             isUpdating = false;
-            updateButtonState(0);
+            updateButtonState(currentQuantity, onQuantityChangeListener.getAvailableQuantity());
         }
 
         private final TextWatcher quantityWatcher = new TextWatcher() {
@@ -97,16 +102,22 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
             @Override
             public void afterTextChanged(Editable s) {
                 if (isUpdating) return;
+
                 int quantity = safeParseQuantity();
-                if (quantity > maxQuantity) {
-                    quantity = maxQuantity;
+                if (onQuantityChangeListener == null) return;
+
+                int maxAvailableQuantity = onQuantityChangeListener.getAvailableQuantity() + currentQuantity;
+                if (quantity > maxAvailableQuantity) {
+                    quantity = maxAvailableQuantity;
+                    maxAvailableQuantity =0;
                     isUpdating = true;
                     edtQuantity.setText(String.valueOf(quantity));
                     edtQuantity.setSelection(String.valueOf(quantity).length());
                     isUpdating = false;
                 }
-                if (onItemClickListener != null) onItemClickListener.onQuantityChanged(currentFoodCombo, quantity);
-                updateButtonState(quantity);
+                currentQuantity = quantity;
+                onQuantityChangeListener.onQuantityChanged(currentFoodCombo, currentQuantity);
+                updateButtonState(currentQuantity, maxAvailableQuantity);
             }
         };
 
@@ -119,36 +130,38 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
         }
 
         private void addQuantity(){
-            Integer quantity =safeParseQuantity();
-            if(quantity < maxQuantity){
-                quantity +=1;
-                isUpdating = true;
-                edtQuantity.setText(String.valueOf(quantity));
-                isUpdating = false;
-                updateButtonState(quantity);
-                if (onItemClickListener != null) {
-                    onItemClickListener.onQuantityChanged(currentFoodCombo, quantity);
-                }
+            if (onQuantityChangeListener == null) return;
+            int maxAvailableQuantity =  onQuantityChangeListener.getAvailableQuantity();
+            if(maxAvailableQuantity > 0){
+                currentQuantity +=1;
+                updateEdtQuantity(String.valueOf(currentQuantity));
+                updateButtonState(currentQuantity, maxAvailableQuantity);
+                onQuantityChangeListener.onQuantityChanged(currentFoodCombo, currentQuantity);
             }
         }
 
         private void subtractQuantity(){
-            Integer quantity = safeParseQuantity();
-            if(quantity > 0){
-                quantity -= 1;
-                isUpdating = true;
-                edtQuantity.setText(String.valueOf(quantity));
-                isUpdating = false;
-                updateButtonState(quantity);
-                if (onItemClickListener != null) {
-                    onItemClickListener.onQuantityChanged(currentFoodCombo, quantity);
-                }
+            if (onQuantityChangeListener == null) return;
+            if(currentQuantity > 0){
+                currentQuantity -= 1;
+                updateEdtQuantity(String.valueOf(currentQuantity ));
+                onQuantityChangeListener.onQuantityChanged(currentFoodCombo, currentQuantity);
+                int maxAvailableQuantity = onQuantityChangeListener.getAvailableQuantity();
+                updateButtonState(currentQuantity , maxAvailableQuantity);
+
             }
         }
 
-        private void updateButtonState(int quantity) {
-            btnAddQuantity.setEnabled(quantity < maxQuantity);
-            btnSubtractQuantity.setEnabled(quantity > 0);
+        private void updateButtonState(int currentQuantity, int maxAvailableQuantity) {
+            btnAddQuantity.setEnabled(maxAvailableQuantity > 0);
+            btnSubtractQuantity.setEnabled(currentQuantity > 0);
+        }
+
+        private void updateEdtQuantity(String quantity){
+            isUpdating = true;
+            edtQuantity.setText(quantity);
+            isUpdating = false;
         }
     }
+
 }

@@ -6,18 +6,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieAdapter;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.util.mapper.MovieMapper;
+import com.example.ticket_sale.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,11 +34,12 @@ public class MovieFragment extends Fragment {
     private RecyclerView rcViewMovies;
     private Button btnCurrentMovies;
     private Button btnUpcomingMovies;
+    private ProgressBar  pbLoadMovies;
 
     private MovieAdapter movieAdapter;
     private List<Movie> currentMovies;
     private List<Movie> upcomingMovies;
-
+    private HomeViewModel homeViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -70,32 +77,48 @@ public class MovieFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_movie, container, false);
         initView(v);
-
+        initData();
+        setDataForViews();
         return v;
     }
 
-    private void initView(View v) {
-        rcViewMovies  = v.findViewById(R.id.rcViewMovies);
-        btnCurrentMovies = v.findViewById(R.id.btnCurrentMovies);
-        btnUpcomingMovies = v.findViewById(R.id.btnUpcomingMovies);
+    private void setDataForViews() {
+        movieAdapter.setMovies(currentMovies);
+    }
 
-        currentMovies = getDataOfCurrentMovies();
-        upcomingMovies = getDataOfUpcomingMovies();
+    private void initData() {
+        getCurrentMovieFromAPI();
+    }
 
-        rcViewMovies.setAdapter(new MovieAdapter(currentMovies, this::openMovieDetail));
+    private void initView(View root) {
+        rcViewMovies  = root.findViewById(R.id.rcViewMovies);
+        btnCurrentMovies = root.findViewById(R.id.btnCurrentMovies);
+        btnUpcomingMovies = root.findViewById(R.id.btnUpcomingMovies);
+        pbLoadMovies = root.findViewById(R.id.pbLoadMovies);
+        currentMovies = new ArrayList<>();
+        movieAdapter = new MovieAdapter(currentMovies, this::openMovieDetail);
         rcViewMovies.setLayoutManager(new GridLayoutManager(getContext(),2));
+        rcViewMovies.setAdapter(movieAdapter);
 
         initButtonListener();
     }
 
 
     private void initButtonListener(){
-        btnUpcomingMovies.setOnClickListener(v->{
-            rcViewMovies.setAdapter(new MovieAdapter(upcomingMovies,this::openMovieDetail));
+        btnCurrentMovies.setOnClickListener(v ->{
+            if(currentMovies == null || currentMovies.isEmpty()){
+                getCurrentMovieFromAPI();
+            }else{
+                movieAdapter.setMovies(currentMovies);
+            }
         });
 
-        btnCurrentMovies.setOnClickListener(v ->{
-            rcViewMovies.setAdapter(new MovieAdapter(currentMovies,this::openMovieDetail));
+        btnUpcomingMovies.setOnClickListener(v->{
+            if(upcomingMovies == null || upcomingMovies.isEmpty()){
+                getUpcomingMovieFromAPI();
+            }else{
+                movieAdapter.setMovies(upcomingMovies);
+            }
         });
     }
 
@@ -112,22 +135,54 @@ public class MovieFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
+    private void getCurrentMovieFromAPI(){
+        movieAdapter.setMovies(new ArrayList<>());
+        pbLoadMovies.setVisibility(View.VISIBLE);
+        if(homeViewModel == null)   homeViewModel = new HomeViewModel();
+        homeViewModel.getCurrentMovies().observe(getViewLifecycleOwner(), dataResult ->{
+            if(dataResult == null || dataResult.getStatusCode()!=200){
+                Log.e("MovieAPI", "Failed to get movies: " + dataResult);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
+                currentMovies = getExampleCurrentMovies();
+            }else{
+                currentMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+            }
+            movieAdapter.setMovies(currentMovies);
+            pbLoadMovies.setVisibility(View.GONE);
+        });
+    }
 
-    private List<Movie> getDataOfCurrentMovies(){
-        Movie mv7 = new Movie("MV7",R.drawable.mv_nhoc_quay,"Nhóc quậy",115,6, 8.9F);
-        Movie mv8 = new Movie("MV8",R.drawable.mv_emma,"Emma và vương quốc tí hon",105,6, 8.9F);
-        Movie mv9 = new Movie("MV9",R.drawable.mv_mission_impossible,"Nhiệm vụ bất khả thi: Nghiệp báo cuối cùng",105,6, 8.9F);
-        Movie mv10 = new Movie("MV10",R.drawable.mv_lang_xi_trum,"Phim xì trum",125,3, 8.9F);
+    private void getUpcomingMovieFromAPI(){
+        movieAdapter.setMovies(new ArrayList<>());
+        pbLoadMovies.setVisibility(View.VISIBLE);
+        homeViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), dataResult ->{
+            if(dataResult == null || dataResult.getStatusCode()!=200){
+                Log.e("MovieAPI", "Failed to get movies: " + dataResult);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
+                upcomingMovies = getExampleUpcomingMovies();
+            }else{
+                upcomingMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+            }
+            movieAdapter.setMovies(upcomingMovies);
+            pbLoadMovies.setVisibility(View.GONE);
+        });
+    }
+
+    private List<Movie> getExampleUpcomingMovies(){
+        Movie mv7 = new Movie("MV7",R.drawable.mv_nhoc_quay,"Nhóc quậy",115,6, 8.9F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv8 = new Movie("MV8",R.drawable.mv_emma,"Emma và vương quốc tí hon",105,6, 8.9F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv9 = new Movie("MV9",R.drawable.mv_mission_impossible,"Nhiệm vụ bất khả thi: Nghiệp báo cuối cùng",105,6, 8.9F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv10 = new Movie("MV10",R.drawable.mv_lang_xi_trum,"Phim xì trum",125,3, 8.9F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
         return Arrays.asList(mv7,mv8,mv9,mv10);
     }
 
-    private List<Movie> getDataOfUpcomingMovies(){
-        Movie mv1 = new Movie("MV1",R.drawable.mv_bi_kip_luyen_rong,"Bí kíp luyện rồng",123,13, 8.6F);
-        Movie mv2 = new Movie("MV2",R.drawable.mv_elio,"Elio Cậu bé đến từ trái đất",112,13, 8.5F);
-        Movie mv3 = new Movie("MV3",R.drawable.mv_superman,"Superman",113,13, 9.3F);
-        Movie mv4 = new Movie("MV4",R.drawable.mv_gau_thu_chu_du,"Gấu thủ chu du",98,3, 9.1F);
-        Movie mv5 = new Movie("MV5",R.drawable.mv_nu_tu_bong_toi,"Nữ tu bóng tối",114,16, 9.2F);
-        Movie mv6 = new Movie("MV6",R.drawable.mv_the_bad_guys_2,"Băng đảng quái kiệt 2",131,16, 9.0F);
+    private List<Movie> getExampleCurrentMovies(){
+        Movie mv1 = new Movie("MV1",R.drawable.mv_bi_kip_luyen_rong,"Bí kíp luyện rồng",123,13, 8.6F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv2 = new Movie("MV2",R.drawable.mv_elio,"Elio Cậu bé đến từ trái đất",112,13, 8.5F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv3 = new Movie("MV3",R.drawable.mv_superman,"Superman",113,13, 9.3F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv4 = new Movie("MV4",R.drawable.mv_gau_thu_chu_du,"Gấu thủ chu du",98,3, 9.1F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv5 = new Movie("MV5",R.drawable.mv_nu_tu_bong_toi,"Nữ tu bóng tối",114,16, 9.2F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
+        Movie mv6 = new Movie("MV6",R.drawable.mv_the_bad_guys_2,"Băng đảng quái kiệt 2",131,16, 9.0F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
 
         return Arrays.asList(mv1,mv2,mv3,mv4,mv5,mv6);
     }

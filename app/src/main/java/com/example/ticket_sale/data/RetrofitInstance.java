@@ -2,6 +2,8 @@ package com.example.ticket_sale.data;
 
 import android.util.Log;
 
+import com.example.ticket_sale.util.TokenManager;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -14,19 +16,12 @@ public class RetrofitInstance {
     private static OkHttpClient client;
     private static AuthInterceptor authInterceptor;
 
-    public RetrofitInstance() {
-    }
-
     public static Retrofit getInstance(){
         if(retrofit == null) {
             logging = new HttpLoggingInterceptor(message -> Log.d("RetrofitNetworkLog", message));
             logging.setLevel(HttpLoggingInterceptor.Level.HEADERS); // Có thể chọn BASIC, HEADERS, BODY
 
-            if (authInterceptor == null) {
-                authInterceptor = new AuthInterceptor(TokenManager.getToken());
-            } else {
-                authInterceptor.setToken(TokenManager.getToken());
-            }
+            authInterceptor = new AuthInterceptor(TokenManager.getToken());
 
             client = new OkHttpClient.Builder()
                     .addInterceptor(logging)

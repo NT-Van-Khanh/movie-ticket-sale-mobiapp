@@ -1,6 +1,5 @@
 package com.example.ticket_sale.fragment;
 
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,12 +14,11 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MovieDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MovieDetailFragment extends Fragment {
     TextView txtGoBack;
     ImageView imgMoviePoster;
@@ -36,7 +34,8 @@ public class MovieDetailFragment extends Fragment {
     TextView txtMovieFormat; //movie format
 
     TextView txtMovieContent;
-    VideoView vidMovieTrailer;
+//    VideoView vidMovieTrailer;
+    YouTubePlayerView vidMovieTrailer;
     private Movie movie;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,15 +50,7 @@ public class MovieDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static MovieDetailFragment newInstance(String param1, String param2) {
         MovieDetailFragment fragment = new MovieDetailFragment();
         Bundle args = new Bundle();
@@ -81,7 +72,6 @@ public class MovieDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         initView(root);
         setDataForView();
@@ -104,6 +94,13 @@ public class MovieDetailFragment extends Fragment {
         txtMovieDirector.setText(movie.getDirector());
 //        txtMovieFormat.setText(movie.getMovieFormats());
         txtMovieContent.setText(movie.getDescription());
+        vidMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(YouTubePlayer youTubePlayer) {
+                String videoId = extractVideoIdFromUrl(movie.getTrailerLink());
+                youTubePlayer.loadVideo(videoId, 0);
+            }
+        });
     }
 
     private void initView(View root){
@@ -121,6 +118,15 @@ public class MovieDetailFragment extends Fragment {
         txtMovieFormat = root.findViewById(R.id.txtMovieFormat);
         txtMovieContent = root.findViewById(R.id.txtMovieContent);
         vidMovieTrailer = root.findViewById(R.id.vidMovieTrailer);
+        getLifecycle().addObserver(vidMovieTrailer);
     }
-
+    private String extractVideoIdFromUrl(String url) {
+        if (url.contains("/embed/")) {
+            return url.substring(url.lastIndexOf("/embed/") + 7, url.indexOf("?"));
+        }
+        if (url.contains("youtu.be")) {
+            return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
+        }
+        return "";
+    }
 }

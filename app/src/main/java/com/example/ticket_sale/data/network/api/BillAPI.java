@@ -1,7 +1,7 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.model.Bill;
+import com.example.ticket_sale.data.dto.Bill;
 
 import java.util.Map;
 

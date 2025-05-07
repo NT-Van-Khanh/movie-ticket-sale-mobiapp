@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.network.PageResponse;
-import com.example.ticket_sale.data.model.Rate;
+import com.example.ticket_sale.data.dto.Rate;
 import com.example.ticket_sale.data.network.api.RateAPI;
 
 import java.util.HashMap;

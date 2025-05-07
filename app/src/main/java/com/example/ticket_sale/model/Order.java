@@ -75,6 +75,27 @@ public class Order implements Parcelable {
         this.user = user;
     }
 
+    public Long getTotalCostOfSeats(){
+        if(seats == null) return 0L;
+        Long totalcost = 0L;
+        for(Seat s: seats){
+            totalcost += s.getPrice();
+        }
+        return totalcost;
+    }
+
+    public Long getTotalCostOfFoods(){
+        if(foods == null) return 0L;
+        Long totalCost = 0L;
+        for (Map.Entry<Item, Integer> foodEntry : foods.entrySet()) {
+            totalCost += foodEntry.getKey().getPrice() * foodEntry.getValue();
+        }
+        return totalCost;
+    }
+
+    public Long getTotalCost(){
+        return getTotalCostOfFoods() + getTotalCostOfSeats();
+    }
     public MovieFormat getMovieFormat() {
         return movieFormat;
     }

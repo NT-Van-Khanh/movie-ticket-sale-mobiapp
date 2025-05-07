@@ -10,18 +10,39 @@ public class MovieTheater implements Parcelable {
     private String name;
     private String address;
     private Integer imageResId;
-    private Integer active;
 
     public MovieTheater() {
     }
 
-    public MovieTheater(String id, String name, String address, Integer imageResId, Integer active) {
+    public MovieTheater(String id, String name, String address, Integer imageResId) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.imageResId = imageResId;
-        this.active = active;
     }
+
+    protected MovieTheater(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        address = in.readString();
+        if (in.readByte() == 0) {
+            imageResId = null;
+        } else {
+            imageResId = in.readInt();
+        }
+    }
+
+    public static final Creator<MovieTheater> CREATOR = new Creator<MovieTheater>() {
+        @Override
+        public MovieTheater createFromParcel(Parcel in) {
+            return new MovieTheater(in);
+        }
+
+        @Override
+        public MovieTheater[] newArray(int size) {
+            return new MovieTheater[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -54,15 +75,6 @@ public class MovieTheater implements Parcelable {
     public void setImageResId(Integer imageResId) {
         this.imageResId = imageResId;
     }
-
-    public Integer getActive() {
-        return active;
-    }
-
-    public void setActive(Integer active) {
-        this.active = active;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -70,6 +82,14 @@ public class MovieTheater implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(address);
+        if (imageResId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(imageResId);
+        }
     }
 }

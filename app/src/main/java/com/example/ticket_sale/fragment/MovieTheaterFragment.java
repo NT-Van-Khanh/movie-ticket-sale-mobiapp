@@ -12,32 +12,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieTheaterAdapter;
 import com.example.ticket_sale.model.MovieTheater;
+import com.example.ticket_sale.util.mapper.TheaterMapper;
+import com.example.ticket_sale.viewmodel.TheaterViewModel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MovieTheaterFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MovieTheaterFragment extends Fragment {
     private Button btnChooseProvince;
     private RecyclerView rcViewMovieTheaters;
-
     private MovieTheaterAdapter movieTheaterAdapter;
-
+    private ProgressBar pbLoadTheaters;
     private List<MovieTheater> movieTheaters;
+    private TheaterViewModel theaterViewModel;
 
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -49,15 +47,7 @@ public class MovieTheaterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MovieTheaterFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static MovieTheaterFragment newInstance(String param1, String param2) {
         MovieTheaterFragment fragment = new MovieTheaterFragment();
         Bundle args = new Bundle();
@@ -79,15 +69,29 @@ public class MovieTheaterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_movie_theater,container,false);
-        movieTheaters = getExampleMovieTheaters();
+        View root = inflater.inflate(R.layout.fragment_theater,container,false);
         init(root);
-
-        movieTheaterAdapter = new MovieTheaterAdapter(movieTheaters, this::onItemClick);
-
-        rcViewMovieTheaters.setAdapter(movieTheaterAdapter);
-
+        initData();
         return root;
+    }
+
+    private void initData() {
+        theaterViewModel = new TheaterViewModel();
+        getMovieTheatersFromAPI();
+    }
+
+    private void getMovieTheatersFromAPI() {
+        theaterViewModel.getTheaters().observe(getViewLifecycleOwner(), resultData ->{
+            if(resultData == null || resultData.getStatusCode() != 200){
+                Log.e("MovieAPI", "Failed to get theaters: " + resultData);
+                Toast.makeText(getContext(), "Không thể lấy dữ liệu các rạp.", Toast.LENGTH_SHORT).show();
+                movieTheaters = getExampleMovieTheaters();
+            }else{
+                movieTheaters = resultData.getData().stream().map(TheaterMapper::toTheater).collect(Collectors.toList());
+            }
+            movieTheaterAdapter.setTheaters(movieTheaters);
+            pbLoadTheaters.setVisibility(View.GONE);
+        });
     }
 
     @Override
@@ -103,21 +107,25 @@ public class MovieTheaterFragment extends Fragment {
     void init(View view){
         rcViewMovieTheaters = view.findViewById(R.id.rcViewMovieTheaters);
         btnChooseProvince = view.findViewById(R.id.btnChooseProvince);
-
         rcViewMovieTheaters.setLayoutManager(new GridLayoutManager(getContext(), 1));
+        pbLoadTheaters  = view.findViewById(R.id.pbLoadTheaters);
         initBtnChooseProvince();
+        movieTheaters = new ArrayList<>();
+        movieTheaterAdapter = new MovieTheaterAdapter(movieTheaters, this::onItemClick);
+        rcViewMovieTheaters.setAdapter(movieTheaterAdapter);
     }
 
     private List<MovieTheater> getExampleMovieTheaters(){
 
-        MovieTheater mt1 = new MovieTheater("MT1","Rạp Linh Trung, Thủ Đức","Rạp Linh Trung, Hồ Chí Minh",R.drawable.cinema1,0);
-        MovieTheater mt2 = new MovieTheater("MT2","Rạp Thảo Điền, Thủ Đức","Xuân Thủy, Thảo Điền, Thủ Đức, Hồ Chí Minh",R.drawable.cinema2,0);
-        MovieTheater mt3 = new MovieTheater("MT3","Rạp Bến Tre","Nguyễn Huệ, Phường 4, Bến Tre",R.drawable.cinema3,1);
-        MovieTheater mt4 = new MovieTheater("MT4","Rạp Mỹ Tho","Lý Thường Kiệt, Phường 5, Mỹ Tho, Tiền Giang",R.drawable.cinema4,1);
-        MovieTheater mt5 = new MovieTheater("MT5","Rạp Bến Nghé","Đinh Tiên Hoàng, Bến Nghé, Quận 1, Hồ Chí Minh",R.drawable.cinema5,1);
-        MovieTheater mt6 = new MovieTheater("MT6","Rạp Trương Định","Trương Định, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh",R.drawable.cinema6,1);
+        MovieTheater mt1 = new MovieTheater("MT1","Rạp Linh Trung, Thủ Đức","Rạp Linh Trung, Hồ Chí Minh",R.drawable.cinema1);
+        MovieTheater mt2 = new MovieTheater("MT2","Rạp Thảo Điền, Thủ Đức","Xuân Thủy, Thảo Điền, Thủ Đức, Hồ Chí Minh",R.drawable.cinema2);
+        MovieTheater mt3 = new MovieTheater("MT3","Rạp Bến Tre","Nguyễn Huệ, Phường 4, Bến Tre",R.drawable.cinema3);
+        MovieTheater mt4 = new MovieTheater("MT4","Rạp Mỹ Tho","Lý Thường Kiệt, Phường 5, Mỹ Tho, Tiền Giang",R.drawable.cinema4);
+        MovieTheater mt5 = new MovieTheater("MT5","Rạp Bến Nghé","Đinh Tiên Hoàng, Bến Nghé, Quận 1, Hồ Chí Minh",R.drawable.cinema5);
+        MovieTheater mt6 = new MovieTheater("MT6","Rạp Trương Định","Trương Định, Phường Võ Thị Sáu, Quận 3, Hồ Chí Minh",R.drawable.cinema6);
         return Arrays.asList(mt1,mt2,mt3,mt4,mt5,mt6);
     }
+
     private void initBtnChooseProvince(){
         String[] provinces = getResources().getStringArray(R.array.provinces);
         btnChooseProvince.setOnClickListener(v->{
@@ -130,15 +138,12 @@ public class MovieTheaterFragment extends Fragment {
     }
 
     private void onItemClick(int position) {
-//        Toast.makeText(getContext(), "Bạn chọn: " + movieTheaters.get(position).getName(), Toast.LENGTH_SHORT).show();
         MovieTheater movieTheater = movieTheaters.get(position);
-        MovieShowtimeFragment movieShowtimeFragment = new MovieShowtimeFragment();
+        TheaterShowtimeFragment movieShowtimeFragment = new TheaterShowtimeFragment();
 
         Bundle bundle  = new Bundle();
         bundle.putParcelable("theater",movieTheater);
-//        bundle.putString("theaterId",movieTheater.getId());
-//        bundle.putString("theaterName",movieTheater.getName());
-//        bundle.putString("theaterAddress",movieTheater.getAddress());
+//      bundle.putString("theaterId",movieTheater.getId());
         movieShowtimeFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()

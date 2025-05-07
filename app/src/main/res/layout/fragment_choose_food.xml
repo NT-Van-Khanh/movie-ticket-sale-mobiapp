@@ -102,18 +102,30 @@
                 android:paddingHorizontal="8dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="3dp"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rcViewCombo"
+            <RelativeLayout
                 android:layout_width="match_parent"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"
-                android:layout_below="@id/txtTitle1"
-                android:nestedScrollingEnabled="false"/>
+                android:layout_below="@id/txtTitle1">
+                <ProgressBar
+                    android:id="@+id/pbLoadCombos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcViewCombo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="230dp"
+                    android:paddingHorizontal="12dp"
+                    android:nestedScrollingEnabled="false"/>
+            </RelativeLayout>
             <TextView
                 android:id="@+id/txtTitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rcViewCombo"
+                android:layout_marginTop="3dp"
                 android:background="@color/white"
                 android:fontFamily="sans-serif-black"
                 android:paddingHorizontal="8dp"
@@ -123,16 +135,25 @@
                 android:text="Bắp nước"
                 android:textColor="@color/app_primary"
                 android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTitle2"
+            android:background="@color/white">
+            <ProgressBar
+                android:id="@+id/pbLoadFoods"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcViewPopcorn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="230dp"
                 android:paddingHorizontal="12dp"
-
                 android:paddingBottom="20dp"
-                android:background="@color/white"
-                android:layout_below="@id/txtTitle2"
                 android:nestedScrollingEnabled="false"/>
+            </RelativeLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <View
@@ -183,7 +204,8 @@
                 android:textAlignment="textEnd"
                 android:fontFamily="sans-serif"
                 android:text="K8, K9"
-                android:textSize="16dp"/>
+                android:textSize="16sp"
+                android:singleLine="true"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,22 +213,21 @@
             android:orientation="horizontal"
             android:paddingVertical="1dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="16dp"
+                android:textSize="16sp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="2dp"
                 android:text="Bắp &amp; nước"/>
             <TextView
                 android:id="@+id/txtFoodSelected"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="4"
                 android:textAlignment="textEnd"
                 android:fontFamily="sans-serif"
                 android:text="0"
-                android:textSize="16dp"/>
+                android:textSize="16dp"
+                android:singleLine="true"/>
         </LinearLayout>
 
         <LinearLayout
@@ -215,19 +236,20 @@
             android:orientation="horizontal"
             android:paddingVertical="5dp">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="18dp"
+                android:textSize="18sp"
                 android:fontFamily="sans-serif-black"
                 android:text="Tổng tiền"/>
             <TextView
                 android:id="@+id/txtTotalCost"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:textAlignment="textEnd"
-                android:textSize="18dp"
+                android:textSize="18sp"
+                android:singleLine="true"
                 android:fontFamily="sans-serif-black"
                 android:text="0"/>
         </LinearLayout>
@@ -235,7 +257,7 @@
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17dp"
+            android:textSize="17sp"
             android:fontFamily="sans-serif-black"
             android:background="@drawable/bgd_btn_accept"
             app:backgroundTint="@null"

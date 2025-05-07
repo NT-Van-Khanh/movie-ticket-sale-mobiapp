@@ -17,6 +17,13 @@ public class ApiResponse <T>{
     public T getData() {
         return data;
     }
+    public static <T> ApiResponse<T> success(T data) {
+        return new ApiResponse<>(data, null, 200);
+    }
+
+    public static <T> ApiResponse<T> error(String message) {
+        return new ApiResponse<>(null, message, 400);
+    }
 
     public String getMessage() {
         return message;

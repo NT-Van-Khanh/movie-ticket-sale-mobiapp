@@ -12,7 +12,7 @@ import com.example.ticket_sale.model.MovieTheater;
 import java.util.List;
 
 public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapter.MovieTheaterViewHolder> {
-    private final List<MovieTheater> movieTheaters;
+    private List<MovieTheater> movieTheaters;
     private final OnItemClickListener onItemClickListener;
 
     public MovieTheaterAdapter(List<MovieTheater> movieTheaters, OnItemClickListener onItemClickListener) {
@@ -38,6 +38,11 @@ public class MovieTheaterAdapter extends RecyclerView.Adapter<MovieTheaterAdapte
     @Override
     public int getItemCount() {
         return movieTheaters.size();
+    }
+
+    public void setTheaters(List<MovieTheater> movieTheaters) {
+        this.movieTheaters = movieTheaters;
+        notifyDataSetChanged();
     }
 
     public interface OnItemClickListener {

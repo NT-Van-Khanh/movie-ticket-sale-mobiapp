@@ -46,6 +46,11 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
         return movies.size();
     }
 
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+        notifyDataSetChanged();
+    }
+
     public class MovieByTheaterViewHolder extends RecyclerView.ViewHolder {
         ImageView imgMovieImage;
         TextView txtMovieTitle;

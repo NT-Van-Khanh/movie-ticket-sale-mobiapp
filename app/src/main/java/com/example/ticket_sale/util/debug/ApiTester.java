@@ -6,8 +6,8 @@ import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.example.ticket_sale.data.ApiServiceFactory;
-import com.example.ticket_sale.data.TokenManager;
-import com.example.ticket_sale.data.model.Bill;
+import com.example.ticket_sale.util.TokenManager;
+import com.example.ticket_sale.data.dto.Bill;
 import com.example.ticket_sale.data.repository.AuthRepository;
 import com.example.ticket_sale.data.repository.BillRepository;
 import com.example.ticket_sale.data.repository.FoodRepository;

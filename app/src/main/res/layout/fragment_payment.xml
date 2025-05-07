@@ -122,7 +122,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcViewOrderItems"
                     android:layout_width="match_parent"
-                    android:layout_height="220dp" />
+                    android:layout_height="wrap_content"
+                    android:minHeight="80dp"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

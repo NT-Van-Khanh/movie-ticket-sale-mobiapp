@@ -62,7 +62,7 @@
                     android:clipToPadding="false"
                     android:clipChildren="false" />
                 <ProgressBar
-                    android:id="@+id/progressBarLoadPosters"
+                    android:id="@+id/pbLoadPosters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"/>
@@ -105,10 +105,11 @@
                     android:id="@+id/rcViewCurrentMovies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="480dp"
                     android:paddingHorizontal="5dp">
                 </androidx.recyclerview.widget.RecyclerView>
                 <ProgressBar
-                    android:id="@+id/progressBarLoadMovies"
+                    android:id="@+id/pbLoadMovies"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"/>

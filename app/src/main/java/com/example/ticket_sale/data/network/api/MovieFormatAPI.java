@@ -1,8 +1,8 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.model.MovieFormat;
-import com.example.ticket_sale.data.model.MovieWrapper;
+import com.example.ticket_sale.data.dto.MovieFormat;
+import com.example.ticket_sale.data.dto.MovieWrapper;
 import com.example.ticket_sale.data.network.PageResponse;
 
 import java.util.List;

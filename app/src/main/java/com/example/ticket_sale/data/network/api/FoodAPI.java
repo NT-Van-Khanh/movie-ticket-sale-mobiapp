@@ -1,8 +1,8 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.model.Food;
-import com.example.ticket_sale.data.model.FoodType;
+import com.example.ticket_sale.data.dto.FoodDTO;
+import com.example.ticket_sale.data.dto.FoodTypeDTO;
 
 import java.util.List;
 
@@ -15,19 +15,19 @@ public interface FoodAPI {
 
     //http://localhost:8888/dish-service/api/dish/3361ff55-72ea-4d7b-b66d-bcf7352bf9ee
     @GET(BASE_PATH + "/dish/{id}")
-    Call<ApiResponse<Food>> getFoodById(@Path("id") String id);
+    Call<ApiResponse<FoodDTO>> getFoodById(@Path("id") String id);
 
     //http://localhost:8888/dish-service/api/dish/all
     @GET(BASE_PATH + "/dish/all")
-    Call<ApiResponse<List<Food>>> getAllFoods();
+    Call<ApiResponse<List<FoodDTO>>> getAllFoods();
 
     //http://localhost:8888/dish-service/api/typedish/7b2ae9d0-3aab-4809-9060-282a257eeea9
     @GET(BASE_PATH + "/typedish/{id}")
-    Call<ApiResponse<FoodType>> getFoodTypeById(@Path("id") String id);
+    Call<ApiResponse<FoodTypeDTO>> getFoodTypeById(@Path("id") String id);
 
     //http://localhost:8888/dish-service/api/typedish/all
     @GET(BASE_PATH + "/typedish/all")
-    Call<ApiResponse<List<FoodType>>> getAllFoodTypes();
+    Call<ApiResponse<List<FoodTypeDTO>>> getAllFoodTypes();
 }
 
 

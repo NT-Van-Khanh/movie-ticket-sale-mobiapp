@@ -49,7 +49,7 @@ dependencies {
 
     implementation (libs.converter.gson)
     implementation (libs.gson)
-
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.glide)
-
+    implementation (libs.core)
 }

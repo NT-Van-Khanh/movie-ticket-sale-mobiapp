@@ -11,12 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.example.ticket_sale.activity.LoginActivity;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.activity.RegisterActivity;
 import com.example.ticket_sale.adapter.SettingAdapter;
 import com.example.ticket_sale.model.SettingItem;
+import com.example.ticket_sale.util.TokenManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class ProfileFragment extends Fragment {
     SettingAdapter settingAdapter;
     List<SettingItem> settingItems;
     List<SettingItem> contactItems;
+    LinearLayout lnRequireUserLogin;
+    LinearLayout lnPersonalInfo;
+    Button btnLogout;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -85,6 +90,16 @@ public class ProfileFragment extends Fragment {
         settingItems = initSettingsItem();
         contactItems = initContactsItem();
         settingAdapter = new SettingAdapter(settingItems, getContext());
+        lnRequireUserLogin = v.findViewById(R.id.lnRequireUserLogin);
+        lnPersonalInfo = v.findViewById(R.id.lnPersonalInfo);
+        btnLogout = v.findViewById(R.id.btnLogout);
+        if(TokenManager.isLoggedIn()){
+            lnRequireUserLogin.setVisibility(View.VISIBLE);
+            lnPersonalInfo.setVisibility(View.GONE);
+        }else{
+            lnRequireUserLogin.setVisibility(View.GONE);
+            lnPersonalInfo.setVisibility(View.VISIBLE);
+        }
 
         btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +112,13 @@ public class ProfileFragment extends Fragment {
         btnRedirectRegister.setOnClickListener(v1 -> {
             Intent intent = new Intent(getActivity(), RegisterActivity.class);
             startActivity(intent);
+        });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
         });
 
         rcViewSettings.setAdapter(settingAdapter);

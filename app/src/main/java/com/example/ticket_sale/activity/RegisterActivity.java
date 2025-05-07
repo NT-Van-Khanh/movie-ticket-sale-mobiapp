@@ -25,16 +25,11 @@ public class RegisterActivity extends AppCompatActivity {
         fragmentContainer = findViewById(R.id.fragment_container);
 
         if(savedInstanceState ==null){
-            RegisterUserFragment registerUserFragment = RegisterUserFragment.newInstance();
-            registerUserFragment.setBtnNextListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new PhoneOTPAuthFragment())
-                                .addToBackStack(null)
-                                .commit();
-                }
-            });
+            RegisterUserFragment registerUserFragment = new RegisterUserFragment();
+            registerUserFragment.setBtnNextListener(v -> getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new PhoneOTPAuthFragment())
+                    .addToBackStack(null)
+                    .commit());
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, registerUserFragment)
@@ -47,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
     }
+
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
