@@ -2,14 +2,14 @@ package com.example.ticket_sale.data.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Theater {
+public class TheaterDTO {
     private String id;
     @SerializedName("nameBranch")
     private String name;
     private String address;
     private String status;
 
-    public Theater() {
+    public TheaterDTO() {
     }
 
     public String getAddress() {

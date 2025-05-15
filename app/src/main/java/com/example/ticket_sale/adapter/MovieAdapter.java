@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.List;
 
@@ -37,11 +38,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
-        holder.imgMovieImage.setImageResource(movie.getImageResId());
-        holder.txtMovieTitle.setText(movie.getTitle());
-        holder.txtMovieAge.setText(movie.getAge().toString());
-        holder.txtMovieDuration.setText(movie.getDuration().toString() + " phút");
-        holder.txtMovieRating.setText(movie.getRating().toString());
         holder.bind(movie, onItemClickListener);
     }
 
@@ -51,11 +47,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgMovieImage;
-        TextView txtMovieTitle;
-        TextView txtMovieDuration;
-        TextView txtMovieAge;
-        TextView txtMovieRating;
+        private final ImageView imgMovieImage;
+        private final TextView txtMovieTitle;
+        private final TextView txtMovieDuration;
+        private final TextView txtMovieAge;
+        private final TextView txtMovieRating;
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             imgMovieImage = itemView.findViewById(R.id.imgMovieImage);
@@ -66,7 +62,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         }
 
         public void bind(final Movie movie, final OnItemClickListener listener) {
-            Glide.with(itemView.getContext()).load(movie.getImageResId()).into(imgMovieImage);
+//            imgMovieImage.setImageResource(movie.getImageResId());
+            txtMovieTitle.setText(movie.getTitle());
+            if(movie.getAge() != null)
+                txtMovieAge.setText(String.valueOf(movie.getAge()));
+            Integer duration = movie.getDuration();
+            if(duration != null) txtMovieDuration.setText(String.format(ViLocaleUtil.localeVN,"%d phút", duration));
+            Float rating = movie.getRating();
+            if(rating != null) txtMovieRating.setText(String.valueOf(rating));
+            Glide.with(itemView.getContext())
+                    .load(movie.getImageLink())
+                    .placeholder(movie.getImageResId())
+                    .error(movie.getImageResId())
+                    .into(imgMovieImage);
             if (listener == null) {
                 Log.e("MovieAdapter", "Listener is null!");
             }

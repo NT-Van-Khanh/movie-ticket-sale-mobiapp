@@ -16,8 +16,8 @@ import com.example.ticket_sale.model.PaymentMethod;
 import java.util.List;
 
 public class PayMethodAdapter extends RecyclerView.Adapter<PayMethodAdapter.PayMethodViewHolder> {
-    private final List<PaymentMethod> payMethods;
-
+    private List<PaymentMethod> payMethods;
+    private int selectedPosition = -1;
     public PayMethodAdapter(List<PaymentMethod> payMethods) {
         this.payMethods = payMethods;
     }
@@ -32,7 +32,7 @@ public class PayMethodAdapter extends RecyclerView.Adapter<PayMethodAdapter.PayM
     @Override
     public void onBindViewHolder(@NonNull PayMethodViewHolder holder, int position) {
         PaymentMethod p = payMethods.get(position);
-        holder.bind(p);
+        holder.bind(p, position);
     }
 
     @Override
@@ -41,20 +41,38 @@ public class PayMethodAdapter extends RecyclerView.Adapter<PayMethodAdapter.PayM
     }
 
     public class PayMethodViewHolder extends RecyclerView.ViewHolder{
-        private TextView txtPayMethodTitle;
-        private ImageView imgPayMethodImage;
-        private RadioButton radPayMethodChoose;
+        private final TextView txtPayMethodTitle;
+        private final ImageView imgPayMethodImage;
+        private final RadioButton radPayMethodChoose;
+
         public PayMethodViewHolder(@NonNull View itemView) {
             super(itemView);
-
             txtPayMethodTitle = itemView.findViewById(R.id.txtPayMethodTitle);
             imgPayMethodImage = itemView.findViewById(R.id.imgPayMethodImage);
             radPayMethodChoose = itemView.findViewById(R.id.radPayMethodChoose);
         }
 
-        public void bind(PaymentMethod p) {
+        public void bind(PaymentMethod p, int position) {
             txtPayMethodTitle.setText(p.getInfo());
             imgPayMethodImage.setImageResource(p.getImageResId());
+            radPayMethodChoose.setChecked(position == selectedPosition);
+            itemView.setOnClickListener(v -> {
+                int previousSelected = selectedPosition;
+                selectedPosition = getAdapterPosition();
+                notifyItemChanged(previousSelected); // cập nhật lại item cũ
+                notifyItemChanged(selectedPosition);
+            });
         }
+    }
+
+    public int getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public PaymentMethod getSelectedPaymentMethod() {
+        if (selectedPosition != -1 && selectedPosition < payMethods.size()) {
+            return payMethods.get(selectedPosition);
+        }
+        return null;
     }
 }

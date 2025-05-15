@@ -26,7 +26,7 @@ import com.example.ticket_sale.model.Seat;
 import com.example.ticket_sale.model.SeatType;
 import com.example.ticket_sale.model.Showtime;
 import com.example.ticket_sale.util.AuthGuard;
-import com.example.ticket_sale.util.mapper.ScreenMapper;
+import com.example.ticket_sale.mapper.ScreenMapper;
 import com.example.ticket_sale.viewmodel.ChooseSeatViewModel;
 
 import java.util.ArrayList;

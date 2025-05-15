@@ -40,15 +40,6 @@ public class ResetPasswordFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ResetPasswordFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ResetPasswordFragment newInstance(String param1, String param2) {
         ResetPasswordFragment fragment = new ResetPasswordFragment();
         Bundle args = new Bundle();
@@ -62,11 +53,6 @@ public class ResetPasswordFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-//        if(context instanceof View.OnClickListener){
-//            btnNextListener = (View.OnClickListener) context;
-//        }else{
-//            throw new RuntimeException(context.toString() + "must implement FragmentNavigationListener");
-//        }
     }
 
     @Override
@@ -81,67 +67,58 @@ public class ResetPasswordFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_reset_password, container, false);
-        initViews(v);
-        return v;
+        View root = inflater.inflate(R.layout.fragment_reset_password, container, false);
+        initViews(root);
+        return root;
     }
 
-    private void initViews(View v) {
-        txtGoBack = v.findViewById(R.id.txtGoBack);
-        edtPhoneOrMail = v.findViewById(R.id.edtPhoneOrEmail);
-        btnNext = v.findViewById(R.id.btnNext);
+    private void initViews(View root) {
+        txtGoBack =  root.findViewById(R.id.txtGoBack);
+        edtPhoneOrMail =  root.findViewById(R.id.edtPhoneOrEmail);
+        btnNext =  root.findViewById(R.id.btnNext);
 
+        txtGoBack.setOnClickListener(v -> ResetPasswordFragment.this.requireActivity().finish());
 
-        txtGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ResetPasswordFragment.this.requireActivity().finish();
+        btnNext.setOnClickListener(v -> {
+            String phoneOrMail = edtPhoneOrMail.getText().toString();
+            if(phoneOrMail.trim().isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
+                return;
             }
-        });
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phoneOrMail = edtPhoneOrMail.getText().toString();
-                if(phoneOrMail.trim().isEmpty()) {
-                    Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
-                Bundle bundle = new Bundle();
-                if(isPhone(phoneOrMail)){
-                    bundle.putString("phone",phoneOrMail);
-                    PhoneOTPAuthFragment phoneOTPAuthFragment= new PhoneOTPAuthFragment();
-                    phoneOTPAuthFragment.setArguments(bundle);
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, phoneOTPAuthFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    return;
-                }
-                if(isEmail(phoneOrMail)){
-                    bundle.putString("email",phoneOrMail);
-                    EmailOTPAuthFragment emailOTPAuthFragment= new EmailOTPAuthFragment();
-                    emailOTPAuthFragment.setArguments(bundle);
-                    getParentFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, emailOTPAuthFragment)
-                            .addToBackStack(null)
-                            .commit();
-                    return;
-                }
-                Toast.makeText(getContext(), "Email hoặc số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
-
+            Bundle bundle = new Bundle();
+            if(isPhone(phoneOrMail)){
+                bundle.putString("phone",phoneOrMail);
+                PhoneOTPAuthFragment phoneOTPAuthFragment= new PhoneOTPAuthFragment();
+                phoneOTPAuthFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, phoneOTPAuthFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return;
             }
+            if(isEmail(phoneOrMail)){
+                bundle.putString("email",phoneOrMail);
+                EmailOTPAuthFragment emailOTPAuthFragment= new EmailOTPAuthFragment();
+                emailOTPAuthFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, emailOTPAuthFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return;
+            }
+            Toast.makeText(getContext(), "Email hoặc số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
         });
-//        if (btnNextListener != null) {
-//            btnNext.setOnClickListener(btnNextListener);
-//        }
     }
+
     private boolean isPhone(String input) {
         return input.matches("\\d{10}");
     }
+
     private boolean isEmail(String input) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches();
     }
+
     public static ResetPasswordFragment newInstance() {
         return new ResetPasswordFragment();
     }

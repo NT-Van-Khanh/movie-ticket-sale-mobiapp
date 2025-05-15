@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingVertical="3dp"
+        android:paddingVertical="6dp"
         android:background="@color/white"
         android:paddingHorizontal="12dp"
         android:layout_marginTop="2dp">
@@ -127,16 +127,16 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:overScrollMode="never"
-        android:layout_marginBottom="2dp"
         android:paddingHorizontal="5dp"
-        android:layout_marginVertical="2dp">
+        android:layout_marginVertical="2dp"
+        android:background="@color/white">
     </androidx.recyclerview.widget.RecyclerView>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcViewTheatersByMovie"
+            android:id="@+id/rcViewTheaterShowtimes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"/>

@@ -22,7 +22,7 @@ A mobile app for booking movie tickets, allowing users to browse showtimes, sele
 3. Detail movie screen
 <img src="https://github.com/user-attachments/assets/863d39e2-ec56-41a4-adcf-64c495f69b54" width="200">
 
-4. Screen shows theaters and movie showtimes by theater
+4. Screen shows theaters and movie showtimes by theaterDTO
 <img src="https://github.com/user-attachments/assets/b6253c1b-80ff-4a93-8fee-0e4071b895d1" width="200">
 <img src="https://github.com/user-attachments/assets/8ac1e82f-db2a-417a-b631-3072bafe570d" width="200">
 

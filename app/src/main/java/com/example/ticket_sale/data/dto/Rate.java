@@ -7,7 +7,7 @@ public class Rate {
     private int star;
     private String content;
     private String timeStamp;
-    private User customer;
+    private UserDTO customer;
     private Movie film;
     private String active;
 
@@ -30,11 +30,11 @@ public class Rate {
         this.content = content;
     }
 
-    public User getCustomer() {
+    public UserDTO getCustomer() {
         return customer;
     }
 
-    public void setCustomer(User customer) {
+    public void setCustomer(UserDTO customer) {
         this.customer = customer;
     }
 

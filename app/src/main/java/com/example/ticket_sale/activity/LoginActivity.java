@@ -10,17 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.Observer;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.base.BaseAuthActivity;
 import com.example.ticket_sale.viewmodel.AuthViewModel;
-
-import java.util.Map;
 
 public class LoginActivity extends BaseAuthActivity {
     private TextView txtGoBack;
@@ -30,7 +26,7 @@ public class LoginActivity extends BaseAuthActivity {
     private Button btnLogin;
     private Button btnRedirectRegister;
 
-    private final AuthViewModel authViewModel = new AuthViewModel();
+    private AuthViewModel authViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +34,7 @@ public class LoginActivity extends BaseAuthActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         initViews();
+        authViewModel = new AuthViewModel();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

@@ -1,4 +1,4 @@
-package com.example.ticket_sale.util.mapper;
+package com.example.ticket_sale.mapper;
 
 import com.example.ticket_sale.data.dto.ScreenDTO;
 import com.example.ticket_sale.model.Screen;

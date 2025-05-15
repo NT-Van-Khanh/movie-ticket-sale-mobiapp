@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.MovieAdapter;
 import com.example.ticket_sale.model.Movie;
-import com.example.ticket_sale.util.mapper.MovieMapper;
+import com.example.ticket_sale.mapper.MovieMapper;
 import com.example.ticket_sale.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;

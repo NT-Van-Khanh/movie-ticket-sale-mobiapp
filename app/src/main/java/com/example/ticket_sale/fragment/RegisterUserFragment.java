@@ -4,29 +4,37 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticket_sale.activity.LoginActivity;
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.model.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RegisterUserFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class RegisterUserFragment extends Fragment {
     private View.OnClickListener btnNextListener;
     private TextView txtGoBack;
     private Button btnNext;
     private Button btnRedirectLogin;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+    private EditText edtFullName;
+    private EditText edtPhone;
+    private EditText edtEmail;
+    private EditText edtUsername;
+    private EditText edtPassword;
+    private EditText edtConfirmPassword;
+    private CheckBox cbAgreeTerms;
+
+    private User user;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -38,15 +46,6 @@ public class RegisterUserFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RegisterUserFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static RegisterUserFragment newInstance(String param1, String param2) {
         RegisterUserFragment fragment = new RegisterUserFragment();
         Bundle args = new Bundle();
@@ -79,37 +78,58 @@ public class RegisterUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_register_user, container, false);
-        initView(v);
-        return v;
+        View root = inflater.inflate(R.layout.fragment_register_user, container, false);
+        initView(root);
+        return root;
     }
 
-    private void initView(View v){
-        txtGoBack = v.findViewById(R.id.txtGoBack);
-        btnNext= v.findViewById(R.id.btnRegister);
-        btnRedirectLogin = v.findViewById(R.id.btnRedirectLogin);
+    private void initView(View root){
+        txtGoBack = root.findViewById(R.id.txtGoBack);
+        edtFullName = root.findViewById(R.id.edtFullName);
+        edtEmail = root.findViewById(R.id.edtEmail);
+        edtPhone = root.findViewById(R.id.edtPhoneNumber);
+        edtUsername = root.findViewById(R.id.edtUsername);
+        edtPassword = root.findViewById(R.id.edtPassword);
+        edtConfirmPassword = root.findViewById(R.id.edtConfirmPassword);
+        cbAgreeTerms = root.findViewById(R.id.cbAgreeTerms);
+        btnNext= root.findViewById(R.id.btnRegister);
+        btnRedirectLogin = root.findViewById(R.id.btnRedirectLogin);
 
-        txtGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (RegisterUserFragment.this.getActivity() != null) {
-                    RegisterUserFragment.this.getActivity().finish();
-                }
+        btnNext.setOnClickListener(v -> {
+            authEmail();
+        });
+
+        txtGoBack.setOnClickListener(v -> {
+            if (RegisterUserFragment.this.getActivity() != null) {
+                RegisterUserFragment.this.getActivity().finish();
             }
         });
 
         if (btnNextListener != null) {
             btnNext.setOnClickListener(btnNextListener);
         }else{
-            Log.e("btnNext.setOnClickListener", "btnNext OnClickListernet is null");
+            Log.e("btnNext.setOnClickListener", "btnNext OnClickListener is null");
         }
-        btnRedirectLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-            }
+        btnRedirectLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
         });
+    }
+
+    private void authEmail() {
+        user = getUserFromView();
+        if(user == null)  return;
+        String password =edtPassword.getText().toString().trim();
+        Bundle b = new Bundle();
+        b.putParcelable("user",user);
+        b.putString("password", password);
+        EmailOTPAuthFragment emailOTPAuthFragment = new EmailOTPAuthFragment();
+        emailOTPAuthFragment.setArguments(b);
+        getParentFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragment_container, emailOTPAuthFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 
@@ -119,5 +139,61 @@ public class RegisterUserFragment extends Fragment {
 
     public void setBtnNextListener(View.OnClickListener listener) {
         this.btnNextListener = listener;
+    }
+
+    private User getUserFromView() {
+        String fullName = edtFullName.getText().toString().trim();
+        if(fullName.isEmpty()) {
+            edtFullName.requestFocus(); // Đặt focus vào trường này
+            Toast.makeText(getActivity(), "Vui lòng nhập tên đầy đủ", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        String phone = edtPhone.getText().toString().trim();
+        if (phone.isEmpty()) {
+            edtPhone.requestFocus();
+            Toast.makeText(getActivity(), "Vui lòng nhập số điện thoại", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        String email = edtEmail.getText().toString().trim();
+        if (email.isEmpty()) {
+            edtEmail.requestFocus();
+            Toast.makeText(getActivity(), "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        String username = edtUsername.getText().toString().trim();
+        if (username.isEmpty()) {
+            edtUsername.requestFocus();
+            Toast.makeText(getActivity(), "Vui lòng nhập tên tài khoản", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        String password = edtPassword.getText().toString().trim();
+        if (password.isEmpty()) {
+            edtPassword.requestFocus();
+            Toast.makeText(getActivity(), "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        String confirmPassword = edtConfirmPassword.getText().toString().trim();
+        if (confirmPassword.isEmpty()) {
+            edtConfirmPassword.requestFocus();
+            Toast.makeText(getActivity(), "Vui lòng nhập xác nhận mật khẩu", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(getActivity(), "Mật khẩu và xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+            edtConfirmPassword.requestFocus();
+            return null;
+        }
+
+        if(!cbAgreeTerms.isChecked()){
+            Toast.makeText(getActivity(), "Vui lòng chấp nhận chính sách điều khoản", Toast.LENGTH_SHORT).show();
+            cbAgreeTerms.requestFocus();
+            return null;
+        }
+        return new User(fullName, phone, email, username);
     }
 }

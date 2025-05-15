@@ -12,6 +12,7 @@ import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.repository.MovieRepository;
 import com.example.ticket_sale.data.repository.MovieShowtimeRepository;
 import com.example.ticket_sale.data.repository.ScreenRepository;
+import com.example.ticket_sale.model.ShowtimeKey;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,28 +23,33 @@ public class TheaterShowtimeViewModel extends ViewModel {
     private final MovieRepository movieRepository;
 //    private LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimes;
     private LiveData<ApiResponse<List<MovieDTO>>> movies;
-    private final Map<String, LiveData<ApiResponse<List<MovieShowtimeDTO>>>> showtimesMap = new HashMap<>();
+    private final Map<ShowtimeKey, LiveData<ApiResponse<List<MovieShowtimeDTO>>>> showtimesMap = new HashMap<>();
 
     public TheaterShowtimeViewModel() {
         this.movieRepository = new MovieRepository(ApiServiceFactory.getMovieAPI());
         this.showtimeRepository = new MovieShowtimeRepository(ApiServiceFactory.getMovieShowtimeAPI());
     }
 
-    public void fetchShowtimesGroupedByMovie(String theaterId, String date, String movieId, String formatId){
-        String key = movieId + "_" + formatId;
-        if (!showtimesMap.containsKey(key)) {
-            LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimes = showtimeRepository.getShowtimesByMovieAndTheater(theaterId, date, movieId, formatId);
-            showtimesMap.put(key, showtimes);
+    public void fetchShowtimesGroupedByMovie(ShowtimeKey showtimeKey){
+        if(showtimeKey == null) return;
+        if (!showtimesMap.containsKey(showtimeKey)) {
+            LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimes = showtimeRepository
+                    .getShowtimesByMovieAndTheater(showtimeKey.getTheaterId(),
+                                                    showtimeKey.getDate(),
+                                                    showtimeKey.getMovieId(),
+                                                    showtimeKey.getFormatId());
+            showtimesMap.put(showtimeKey, showtimes);
         }
     }
 
     public void fetchCurrentMovies(){
-        movies =movieRepository.getMoviesByStatus("CURRENT");
+        movies =movieRepository.getMoviesByStatus("ACTIVE");
     }
 
-    public LiveData<ApiResponse<List<MovieShowtimeDTO>>> getShowtimes(String movieId, String formatId) {
-        String key = movieId + "_" + formatId;
-        return showtimesMap.getOrDefault(key, new MutableLiveData<>());
+    public LiveData<ApiResponse<List<MovieShowtimeDTO>>> getShowtimes(ShowtimeKey showtimeKey) {
+        if (showtimeKey == null || !showtimeKey.isValid()) return new MutableLiveData<>();
+        if(!showtimesMap.containsKey(showtimeKey)) fetchShowtimesGroupedByMovie(showtimeKey);
+        return showtimesMap.getOrDefault(showtimeKey, new MutableLiveData<>());
     }
 
     public LiveData<ApiResponse<List<MovieDTO>>> getMovies() {
@@ -81,7 +87,7 @@ public class TheaterShowtimeViewModel extends ViewModel {
 //            AtomicInteger counter = new AtomicInteger();
 //
 //            for (MovieDTO movie : movies) {
-//                for (MovieFormat format : movie.getFormat()) {
+//                for (MovieFormatDTO format : movie.getFormat()) {
 //                    counter.incrementAndGet();
 //                    showtimeRepository.getShowtimesByMovieAndTheater(theaterId, date, movie.getId(), format.getId())
 //                            .observeForever(showtimes -> {

@@ -1,6 +1,6 @@
 package com.example.ticket_sale.adapter;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +14,18 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.List;
 
 public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieByTheaterViewHolder> {
     private List<Movie> movies;
     private ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
-
-    public MovieByTheaterAdapter(List<Movie> movies, ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
+    private Context context;
+    public MovieByTheaterAdapter(List<Movie> movies, Context context,
+                                 ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
         this.movies = movies;
+        this.context = context;
         this.onShowtimeClickListener = onShowtimeClickListener;
     }
 
@@ -37,13 +40,13 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
     public void onBindViewHolder(@NonNull MovieByTheaterAdapter.MovieByTheaterViewHolder holder, int position) {
         Movie movie  = movies.get(position);
         holder.bind(movie);
-        Log.d("MovieAdapter", "Num of movie: " + movies.size());
+//        Log.d("MovieAdapter", "Num of movie: " + movies.size());
 
     }
 
     @Override
     public int getItemCount() {
-        return movies.size();
+        return movies == null ? 0 : movies.size();
     }
 
     public void setMovies(List<Movie> movies) {
@@ -52,13 +55,12 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
     }
 
     public class MovieByTheaterViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgMovieImage;
-        TextView txtMovieTitle;
-        TextView txtMovieAge;
-        TextView txtMovieDuration;
-        TextView txtMovieRating;
-
-        RecyclerView rcViewMovieFormats;
+        private final ImageView imgMovieImage;
+        private final TextView txtMovieTitle;
+        private final TextView txtMovieAge;
+        private final TextView txtMovieDuration;
+        private final TextView txtMovieRating;
+        private final RecyclerView rcViewMovieFormats;
 
         public MovieByTheaterViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,18 +77,19 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
         public void bind(Movie movie) {
             imgMovieImage.setImageResource(movie.getImageResId());
             txtMovieTitle.setText(movie.getTitle());
-            txtMovieAge.setText(movie.getAge().toString());
-            txtMovieRating.setText(movie.getRating().toString());
-            txtMovieDuration.setText(movie.getDuration().toString() + " phút");
+            txtMovieAge.setText(String.valueOf(movie.getAge()));
+            txtMovieRating.setText(String.valueOf(movie.getRating()));
+            txtMovieDuration.setText(String.format(ViLocaleUtil.localeVN,"%d phút", movie.getDuration()));
 
             MovieFormatAdapter movieFormatAdapter = (MovieFormatAdapter) rcViewMovieFormats.getAdapter();
             if(movieFormatAdapter == null){
-                Log.e("movieFormatAdapter","adapter is null");
-                movieFormatAdapter = new MovieFormatAdapter(movie.getMovieFormats(), getAdapterPosition(), onShowtimeClickListener);
+                movieFormatAdapter = new MovieFormatAdapter(movie.getMovieFormats(),
+                                            getAdapterPosition(),context, onShowtimeClickListener);
                 rcViewMovieFormats.setAdapter(movieFormatAdapter);
             }else{
                 movieFormatAdapter.updateData(movie.getMovieFormats(), getAdapterPosition());
             }
         }
+
     }
 }

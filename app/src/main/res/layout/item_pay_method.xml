@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:button="@drawable/radio_custom"
         android:gravity="center"
-        android:checked="true"
         app:buttonTint="#545D79"/>
     <ImageView
         android:id="@+id/imgPayMethodImage"

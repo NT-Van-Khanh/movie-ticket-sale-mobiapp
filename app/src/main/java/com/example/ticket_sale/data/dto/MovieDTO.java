@@ -27,7 +27,7 @@ public class MovieDTO {
     private List<MovieType> movieTypes;
 
     @SerializedName("sub")
-    private List<MovieFormat> format;
+    private List<MovieFormatDTO> format;
 
 //CHƯA CÓ:
 //    private String actor;
@@ -43,11 +43,11 @@ public class MovieDTO {
         return age;
     }
 
-    public List<MovieFormat> getFormat() {
+    public List<MovieFormatDTO> getFormat() {
         return format;
     }
 
-    public void setFormat(List<MovieFormat> format) {
+    public void setFormat(List<MovieFormatDTO> format) {
         this.format = format;
     }
 

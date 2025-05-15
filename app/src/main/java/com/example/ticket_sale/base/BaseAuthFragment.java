@@ -19,7 +19,7 @@ public abstract class BaseAuthFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        TokenManager.init(requireContext().getApplicationContext());
+//        TokenManager.init(requireContext().getApplicationContext());
         if(!TokenManager.isLoggedIn()){
             Log.e("TokenManager","Haven't logined");
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
@@ -34,7 +34,7 @@ public abstract class BaseAuthFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = super.onCreateView(inflater, container, savedInstanceState);
-        TokenManager.init(requireContext().getApplicationContext());
+//        TokenManager.init(requireContext().getApplicationContext());
         if(!TokenManager.isLoggedIn()){
             Log.e("TokenManager","Haven't logined");
             Intent intent = new Intent(requireActivity(), LoginActivity.class);
@@ -46,7 +46,7 @@ public abstract class BaseAuthFragment extends Fragment {
         return root;
     }
     protected void checkLogin(){
-        TokenManager.init(requireContext().getApplicationContext());
+//        TokenManager.init(requireContext().getApplicationContext());
         if (!TokenManager.isLoggedIn()) {
             Log.e("TokenManager", "Haven't logined");
             Intent intent = new Intent(requireActivity(), LoginActivity.class);

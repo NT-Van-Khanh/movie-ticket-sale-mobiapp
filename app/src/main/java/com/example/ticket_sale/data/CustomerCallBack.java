@@ -3,6 +3,8 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ticket_sale.util.TokenManager;
+
 import java.io.IOException;
 
 import okhttp3.ResponseBody;
@@ -23,11 +25,13 @@ public class CustomerCallBack<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         if (response.isSuccessful()) {
             T body = response.body();
-
-
             liveData.setValue(body);
             Log.d(logTag, "Success: " + response.body());
-        } else {
+        }else if(response.code() == 401){
+            Log.e(logTag, "Token expired");
+            TokenManager.clearToken();
+        }
+        else {
             Log.e(logTag, "Code: " + response.code());
             try (ResponseBody errorBody = response.errorBody()) {
                 if (errorBody != null) {

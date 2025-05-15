@@ -23,13 +23,14 @@ import com.example.ticket_sale.data.dto.MovieShowtimeDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
+import com.example.ticket_sale.model.ShowtimeKey;
 import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Showtime;
 import com.example.ticket_sale.util.AuthGuard;
-import com.example.ticket_sale.util.mapper.MovieMapper;
-import com.example.ticket_sale.util.mapper.ShowtimeMapper;
+import com.example.ticket_sale.mapper.MovieMapper;
+import com.example.ticket_sale.mapper.ShowtimeMapper;
 import com.example.ticket_sale.viewmodel.TheaterShowtimeViewModel;
 
 import java.util.ArrayList;
@@ -107,48 +108,65 @@ public class TheaterShowtimeFragment extends Fragment {
         theater = getArguments().getParcelable("theater");
         availableDates = getAvailableDates();
 
-        getShowtimesFromAPI("2025-03-17");
+        getMoviesFromAPI("2025-03-21");
 
-//            movieTheater = new Theater();
+//            movieTheater = new TheaterDTO();
 //            movieTheater.setId( getArguments().getString("theaterId"));
 //            Log.d("theater infor:", movieTheater.getId() +" "+movieTheater.getName() + " " +movieTheater.getAddress());
 
     }
-    private void getShowtimesFromAPI(String date){
-        if(showtimeViewModel == null){
-            showtimeViewModel = new TheaterShowtimeViewModel();
-        }
-        showtimeViewModel.fetchCurrentMovies();
-        showtimeViewModel.getMovies().observe(getViewLifecycleOwner(), response ->
-        {
-            if (response != null && response.getStatusCode() == 200) {
-                movies = response.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
-                for(Movie m : movies){
-                    for(MovieFormat mFormat : m.getMovieFormats()){
-                        showtimeViewModel.fetchShowtimesGroupedByMovie(theater.getId(),
-                                date, m.getId(),mFormat.getId());
-                        LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimesLiveData =
-                                showtimeViewModel.getShowtimes(m.getId(), mFormat.getId());
-                        showtimesLiveData.observe(getViewLifecycleOwner(), showtimeResponse ->
-                        {
-                            if (showtimeResponse != null && showtimeResponse.getData() != null) {
-                                List<Showtime> showtimes = showtimeResponse.getData().stream()
-                                        .map(ShowtimeMapper::toShowtime).collect(Collectors.toList());
-                                mFormat.setShowtimes(showtimes);
-                            }
-                        });
-                    }
 
-                }
+    private void getMoviesFromAPI(String date){
+        if(showtimeViewModel == null) showtimeViewModel = new TheaterShowtimeViewModel();
+        showtimeViewModel.fetchCurrentMovies();
+
+        showtimeViewModel.getMovies().observe(getViewLifecycleOwner(), response -> {
+            if (response != null && response.getStatusCode() == 200) {
+                movies = response.getData().stream() .map(MovieMapper::toMovie)
+                        .collect(Collectors.toList());
+                getShowtimeFromAPI(movies, date);
             }else{
-                Log.e("MovieAPI", "Failed to get theaters: " +  response);
                 Toast.makeText(getContext(), "Không thể lấy dữ liệu các rạp.", Toast.LENGTH_SHORT).show();
                 movies = getMovies();
             }
-            movieByTheaterAdapter.setMovies(movies);
-            pbLoadShowtimes.setVisibility(View.GONE);
+//            movieByTheaterAdapter.setMovies(movies);
         });
     }
+
+    private void getShowtimeFromAPI(List<Movie> activeMovies, String date) {
+        List<Movie> visibleMovies = new ArrayList<>();
+        int[] totalRequests = {0};
+        int[] completedRequests = {0};
+        for(Movie m : activeMovies){
+            if(m.getMovieFormats() != null) {
+                for (MovieFormat mFormat : m.getMovieFormats()) {
+                    totalRequests[0]++;
+                    ShowtimeKey showtimeKey = new ShowtimeKey(theater.getId(), m.getId(),
+                            mFormat.getId(), date);
+                    showtimeViewModel.getShowtimes(showtimeKey)
+                            .observe(getViewLifecycleOwner(), response -> {
+                                completedRequests[0]++;
+                                if (response != null &&response.getStatusCode() == 200 &&
+                                                        !response.getData().isEmpty()) {
+                                    List<Showtime> showtimes = response.getData().stream()
+                                            .map(ShowtimeMapper::toShowtime)
+                                            .collect(Collectors.toList());
+                                    mFormat.setShowtimes(showtimes);
+                                    visibleMovies.add(m);
+                                    movieByTheaterAdapter.setMovies(visibleMovies);
+                                }else{
+                                    Toast.makeText(getContext(),
+                                            String.format("Không thể lấy suất chiếu của phim %s",m.getTitle()),
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                                pbLoadShowtimes.setVisibility(View.GONE);
+                            });
+                }
+
+            }
+        }
+    }
+
 
     private void initView(View root){
         txtTheaterName = root.findViewById(R.id.txtMovieTheaterName);
@@ -165,7 +183,7 @@ public class TheaterShowtimeFragment extends Fragment {
         rcViewDates.setAdapter(dateAdapter);
 
         movies = new ArrayList<>();
-        movieByTheaterAdapter = new MovieByTheaterAdapter(movies, this::onItemClick);
+        movieByTheaterAdapter = new MovieByTheaterAdapter(movies, getContext(), this::onItemClick);
         rcViewMoviesByTheater.setLayoutManager(new GridLayoutManager(getContext(),1));
         rcViewMoviesByTheater.setAdapter(movieByTheaterAdapter);
     }
@@ -188,11 +206,11 @@ public class TheaterShowtimeFragment extends Fragment {
         Movie mbt1 = new Movie("MV1","Bí kíp luyện rồng",123,13, 8.6F,R.drawable.mv_bi_kip_luyen_rong,movieFormats1,null);
         Movie mbt2 = new Movie("MV2","The bad guys 2",113,13, 8.6F,R.drawable.mv_the_bad_guys_2,movieFormats2,null);
         List<Movie> movies= Arrays.asList(mbt2,mbt1);
-        Log.e("moviesByTheater", String.valueOf(movies.size()));
 //        Log.e("moviesByTheater.get(0).getMovieFormats().size", String.valueOf(moviesByTheater.get(0).getMovieFormats().get(0).getShowtimes().size()));
 //        Log.e("moviesByTheater.get(1).getMovieFormats().size", String.valueOf(moviesByTheater.get(1).getMovieFormats().get(0).getShowtimes().size()));
         return movies;
     }
+
     private List<Calendar> getAvailableDates(){
         List<Calendar> availableDates = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
@@ -212,7 +230,7 @@ public class TheaterShowtimeFragment extends Fragment {
         ChooseSeatFragment chooseSeatFragment = new ChooseSeatFragment();
         Bundle bundle = new Bundle();
         Order order = new Order();
-//        order.setUser(new User());
+//        order.setUser(new UserDTO());
         order.setScreen(new Screen("SC2","Phòng 2", theater));
         order.setMovie(movie);
         order.setMovieFormat(movieFormat);

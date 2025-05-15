@@ -37,10 +37,10 @@ public interface MovieAPI {
 //        "age": 18,
 //        "image": "https://cinestar.com.vn/_next/image/?url=https%3A%2F%2Fapi-website.cinestar.com.vn%2Fmedia%2Fwysiwyg%2FPosters%2F03_2025%2Fquy-nhap-trang-poster.jpg&w=640&q=50",
 //        "sub": [
-//        {
-//        "id": "2",
-//        "name": "[2D] Tiếng Việt"
-//        }
+//                {
+//                "id": "2",
+//                "name": "[2D] Tiếng Việt"
+//                }
 //        ],
 //        "nation": "VIỆT NAM",
 //        "duration": "122'",
@@ -48,11 +48,11 @@ public interface MovieAPI {
 //        "content": "<p>Đạo diễn: Pom Nguyễn</p>",
 //        "trailer": "https://www.youtube.com/embed/d_C534uicPw?si=oZxZwt_VTz2s4wGk",
 //        "typeFilms": [
-//        {
-//        "id": "KINHDI",
-//        "name": "Kinh Dị",
-//        "active": "ACTIVE"
-//        }
+//                {
+//                "id": "KINHDI",
+//                "name": "Kinh Dị",
+//                "active": "ACTIVE"
+//                }
 //        ],
 //        "status": "COMMING_SOON"
 //        },

@@ -1,7 +1,7 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.dto.MovieFormat;
+import com.example.ticket_sale.data.dto.MovieFormatDTO;
 import com.example.ticket_sale.data.dto.MovieWrapper;
 import com.example.ticket_sale.data.network.PageResponse;
 
@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 public interface MovieFormatAPI {
     String BASE_PATH = "film-service/api";
     @GET(BASE_PATH + "/sub/all")
-    Call<ApiResponse<List<MovieFormat>>> getAllMovieFormats();
+    Call<ApiResponse<List<MovieFormatDTO>>> getAllMovieFormats();
 
     @GET(BASE_PATH + "/subfilm/get/all")
     Call<ApiResponse<List<MovieWrapper>>> getAllMoviesWithFormats();

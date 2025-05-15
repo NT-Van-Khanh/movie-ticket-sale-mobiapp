@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/selectableItemBackground"
+    android:background="@drawable/bgd_item_theater"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="2dp"
-    android:paddingVertical="5dp">
+    android:paddingVertical="5dp"
+    android:layout_marginVertical="2dp">
 
     <RelativeLayout
         android:layout_width="0dp"

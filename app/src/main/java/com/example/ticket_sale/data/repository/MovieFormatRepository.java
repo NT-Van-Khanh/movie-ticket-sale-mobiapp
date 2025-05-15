@@ -3,9 +3,9 @@ package com.example.ticket_sale.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ticket_sale.data.dto.MovieFormatDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
-import com.example.ticket_sale.data.dto.MovieFormat;
 import com.example.ticket_sale.data.dto.MovieWrapper;
 import com.example.ticket_sale.data.network.PageResponse;
 import com.example.ticket_sale.data.network.api.MovieFormatAPI;
@@ -19,8 +19,8 @@ public class MovieFormatRepository {
         this.movieFormatAPI = movieFormatAPI;
     }
 
-    public LiveData<ApiResponse<List<MovieFormat>>> getAllMovieFormats(){
-        MutableLiveData<ApiResponse<List<MovieFormat>>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<List<MovieFormatDTO>>> getAllMovieFormats(){
+        MutableLiveData<ApiResponse<List<MovieFormatDTO>>> responseData = new MutableLiveData<>();
         movieFormatAPI.getAllMovieFormats().enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getAllMovieFormats"));
         return responseData;
     }

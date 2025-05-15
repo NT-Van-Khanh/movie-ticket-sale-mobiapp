@@ -1,149 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-tools:context=".fragment.EmailOTPAuthFragment"
-android:background="@color/white"
-android:orientation="vertical">
-<Toolbar
-    android:id="@+id/toolbar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    android:contentInsetStart="0dp"
-    android:paddingStart="0dp">
+    android:layout_height="match_parent"
+    tools:context=".fragment.EmailOTPAuthFragment"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:contentInsetStart="0dp"
+        android:paddingStart="0dp">
+        <TextView
+            android:id="@+id/txtGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="5dp"
+            app:backgroundTint="@null"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/ic_go_back"
+            android:drawablePadding="-2dp"
+            android:gravity="center_vertical"
+            android:text="Quay lại"
+            android:textColor="#505050"
+            android:textSize="18dp"
+            android:textStyle="bold"/>
+    </Toolbar>
+
+
+    <ImageView
+        android:id="@+id/imgLoginImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_send_email"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="35dp"
+        android:paddingEnd="20dp"/>
     <TextView
-        android:id="@+id/txtGoBack"
+        android:id="@+id/txtLoginTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xác thực địa chỉ email"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="28sp"
+        android:textColor="#1E2E3D"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chúng tôi đã gửi mã xác thực qua email mà bạn đã đăng ký. \nVui lòng nhập mã xác thực để tiếp tục."
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="12dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập mã xác thực"
+        android:textColor="#36495B"
+        android:textSize="21dp"
+        android:fontFamily="sans-serif-black"
+        android:textAlignment="center"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="18dp"
+        android:gravity="center">
+        <EditText
+            android:id="@+id/edtNum1"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:background="@drawable/bgd_edt_otp"
+            android:fontFamily="sans-serif-black"
+            android:hint="0"
+            android:inputType="number"
+            android:maxLength="1"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textColor="#6E697A"
+            android:textSize="22dp" />
+        <EditText
+            android:id="@+id/edtNum2"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:textAlignment="center"
+            android:hint="0"
+            android:textSize="22dp"
+            android:maxLength="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bgd_edt_otp"
+            android:textColor="#6E697A"/>
+        <EditText
+            android:id="@+id/edtNum3"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:textAlignment="center"
+            android:hint="0"
+            android:textSize="22dp"
+            android:maxLength="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bgd_edt_otp"
+            android:textColor="#6E697A"/>
+        <EditText
+            android:id="@+id/edtNum4"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:textAlignment="center"
+            android:hint="0"
+            android:textSize="22dp"
+            android:maxLength="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bgd_edt_otp"
+            android:textColor="#6E697A"/>
+        <EditText
+            android:id="@+id/edtNum5"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:textAlignment="center"
+            android:hint="0"
+            android:textSize="22dp"
+            android:maxLength="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bgd_edt_otp"
+            android:textColor="#6E697A"/>
+        <EditText
+            android:id="@+id/edtNum6"
+            android:layout_width="38dp"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="2dp"
+            android:textAlignment="center"
+            android:hint="0"
+            android:textSize="22dp"
+            android:maxLength="1"
+            android:inputType="number"
+            android:singleLine="true"
+            android:fontFamily="sans-serif-black"
+            android:background="@drawable/bgd_edt_otp"
+            android:textColor="#6E697A"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:paddingHorizontal="5dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian còn lại "
+            android:textColor="#7A7A7A"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAlignment="textEnd"/>
+        <TextView
+            android:id="@+id/txtTimeLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(120s)"
+            android:textColor="#7A7A7A"
+            android:textSize="18dp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textSize="17sp"
+        android:textColor="#F7F9FA"
+        android:fontFamily="sans-serif-black"
         app:backgroundTint="@null"
-        android:background="@color/white"
-        android:drawableLeft="@drawable/ic_go_back"
-        android:drawablePadding="-2dp"
-        android:gravity="center_vertical"
-        android:text="Quay lại"
-        android:textColor="#505050"
-        android:textSize="18dp"
-        android:textStyle="bold"/>
-</Toolbar>
-
-
-<ImageView
-    android:id="@+id/imgLoginImage"
-    android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:src="@drawable/ic_send_email"
-    android:layout_marginTop="45dp"
-    android:layout_marginBottom="25dp"
-    android:paddingEnd="20dp"/>
-<TextView
-    android:id="@+id/txtLoginTitle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Xác thực địa chỉ email"
-    android:gravity="center"
-    android:textStyle="bold"
-    android:textSize="30sp"
-    android:textColor="#1E2E3D"/>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Chúng tôi đã gửi mã xác thực qua email mà bạn đã đăng ký. \nVui lòng nhập mã xác thực để tiếp tục."
-    android:textSize="16dp"
-    android:textAlignment="center"
-    android:paddingHorizontal="20dp"
-    android:paddingTop="12dp"/>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Nhập mã xác thực"
-
-    android:textColor="#36495B"
-    android:textSize="20dp"
-    android:fontFamily="sans-serif-black"
-    android:textAlignment="center"
-    android:paddingTop="35dp"/>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingVertical="18dp"
-    android:gravity="center">
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-    <EditText
-        android:layout_width="38dp"
-        android:layout_height="46dp"
-        android:layout_marginHorizontal="2dp"
-        android:textAlignment="center"
-        android:hint="0"
-        android:textSize="22dp"
-        android:fontFamily="sans-serif-black"
-        android:background="@drawable/bgd_edt_otp"
-        android:textColor="#6E697A"/>
-
-</LinearLayout>
-<Button
-    android:id="@+id/btnNext"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:textSize="17sp"
-    android:textColor="#F7F9FA"
-    android:fontFamily="sans-serif-black"
-    app:backgroundTint="@null"
-    android:background="@drawable/bgd_btn_login"
-    android:layout_marginHorizontal="15dp"
-    android:layout_marginTop="30dp"
-    android:text="TIẾP TỤC"/>
+        android:background="@drawable/bgd_btn_login"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="32dp"
+        android:text="XÁC NHẬN"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        app:backgroundTint="@null"
+        android:textColor="#807C8A"
+        android:paddingHorizontal="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="36dp"
+        android:textSize="16dp"
+        android:background="@drawable/bgd_btn_another_login"
+        android:text="Gửi lại mã"
+        android:enabled="false"/>
 </LinearLayout>

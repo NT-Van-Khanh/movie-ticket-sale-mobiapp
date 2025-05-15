@@ -1,6 +1,6 @@
 package com.example.ticket_sale.data.dto;
 
-public class User {
+public class UserDTO {
     private String id;
     private String name;
     private String phoneNumber;
@@ -9,7 +9,7 @@ public class User {
     private String timestamp;
     private String status;
 
-    public User() {
+    public UserDTO() {
     }
 
     public Account getAccount() {
@@ -70,7 +70,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserDTO{" +
                 "account=" + account +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +

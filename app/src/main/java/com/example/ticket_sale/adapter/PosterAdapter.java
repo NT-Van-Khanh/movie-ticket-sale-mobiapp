@@ -18,6 +18,7 @@ import java.util.List;
 public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterViewHolder> {
     private List<Slider> posters;
     private Context context;
+
     public PosterAdapter(List<Slider> posters){
         this.posters = posters;
     }
@@ -32,13 +33,14 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     @Override
     public void onBindViewHolder(@NonNull PosterViewHolder holder, int position) {
         Slider slider = posters.get(position);
+        if(slider.getImageResId() == null) slider.setImageResId(R.drawable.pt_samsung);
         Glide.with(holder.itemView.getContext())
                 .load(slider.getImageLink())
                 .placeholder(slider.getImageResId()) // ảnh tạm thời
                 .error(slider.getImageResId())             // ảnh khi lỗi
                 .into(holder.imageView);
 //        holder.imageView.setImageResource(slider.getImageLink());
-        // Xử lý sự kiện khi click vào slide
+
 //        holder.imageView.setOnClickListener(v -> {
 //            Intent intent = new Intent(context, DetailActivity.class);
 //            intent.putExtra("posterId", posterId);
@@ -52,7 +54,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.PosterView
     }
 
     public static class PosterViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        private final ImageView imageView;
 
         public PosterViewHolder(@NonNull View itemView) {
             super(itemView);

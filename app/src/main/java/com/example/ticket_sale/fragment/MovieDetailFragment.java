@@ -3,10 +3,12 @@ package com.example.ticket_sale.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -14,28 +16,30 @@ import android.widget.VideoView;
 import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.model.MovieFormat;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.List;
+
 
 public class MovieDetailFragment extends Fragment {
-    TextView txtGoBack;
-    ImageView imgMoviePoster;
-    TextView txtMovieRating;
-    TextView txtMovieTitle;
-    TextView txtMovieAge;
-    TextView txtMovieDuration;
-    TextView txtMovieOpeningDate;
-
-    TextView txtMovieGenre;
-    TextView txtMovieDirector;
-    TextView txtMovieActor;
-    TextView txtMovieFormat; //movie format
-
-    TextView txtMovieContent;
+    private TextView txtGoBack;
+    private ImageView imgMoviePoster;
+    private TextView txtMovieRating;
+    private TextView txtMovieTitle;
+    private TextView txtMovieAge;
+    private TextView txtMovieDuration;
+    private TextView txtMovieOpeningDate;
+    private TextView txtMovieGenre;
+    private TextView txtMovieDirector;
+    private TextView txtMovieActor;
+    private TextView txtMovieFormat; //movie format
+    private TextView txtMovieContent;
+    private Button btnRedirectToShowtime;
 //    VideoView vidMovieTrailer;
-    YouTubePlayerView vidMovieTrailer;
+    private YouTubePlayerView vidMovieTrailer;
     private Movie movie;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,6 +96,7 @@ public class MovieDetailFragment extends Fragment {
 //        txtMovieGenre.setText(movie.getGenre());
         txtMovieActor.setText(movie.getActor());
         txtMovieDirector.setText(movie.getDirector());
+
 //        txtMovieFormat.setText(movie.getMovieFormats());
         txtMovieContent.setText(movie.getDescription());
         vidMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -101,6 +106,13 @@ public class MovieDetailFragment extends Fragment {
                 youTubePlayer.loadVideo(videoId, 0);
             }
         });
+        List<MovieFormat> formats = movie.getMovieFormats();
+        if(formats == null) return;
+        StringBuilder formatString = new StringBuilder();
+        for(MovieFormat format : movie.getMovieFormats()) {
+            formatString.append(format.getName()).append(" ");
+        }
+        txtMovieFormat.setText(formatString);
     }
 
     private void initView(View root){
@@ -118,6 +130,19 @@ public class MovieDetailFragment extends Fragment {
         txtMovieFormat = root.findViewById(R.id.txtMovieFormat);
         txtMovieContent = root.findViewById(R.id.txtMovieContent);
         vidMovieTrailer = root.findViewById(R.id.vidMovieTrailer);
+        btnRedirectToShowtime = root.findViewById(R.id.btnRedirectToShowtime);
+        btnRedirectToShowtime.setOnClickListener(v ->{
+            if(movie == null) return;
+            Bundle b = new Bundle();
+            b.putParcelable("movie", movie);
+            MovieShowtimeFragment movieShowtimeFragment = new MovieShowtimeFragment();
+            movieShowtimeFragment.setArguments(b);
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, movieShowtimeFragment)
+                    .addToBackStack(null)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+        });
         getLifecycle().addObserver(vidMovieTrailer);
     }
     private String extractVideoIdFromUrl(String url) {

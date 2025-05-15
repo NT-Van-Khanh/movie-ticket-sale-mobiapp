@@ -40,11 +40,12 @@ public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return showtimes.size();
+        return showtimes == null ? 0 : showtimes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        Button btnShowtime;
+        private final Button btnShowtime;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             btnShowtime = itemView.findViewById(R.id.btnMovieShowtime);

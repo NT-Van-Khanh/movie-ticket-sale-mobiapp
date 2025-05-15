@@ -17,12 +17,13 @@ import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieFragment;
 import com.example.ticket_sale.fragment.TheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
+import com.example.ticket_sale.util.TokenManager;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
-    FrameLayout fragmentContainer;
+    private FrameLayout fragmentContainer;
     private NavigationBarView bottomNavigationView;
-    Fragment selectedFragment;
+    private Fragment selectedFragment;
 
     private final NavigationBarView.OnItemSelectedListener onItemSelectedListener = new NavigationBarView.OnItemSelectedListener() {
         @Override
@@ -38,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new ProfileFragment();
             }
             if(selectedFragment!=null){
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container,selectedFragment)
+                        .commit();
             }
             return true;
         }
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        TokenManager.init(this);
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
@@ -98,5 +103,5 @@ public class MainActivity extends AppCompatActivity {
 //                        }
 //                    });
 //        }catch (Exception e){
-//            Log.e("userRepository.getUserById","Error when get User Info");
+//            Log.e("userRepository.getUserById","Error when get UserDTO Info");
 //        }

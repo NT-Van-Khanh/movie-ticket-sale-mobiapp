@@ -10,7 +10,7 @@
     <Toolbar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="42dp"
         android:background="@color/white"
         android:contentInsetStart="0dp">
         <TextView
@@ -30,8 +30,8 @@
     </Toolbar>
     <WebView
         android:id="@+id/webContainer"
-        android:layout_width="391dp"
-        android:layout_height="827dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp" />
 </LinearLayout>

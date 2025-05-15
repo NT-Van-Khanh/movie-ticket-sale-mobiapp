@@ -30,7 +30,7 @@ import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Seat;
 import com.example.ticket_sale.model.Showtime;
 import com.example.ticket_sale.util.AuthGuard;
-import com.example.ticket_sale.util.mapper.FoodMapper;
+import com.example.ticket_sale.mapper.FoodMapper;
 import com.example.ticket_sale.viewmodel.ChooseFoodViewModel;
 
 import java.util.ArrayList;
@@ -155,21 +155,9 @@ public class ChooseFoodFragment extends Fragment {
         pbLoadCombos = root.findViewById(R.id.pbLoadCombos);
 
         btnNext = root.findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(AuthGuard.checkLogin(requireActivity())) {
-                    PaymentFragment paymentFragment = new PaymentFragment();
-                    Bundle b = new Bundle();
-                    order.setFoods(selectedFoods);
-                    b.putParcelable("order",order);
-                    paymentFragment.setArguments(b);
-                    getParentFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .add(R.id.fragment_container, paymentFragment)
-                            .addToBackStack(null)
-                            .commit();
-                }
+        btnNext.setOnClickListener(v -> {
+            if(AuthGuard.checkLogin(requireActivity())) {
+                navigateToPayment();
             }
         });
 
@@ -222,11 +210,24 @@ public class ChooseFoodFragment extends Fragment {
 
 //        foods = getExampleFoods();
 //        combos = getExampleFoodCombos();
-//        theater = new Theater();
+//        theater = new TheaterDTO();
 //        theater.setId(getArguments().getString("theaterId"));
 //        movieFormat = getArguments().getParcelable("movieFormat");
 //        movie = getArguments().getParcelable("movieByTheater");
 //        showtime = getArguments().getParcelable("movieShowtime");
+    }
+    private void navigateToPayment() {
+        PaymentFragment paymentFragment = new PaymentFragment();
+        Bundle b = new Bundle();
+        order.setFoods(selectedFoods);
+        b.putParcelable("order", order);
+        paymentFragment.setArguments(b);
+
+        getParentFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .add(R.id.fragment_container, paymentFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private void getFoodsFromAPI(){

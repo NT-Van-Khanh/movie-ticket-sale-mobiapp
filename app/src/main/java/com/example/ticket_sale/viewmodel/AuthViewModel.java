@@ -20,7 +20,7 @@ public class AuthViewModel extends ViewModel {
         return authRepository.auth(username, password);
     }
 
-    public  LiveData<ApiResponse<String>> logout(){
-        return authRepository.logout();
-    }
+//    public  LiveData<ApiResponse<String>> logout(){
+//        return authRepository.logout();
+//    }
 }

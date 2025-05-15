@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.util.DateUtil;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.Calendar;
 import java.util.List;
@@ -31,26 +31,38 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     @NonNull
     @Override
     public DateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_date,parent,false);
+        View root = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_date, parent,false);
         return new DateViewHolder(root);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DateViewHolder holder, int position) {
         Calendar date = dates.get(position);
-
-        holder.txtDayMonth.setText(DateUtil.getDayMonthFromString(date));
-        holder.txtDayOfWeek.setText(DateUtil.getDayOfWeek(date));
-
+        holder.bind(date);
         holder.itemView.setSelected(selectedPosition == position);
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onDateClick(date);
-                notifyItemChanged(selectedPosition);
-                selectedPosition = position;
+            int adapterPosition = holder.getAdapterPosition();
+//            if (adapterPosition != RecyclerView.NO_POSITION && listener != null && selectedPosition != adapterPosition) {
+//                int previousPosition = selectedPosition;
+//                selectedPosition = adapterPosition;
+//                notifyItemChanged(previousPosition);
+//                notifyItemChanged(selectedPosition);
+//                listener.onDateClick(dates.get(selectedPosition));
+//            }
+            if (selectedPosition == adapterPosition) {
+                // Bỏ chọn
+                int prevPos = selectedPosition;
+                selectedPosition = RecyclerView.NO_POSITION;
+                notifyItemChanged(prevPos);
+            } else {
+                int prevPos = selectedPosition;
+                selectedPosition = adapterPosition;
+                notifyItemChanged(prevPos);
                 notifyItemChanged(selectedPosition);
             }
+            if (listener != null) listener.onDateClick(date);
         });
+
     }
 
     @Override
@@ -59,12 +71,17 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     }
 
     public static class DateViewHolder extends RecyclerView.ViewHolder{
-        TextView txtDayOfWeek;
-        TextView txtDayMonth;
+        private TextView txtDayOfWeek;
+        private TextView txtDayMonth;
         public DateViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDayOfWeek = itemView.findViewById(R.id.txtDayOfWeek);
             txtDayMonth = itemView.findViewById(R.id.txtDayMonth);
+        }
+
+        void bind(Calendar date){
+            txtDayMonth.setText(ViLocaleUtil.getDayMonthFromString(date));
+            txtDayOfWeek.setText(ViLocaleUtil.getDayOfWeek(date));
         }
     }
 
@@ -72,4 +89,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         this.dates = newDates;
         notifyDataSetChanged();
     }
+
+
 }

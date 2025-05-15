@@ -3,9 +3,9 @@ package com.example.ticket_sale.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ticket_sale.data.dto.UserDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
-import com.example.ticket_sale.data.dto.User;
 import com.example.ticket_sale.data.network.api.UserAPI;
 
 import java.util.HashMap;
@@ -18,15 +18,15 @@ public class UserRepository {
         this.userApi = userApi;
     }
 
-    public LiveData<ApiResponse<User>> getUserById(String id){
-        MutableLiveData<ApiResponse<User>> userData = new MutableLiveData<>();
+    public LiveData<ApiResponse<UserDTO>> getUserById(String id){
+        MutableLiveData<ApiResponse<UserDTO>> userData = new MutableLiveData<>();
         userApi.getUserById(id).enqueue(new CustomerCallBack<>(userData,
                 getClass().getSimpleName()+"_getUserById"));
         return userData;
     }
 
-    public LiveData<ApiResponse<User>> addUser(String name, String phoneNumber,
-                                                       String email, String userName, String password){
+    public LiveData<ApiResponse<UserDTO>> addUser(String name, String phoneNumber,
+                                                  String email, String userName, String password){
         Map<String,Object> data = new HashMap<>();
         data.put("name",name);
         data.put("phoneNumber", phoneNumber);
@@ -35,26 +35,26 @@ public class UserRepository {
         data.put("password", password);
         data.put("roleId",1073741824L);
         data.put("status","DELETE");
-        MutableLiveData<ApiResponse<User>> responseData = new MutableLiveData<>();
+        MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
         userApi.addUser(data).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_addUser"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<User>> updateUser(String id, String name,
-                                                  String phoneNumber, String email){
+    public LiveData<ApiResponse<UserDTO>> updateUser(String id, String name,
+                                                     String phoneNumber, String email){
         Map<String, Object> data = new HashMap<>();
         data.put("name", name);
         data.put("phoneNumber",phoneNumber);
         data.put("email", email);
-        MutableLiveData<ApiResponse<User>> responseData = new MutableLiveData<>();
+        MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
         userApi.updateUser(id, data).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_updateUser"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<User>> resetPassword(String email, String otp, String newPassword){
-        MutableLiveData<ApiResponse<User>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<UserDTO>> resetPassword(String email, String otp, String newPassword){
+        MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
         userApi.resetPasswordByEmail(otp,email, newPassword).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_authEmail"));
         return responseData;
@@ -76,12 +76,12 @@ public class UserRepository {
         return userData;
     }
 }
-//    public LiveData<User> getUserById(String id){
-//        MutableLiveData<User> userData = new MutableLiveData<>();
+//    public LiveData<UserDTO> getUserById(String id){
+//        MutableLiveData<UserDTO> userData = new MutableLiveData<>();
 //
-//        userApi.getUserById(id).enqueue(new Callback<User>() {
+//        userApi.getUserById(id).enqueue(new Callback<UserDTO>() {
 //            @Override
-//            public void onResponse(Call<User> call, Response<User> response) {
+//            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
 //                if(response.isSuccessful()) {
 //                    userData.setValue(response.body());
 //                }else {
@@ -90,7 +90,7 @@ public class UserRepository {
 //            }
 //
 //            @Override
-//            public void onFailure(Call<User> call, Throwable t) {
+//            public void onFailure(Call<UserDTO> call, Throwable t) {
 //                Log.e("UserRepository", "Error fetching user: ", t);
 //                userData.setValue(null);
 //            }
@@ -99,8 +99,8 @@ public class UserRepository {
 //        return userData;
 //    }
 
-//    public LiveData<User> addUser(User user){
-//        MutableLiveData<User> userData = new MutableLiveData<>();
+//    public LiveData<UserDTO> addUser(UserDTO user){
+//        MutableLiveData<UserDTO> userData = new MutableLiveData<>();
 //        userApi.addUser(user).enqueue(new CustomerCallBack<>(userData,"UserRepository_addUser"));
 //        return userData;
 //    }

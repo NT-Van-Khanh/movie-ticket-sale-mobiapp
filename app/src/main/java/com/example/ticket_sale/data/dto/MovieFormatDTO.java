@@ -1,10 +1,10 @@
 package com.example.ticket_sale.data.dto;
 
-public class MovieFormat {
+public class MovieFormatDTO {
     private String id;
     private String name;
 
-    public MovieFormat() {
+    public MovieFormatDTO() {
     }
 
     public String getId() {
@@ -21,5 +21,9 @@ public class MovieFormat {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isValid(){
+        return true;
     }
 }

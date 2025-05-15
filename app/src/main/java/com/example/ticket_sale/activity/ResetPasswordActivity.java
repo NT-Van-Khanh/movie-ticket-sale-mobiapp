@@ -14,7 +14,7 @@ import com.example.ticket_sale.base.BaseAuthActivity;
 import com.example.ticket_sale.fragment.ResetPasswordFragment;
 
 public class ResetPasswordActivity extends BaseAuthActivity {
-    FrameLayout fragmentContainer;
+    private FrameLayout fragmentContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

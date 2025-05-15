@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.OrderDisplayItem;
-import com.example.ticket_sale.util.debug.MoneyUtil;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -22,9 +22,6 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
         this.orderItems = orderItems;
     }
 
-    public  interface  OnItemClickListener{
-        void onClick();
-    }
     @NonNull
     @Override
     public OrderItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,9 +41,9 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
     }
 
     public class OrderItemViewHolder extends RecyclerView.ViewHolder{
-        private TextView txtItemTitle;
-        private TextView txtItemQuantity;
-        private TextView txtItemPrice;
+        private final TextView txtItemTitle;
+        private final TextView txtItemQuantity;
+        private final TextView txtItemPrice;
 
         public OrderItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,14 +61,14 @@ public class OrderItemAdapter extends RecyclerView.Adapter<OrderItemAdapter.Orde
             }
 
             if (orderItem.getQuantity() != null) {
-                txtItemQuantity.setText(String.format(MoneyUtil.localeVN,"x%d",orderItem.getQuantity()));
+                txtItemQuantity.setText(String.format(ViLocaleUtil.localeVN,"x%d",orderItem.getQuantity()));
             } else {
                 txtItemQuantity.setText("0");
             }
 
             DecimalFormat formatter = new DecimalFormat("#,###");
             if (orderItem.getUnitPrice() != null && orderItem.getQuantity() != null) {
-                txtItemPrice.setText(MoneyUtil.formatLocalCurrency(orderItem.getTotalPrice()));
+                txtItemPrice.setText(ViLocaleUtil.formatLocalCurrency(orderItem.getTotalPrice()));
             }else{
                 txtItemPrice.setText("0đ");
             }

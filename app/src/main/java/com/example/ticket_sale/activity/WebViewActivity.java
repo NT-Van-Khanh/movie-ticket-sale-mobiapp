@@ -14,23 +14,14 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.ticket_sale.R;
 
 public class WebViewActivity extends AppCompatActivity {
-    TextView txtGoBack;
-    WebView webView;
+    private TextView txtGoBack;
+    private WebView webView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_web_view);
-
-        txtGoBack  = findViewById(R.id.txtGoBack);
-        webView = findViewById(R.id.webContainer);
-
-        txtGoBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        initViews();
 
         String url = getIntent().getStringExtra("URL");
         if (url != null) {
@@ -42,6 +33,11 @@ public class WebViewActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+    private void initViews(){
+        txtGoBack  = findViewById(R.id.txtGoBack);
+        webView = findViewById(R.id.webContainer);
+        txtGoBack.setOnClickListener(v -> finish());
     }
 
     public void loadUrl(String url){

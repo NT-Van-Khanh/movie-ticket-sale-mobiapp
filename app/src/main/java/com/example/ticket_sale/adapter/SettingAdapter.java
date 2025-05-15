@@ -22,8 +22,8 @@ import com.example.ticket_sale.model.SettingItem;
 import java.util.List;
 
 public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingViewHolder> {
-    private Context context;
-    List<SettingItem> settings;
+    private final Context context;
+    private List<SettingItem> settings;
 
     public SettingAdapter(List<SettingItem> settings,Context context) {
         this.settings = settings;
@@ -67,7 +67,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
         });
     }
 
-
     @Override
     public int getItemCount() {
         return settings.size();
@@ -75,8 +74,8 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
 
 
     public class SettingViewHolder extends RecyclerView.ViewHolder {
-        TextView txtSettingName;
-        ImageView imgSettingIcon;
+        private final TextView txtSettingName;
+        private final ImageView imgSettingIcon;
         public SettingViewHolder(@NonNull View itemView) {
             super(itemView);
             imgSettingIcon = itemView.findViewById(R.id.imgSettingIcon);

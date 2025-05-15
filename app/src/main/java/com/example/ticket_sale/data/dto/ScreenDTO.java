@@ -10,7 +10,7 @@ public class ScreenDTO {
     private String status;
 
     @SerializedName("branch")
-    private Theater theater;
+    private TheaterDTO theater;
 
     public ScreenDTO() {
     }
@@ -47,11 +47,11 @@ public class ScreenDTO {
         this.status = status;
     }
 
-    public Theater getTheater() {
+    public TheaterDTO getTheater() {
         return theater;
     }
 
-    public void setTheater(Theater theater) {
-        this.theater = theater;
+    public void setTheater(TheaterDTO theater) {
+        this.theater= theater;
     }
 }

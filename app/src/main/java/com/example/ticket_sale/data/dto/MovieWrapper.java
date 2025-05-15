@@ -3,7 +3,7 @@ package com.example.ticket_sale.data.dto;
 public class MovieWrapper {
     private String id;
     private MovieDTO filmDto;
-    private MovieFormat subDto;
+    private MovieFormatDTO subDto;
 
     public MovieWrapper() {
     }
@@ -24,11 +24,11 @@ public class MovieWrapper {
         this.id = id;
     }
 
-    public MovieFormat getSubDto() {
+    public MovieFormatDTO getSubDto() {
         return subDto;
     }
 
-    public void setSubDto(MovieFormat subDto) {
+    public void setSubDto(MovieFormatDTO subDto) {
         this.subDto = subDto;
     }
 }

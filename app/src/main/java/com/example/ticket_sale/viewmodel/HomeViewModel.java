@@ -29,11 +29,11 @@ public class HomeViewModel extends ViewModel {
     }
 
     private void fetchCurrentMovies(){
-        this.currentMovies = movieRepository.getMoviesByStatus("NOW");
+        this.currentMovies = movieRepository.getMoviesByStatus("ACTIVE");
     }
 
     private void fetchUpcomingMovies(){
-        upcomingMovies = movieRepository.getMoviesByStatus("UPCOMING");
+        upcomingMovies = movieRepository.getMoviesByStatus("COMMING_SOON");
     }
 
     public LiveData<ApiResponse<List<Slider>>> getCurrentPosters(){

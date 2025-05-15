@@ -62,8 +62,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tài khoản"
-        android:textSize="18sp"
-        android:paddingLeft="10dp"
+        android:textSize="19sp"
+        android:paddingLeft="12dp"
         android:textColor="#434349"
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-medium"
@@ -87,12 +87,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edtUsername"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="sans-serif-medium"
-        android:paddingLeft="10dp"
+        android:paddingLeft="12dp"
         android:text="Mật khẩu"
         android:textColor="#434349"
-        android:textSize="18sp" />
+        android:textSize="19sp" />
 
     <EditText
         android:id="@+id/edtPassword"

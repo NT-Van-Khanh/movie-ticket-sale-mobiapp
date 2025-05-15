@@ -4,21 +4,33 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.model.User;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EmailOTPAuthFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class EmailOTPAuthFragment extends Fragment {
+    private List<EditText> edtNumbers;
+    private TextView txtTimeLeft;
+    private TextView txtGoBack;
+    private Button btnConfirm;
+    private int timeLeft;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private User user;
+    private String password;
+    private String email;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -30,15 +42,6 @@ public class EmailOTPAuthFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EmailOTPAuthFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static EmailOTPAuthFragment newInstance(String param1, String param2) {
         EmailOTPAuthFragment fragment = new EmailOTPAuthFragment();
         Bundle args = new Bundle();
@@ -60,7 +63,57 @@ public class EmailOTPAuthFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_email_otp_auth, container, false);
+        View root = inflater.inflate(R.layout.fragment_email_otp_auth, container, false);
+        initViews(root);
+        initData();
+        startCountdown();
+        return root;
+    }
+
+    private void startCountdown() {
+        timeLeft = 120;
+        btnConfirm.setEnabled(true);
+        handler.post(timeLeftRunnable);
+    }
+
+    private void initData() {
+        Bundle bundle = getArguments();
+        if (bundle == null) {
+            Log.e("EmailOTPAuthFragment", "Bundle is null. Không nhận được dữ liệu từ Fragment trước đó.");
+            return;
+        }
+        user = bundle.getParcelable("user");
+        email = bundle.getString("email");
+        password = bundle.getString("password");
+    }
+
+    private Runnable timeLeftRunnable = new Runnable(){
+        @Override
+        public void run() {
+            if (timeLeft > 0) {
+                txtTimeLeft.setText("(" + timeLeft + "s)");
+                timeLeft--;
+                handler.postDelayed(this, 1000);
+            } else {
+
+            }
+        }
+    };
+
+    private void initViews(View root) {
+        txtGoBack = root.findViewById(R.id.txtGoBack);
+        edtNumbers = new ArrayList<>();
+        edtNumbers.add(root.findViewById(R.id.edtNum1));
+        edtNumbers.add(root.findViewById(R.id.edtNum2));
+        edtNumbers.add(root.findViewById(R.id.edtNum3));
+        edtNumbers.add(root.findViewById(R.id.edtNum4));
+        edtNumbers.add(root.findViewById(R.id.edtNum5));
+        edtNumbers.add(root.findViewById(R.id.edtNum6));
+
+        txtTimeLeft = root.findViewById(R.id.txtTimeLeft);
+        btnConfirm = root.findViewById(R.id.btnConfirm);
+        txtGoBack.setOnClickListener(v->{
+            getParentFragmentManager().popBackStack();
+        });
     }
 }

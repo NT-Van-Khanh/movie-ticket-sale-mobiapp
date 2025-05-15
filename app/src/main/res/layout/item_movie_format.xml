@@ -11,16 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:paddingHorizontal="8dp"
+        android:paddingHorizontal="3dp"
         android:paddingVertical="3dp"
+        android:gravity="center_vertical"
         android:text="2D THUYẾT MINH"
-        android:textColor="#767676"
-        android:textSize="15sp"/>
+        android:textColor="#494B54"
+        android:textSize="15sp"
+        android:drawableRight="@drawable/ic_arrow_right"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewMovieShowtimes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="5dp">
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="6dp">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

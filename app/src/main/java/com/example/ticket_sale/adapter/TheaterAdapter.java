@@ -51,9 +51,9 @@ public class TheaterAdapter extends RecyclerView.Adapter<TheaterAdapter.MovieThe
     }
 
     public class MovieTheaterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
-        ImageView imgMovieTheaterImage;
-        TextView txtMovieTheaterName;
-        TextView txtMovieTheaterAddress;
+        private final ImageView imgMovieTheaterImage;
+        private final TextView txtMovieTheaterName;
+        private final TextView txtMovieTheaterAddress;
 
         public MovieTheaterViewHolder(@NonNull View itemView) {
             super(itemView);
