@@ -25,7 +25,7 @@ public class ChangePasswordFragment extends Fragment {
     private TextView txtGoBack;
     private Button btnConfirm;
     private View vOverlay;
-    private ProgressBar pbLoadChangePassowrd;
+    private ProgressBar pbLoadChangePassword;
 
     private ChangePasswordViewModel changePasswordViewModel;
 
@@ -76,7 +76,7 @@ public class ChangePasswordFragment extends Fragment {
         edtNewPassword = root.findViewById(R.id.edtNewPassword);
         edtConfirmPassword = root.findViewById(R.id.edtConfirmPassword);
         btnConfirm = root.findViewById(R.id.btnConfirm);
-        pbLoadChangePassowrd  = root.findViewById(R.id.pbLoadChangePassword);
+        pbLoadChangePassword  = root.findViewById(R.id.pbLoadChangePassword);
         vOverlay = root.findViewById(R.id.vOverlay);
 
         txtGoBack.setOnClickListener( v ->
@@ -138,11 +138,11 @@ public class ChangePasswordFragment extends Fragment {
     }
 
     private void showLoading() {
-        pbLoadChangePassowrd.setVisibility(View.VISIBLE);
+        pbLoadChangePassword.setVisibility(View.VISIBLE);
         vOverlay.setVisibility(View.VISIBLE);
     }
     private void hideLoading() {
-        pbLoadChangePassowrd.setVisibility(View.GONE);
+        pbLoadChangePassword.setVisibility(View.GONE);
         vOverlay.setVisibility(View.GONE);
     }
 }

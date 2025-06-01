@@ -65,6 +65,7 @@ public class ViLocaleUtil {
             return null;
         }
     }
+
     public static String formatToHHmm(String timeString){
         if (timeString == null || !timeString.matches("^\\d{1,2}:\\d{2}$"))
             return null;

@@ -14,8 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Food;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -85,11 +87,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         }
 
         void bind(Food food) {
+            if(food == null) return;
+
             currentFood = food;
             txtFoodTitle.setText(food.getTitle());
-            txtFoodPrice.setText(String.format("%sđ", food.getPrice()));
-            imgFoodImage.setImageResource(food.getImageResId());
-
+            txtFoodPrice.setText(ViLocaleUtil.formatLocalCurrency(food.getPrice()));
+//            imgFoodImage.setImageResource(food.getImageResId());
+            Glide.with(itemView.getContext())
+                    .load(food.getImageLink())
+                    .placeholder(R.drawable.fd_cb_popcorn1)
+                    .error(R.drawable.fd_cb_popcorn1)
+                    .into(imgFoodImage);
             updateEdtQuantity("0");
             updateButtonState(0, onQuantityChangeListener.getAvailableQuantity());
         }

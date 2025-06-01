@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragment.TheaterShowtimeFragment">
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
     <Toolbar
         android:id="@+id/tbrMovieTheater"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:background="#FEFDFF"
         android:gravity="center_vertical"
         android:layout_marginBottom="2dp"
         android:contentInsetStart="2dp"
@@ -27,7 +30,7 @@
             android:drawablePadding="-2dp"
             android:gravity="center_vertical"
             android:text="Suất chiếu"
-            android:textColor="#2A2B2C"
+            android:textColor="@color/theme_tertiary"
             android:textSize="20dp"
             android:textStyle="bold"/>
     </Toolbar>
@@ -38,7 +41,6 @@
         android:paddingHorizontal="15dp"
         android:paddingVertical="8dp"
         android:layout_marginBottom="2dp"
-        android:background="#FEFDFF"
         android:layout_marginHorizontal="5dp">
         <TextView
             android:id="@+id/txtMovieTheaterName"
@@ -73,19 +75,24 @@
         android:layout_marginBottom="2dp"
         android:paddingHorizontal="5dp">
     </androidx.recyclerview.widget.RecyclerView>
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcViewMoviesByTheater"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcViewMoviesByTheater"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"/>
-        <ProgressBar
-            android:id="@+id/pbLoadShowtimes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:overScrollMode="never"/>
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbLoadShowtimes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/viewOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/theme_loading"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
+</RelativeLayout>

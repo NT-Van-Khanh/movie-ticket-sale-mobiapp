@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -13,8 +12,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.base.BaseAuthActivity;
-import com.example.ticket_sale.fragment.EmailOTPAuthFragment;
-import com.example.ticket_sale.fragment.PhoneOTPAuthFragment;
 import com.example.ticket_sale.fragment.RegisterUserFragment;
 
 public class RegisterActivity extends BaseAuthActivity {

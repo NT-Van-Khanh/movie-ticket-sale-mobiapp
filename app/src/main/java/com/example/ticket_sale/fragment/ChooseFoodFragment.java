@@ -20,10 +20,10 @@ import com.example.ticket_sale.R;
 import com.example.ticket_sale.adapter.FoodAdapter;
 import com.example.ticket_sale.adapter.FoodComboAdapter;
 import com.example.ticket_sale.model.Food;
-import com.example.ticket_sale.model.FoodCombo;
 import com.example.ticket_sale.model.FoodType;
 import com.example.ticket_sale.model.Item;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.model.SeatPosition;
 import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
@@ -31,6 +31,7 @@ import com.example.ticket_sale.model.Seat;
 import com.example.ticket_sale.model.Showtime;
 import com.example.ticket_sale.util.AuthGuard;
 import com.example.ticket_sale.mapper.FoodMapper;
+import com.example.ticket_sale.util.ViLocaleUtil;
 import com.example.ticket_sale.viewmodel.ChooseFoodViewModel;
 
 import java.util.ArrayList;
@@ -51,15 +52,16 @@ public class ChooseFoodFragment extends Fragment {
     private TextView txtGoBack;
     private ProgressBar pbLoadFoods;
     private ProgressBar pbLoadCombos;
+    private View viewOverlay;
 
     private RecyclerView rcViewFoods;
     private RecyclerView rcViewCombos;
     private RecyclerView rcViewDrinks;
 
     private List<Food> foods;
-    private List<FoodCombo> combos;
+    private List<Food> combos;
     private List<FoodType> foodTypes;
-    private Map<Item,Integer> selectedFoods = new HashMap<>();
+    private Map<Food,Integer> selectedFoods = new HashMap<>();
     private Order order;
 
     private FoodAdapter foodAdapter;
@@ -123,24 +125,24 @@ public class ChooseFoodFragment extends Fragment {
         Movie movie = order.getMovie();
         if(movie == null) return;
         txtMovieTitle.setText(movie.getTitle());
-        List<Seat> selectedSeats = order.getSeats();
-        String stringSeats = selectedSeats.stream()
-                .map(seat -> ( " " + seat.getTitle()))
-                .collect(Collectors.joining());
-        txtSeatsSelected.setText(stringSeats);
+        txtSeatsSelected.setText(order.getSelectedSeatsString());
         showTotalCost();
-
     }
+
     private void showTotalCost(){
         if(order == null) return;
         Long totalCost =order.getTotalCostOfSeats();
-        String stringSelectedFoods = "";
-        for (Map.Entry<Item, Integer> foodEntry : selectedFoods.entrySet()) {
+        StringBuilder stringSelectedFoods = new StringBuilder();
+
+        for (Map.Entry<Food, Integer> foodEntry : selectedFoods.entrySet()) {
+
             totalCost += foodEntry.getKey().getPrice() * foodEntry.getValue();
-            stringSelectedFoods += foodEntry.getKey().getTitle();
+
+            if (stringSelectedFoods.length() > 0)  stringSelectedFoods.append(", ");
+            stringSelectedFoods.append(foodEntry.getKey().getTitle());
         }
-        txtFoodsSelected.setText(stringSelectedFoods);
-        txtTotalCost.setText(String.valueOf(totalCost));
+        txtFoodsSelected.setText(stringSelectedFoods.toString());
+        txtTotalCost.setText(ViLocaleUtil.formatLocalCurrency(totalCost));
     }
 
     private void initViews(View root){
@@ -153,6 +155,7 @@ public class ChooseFoodFragment extends Fragment {
         txtTotalCost = root.findViewById(R.id.txtTotalCost);
         pbLoadFoods = root.findViewById(R.id.pbLoadFoods);
         pbLoadCombos = root.findViewById(R.id.pbLoadCombos);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
 
         btnNext = root.findViewById(R.id.btnNext);
         btnNext.setOnClickListener(v -> {
@@ -190,7 +193,7 @@ public class ChooseFoodFragment extends Fragment {
             }
 
             @Override
-            public void onQuantityChanged(FoodCombo food, int quantity) {
+            public void onQuantityChanged(Food food, int quantity) {
                 handleQuantityChanged(food, quantity);
                 availableQuantity = availableFoodsQuantity(maxQuantity);
             }
@@ -202,9 +205,11 @@ public class ChooseFoodFragment extends Fragment {
     }
 
     private void initData(){
-        if(getArguments() == null) return;
+        if(getArguments() == null) getParentFragmentManager().popBackStack();
+        viewOverlay.setVisibility(View.VISIBLE);
         order = getArguments().getParcelable("order");
-        if(order == null) return;
+        if(order == null) getParentFragmentManager().popBackStack();
+
         chooseFoodViewModel = new ChooseFoodViewModel();
         getFoodsFromAPI();
 
@@ -231,7 +236,7 @@ public class ChooseFoodFragment extends Fragment {
     }
 
     private void getFoodsFromAPI(){
-        chooseFoodViewModel.fetchFoods();
+
         chooseFoodViewModel.getFoods().observe(getViewLifecycleOwner(), response ->{
             if(response != null && response.getStatusCode() == 200){
                 foodTypes = response.getData()
@@ -243,19 +248,19 @@ public class ChooseFoodFragment extends Fragment {
             }
             for(FoodType ft : foodTypes){
                 if("COMBO".equals(ft.getName())){
-                    combos.addAll(ft.getFoods().stream()
-                            .filter(item -> item instanceof FoodCombo)
-                            .map(item -> (FoodCombo) item)
-                            .collect(Collectors.toList()));
+                    combos.addAll(ft.getFoods());
                     foodComboAdapter.setFoodCombos(combos);
                 }else{
-                    foods.addAll(ft.getFoods().stream()
-                            .filter(item -> item instanceof Food)
-                            .map(item -> (Food) item)
-                            .collect(Collectors.toList()));
+                    foods.addAll(ft.getFoods());
                     foodAdapter.setFoods(foods);
                 }
             }
+
+            if(combos == null ||combos.isEmpty()){
+                rcViewCombos.setVisibility(View.GONE);
+            }
+
+            viewOverlay.setVisibility(View.GONE);
             pbLoadFoods.setVisibility(View.GONE);
             pbLoadCombos.setVisibility(View.GONE);
         });
@@ -263,38 +268,43 @@ public class ChooseFoodFragment extends Fragment {
 
     private List<FoodType> getExampleFoodTypes(){
         List<FoodType> fts = new ArrayList<>();
-        List<Item> foodItems = new ArrayList<>(getExampleFoods());
+        List<Food> foodItems = new ArrayList<>(getExampleFoods());
         fts.add(new FoodType("FT1", "FOOD", foodItems));
-        List<Item> foodComboItems = new ArrayList<>(getExampleFoodCombos());
+        List<Food> foodComboItems = getExampleFoodCombos();
         fts.add(new FoodType("FT2", "COMBO", foodComboItems));
         return fts;
     }
 
     private List<Food> getExampleFoods(){
        List<Food> foods = new ArrayList<>();
-        foods.add(new Food("FD1","Combo 1","", R.drawable.fd_cb_popcorn1,52000L ));
-        foods.add(new Food("FD2","Combo 2","", R.drawable.fd_cb2,82000L ));
-        foods.add(new Food("FD3","Lay's","", R.drawable.fd_lays1,32000L));
-        foods.add(new Food("FD4","Lay's truyền thống","", R.drawable.fd_lays2,32000L));
-        foods.add(new Food("FD5","Nước suối","", R.drawable.fd_water,18000L ));
+//        foods.add(new Food("FD1","Combo 1","", R.drawable.fd_cb_popcorn1,52000L ));
+//        foods.add(new Food("FD2","Combo 2","", R.drawable.fd_cb2,82000L ));
+//        foods.add(new Food("FD3","Lay's","", R.drawable.fd_lays1,32000L));
+//        foods.add(new Food("FD4","Lay's truyền thống","", R.drawable.fd_lays2,32000L));
+//        foods.add(new Food("FD5","Nước suối","", R.drawable.fd_water,18000L ));
+        foods.add(new Food("FD1","Combo 1",null, 52000L, new FoodType("POPCORN", "BẮP NƯỚC",null)));
+        foods.add(new Food("FD2","Combo 2",null, 82000L,new FoodType("POPCORN", "BẮP NƯỚC",null)));
+        foods.add(new Food("FD3","Lay's",null, 32000L, new FoodType("POPCORN", "BẮP NƯỚC",null)));
+        foods.add(new Food("FD4","Lay's truyền thống",null, 32000L,  new FoodType("POPCORN", "BẮP NƯỚC",null)));
+        foods.add(new Food("FD5","Nước suối",null, 18000L,  new FoodType("POPCORN", "BẮP NƯỚC",null)));
         return foods;
     }
 
-    private List<FoodCombo> getExampleFoodCombos(){
-        List<FoodCombo> combos =  new ArrayList<>();
-        combos.add(new FoodCombo("FC1","Combo 1","- 1 Bắp\n- 1 Nước tự chọn","",R.drawable.fd_cb3,62000L));
-        combos.add(new FoodCombo("FC2","Combo 2","- 2 Bắp\n- 2 Nước tự chọn","",R.drawable.fd_cb2,132000L));
-        combos.add(new FoodCombo("FC3","Combo 3","- 1 Bắp\n- 2 Nước tự chọn","",R.drawable.fd_cb_popcorn1,92000L));
-        combos.add(new FoodCombo("FC4","Combo 4","- 1Bắp\n- 2 Nước tự chọn\n - 1 Mực chiên giòn","",R.drawable.fd_cb_popcorn,132000L));
+    private List<Food> getExampleFoodCombos(){
+        List<Food> combos =  new ArrayList<>();
+        combos.add(new Food("FC1","Combo 1",null, 92000L,"- 1 Bắp\n- 1 Nước tự chọn", new FoodType("COMBO", "COMBO",null)));
+        combos.add(new Food("FC1","Combo 2",null, 132000L,"- 2 Bắp\n- 2 Nước tự chọn", new FoodType("COMBO", "COMBO",null)));
+        combos.add(new Food("FC1","Combo 3",null, 92000L,"- 1 Bắp\n- 2 Nước tự chọn", new FoodType("COMBO", "COMBO",null)));
+        combos.add(new Food("FC1","Combo 4",null, 132000L,"- 1Bắp\n- 2 Nước tự chọn\n - 1 Mực chiên giòn", new FoodType("COMBO", "COMBO",null)));
         return combos;
     }
 
 
-    private void handleQuantityChanged(Item item, int quantity) {
+    private void handleQuantityChanged(Food food, int quantity) {
         if (quantity > 0) {
-            selectedFoods.put(item, quantity);
+            selectedFoods.put(food, quantity);
         } else {
-            selectedFoods.remove(item);
+            selectedFoods.remove(food);
         }
         showTotalCost();
         availableQuantity = availableFoodsQuantity(maxQuantity);

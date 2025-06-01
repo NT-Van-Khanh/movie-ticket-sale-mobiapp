@@ -65,8 +65,7 @@ public class ShowtimeAdapter extends RecyclerView.Adapter<ShowtimeAdapter.ViewHo
     }
 
     public void updateData(List<Showtime> newShowtimes, int movieIndex, int formatIndex) {
-        this.showtimes.clear();
-        this.showtimes.addAll(newShowtimes);
+        this.showtimes = newShowtimes;
         this.movieIndex = movieIndex;
         this.formatIndex = formatIndex;
         notifyDataSetChanged(); // Cập nhật RecyclerView mà không cần tạo lại Adapter

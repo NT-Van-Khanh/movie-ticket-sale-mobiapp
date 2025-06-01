@@ -45,7 +45,7 @@ public class ChangePasswordViewModel extends ViewModel {
             String username = account.optString("username");
             this.authResponse = authRepository.auth(username, password);
         } else {
-            Log.e("fetchAuth", "Account information not found in token");
+            Log.e("fetchAuth", "AccountDTO information not found in token");
         }
     }
 

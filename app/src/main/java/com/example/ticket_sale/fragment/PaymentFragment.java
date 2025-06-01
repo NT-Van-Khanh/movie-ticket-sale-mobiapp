@@ -1,11 +1,9 @@
 package com.example.ticket_sale.fragment;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,21 +14,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.activity.MainActivity;
 import com.example.ticket_sale.adapter.OrderItemAdapter;
 import com.example.ticket_sale.adapter.PayMethodAdapter;
+import com.example.ticket_sale.mapper.OrderMapper;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.OrderDisplayItem;
 import com.example.ticket_sale.model.PaymentMethod;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Showtime;
-import com.example.ticket_sale.util.OrderUtil;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class PaymentFragment extends Fragment {
     private List<PaymentMethod> payMethods;
@@ -91,11 +91,11 @@ public class PaymentFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_payment, container, false);
         initData();
         initViews(root);
-        setDataForViews(root);
+        setDataForViews();
         return root;
     }
 
-    private void setDataForViews(View root) {
+    private void setDataForViews() {
         if(order == null) return;
         Movie movie = order.getMovie();
         if(movie == null) return;
@@ -113,8 +113,8 @@ public class PaymentFragment extends Fragment {
         for(OrderDisplayItem orderItem : orderItems){
             orderTotalCost += orderItem.getTotalPrice();
         }
-        txtTotalCost.setText(String.valueOf(orderTotalCost));
-        txtFinalCost.setText(String.valueOf(orderTotalCost));
+        txtTotalCost.setText(ViLocaleUtil.formatLocalCurrency(orderTotalCost));
+        txtFinalCost.setText(ViLocaleUtil.formatLocalCurrency(orderTotalCost));
         payMethodAdapter = new PayMethodAdapter(payMethods);
         rcViewPayMethods.setAdapter(payMethodAdapter);
 
@@ -131,7 +131,7 @@ public class PaymentFragment extends Fragment {
         payMethods.add(new PaymentMethod("PM4", "Master Card", PaymentMethod.Method.MASTER_CARD,"Thanh toán bằng thẻ quốc tế",R.drawable.pm_vn_pay));
         if(getArguments() == null) return;
         order = getArguments().getParcelable("order");
-        orderItems = OrderUtil.mapToDisplayItems(order);
+        orderItems = OrderMapper.mapToDisplayItems(order);
 
     }
 
@@ -152,11 +152,20 @@ public class PaymentFragment extends Fragment {
         txtGoBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         btnNext = root.findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnNext.setOnClickListener(this::onClick);
+    }
 
-            }
-        });
+    private void onClick(View v) {
+        if (payMethodAdapter.getSelectedPosition() == -1) {
+            Toast.makeText(getContext(), "Vui lòng chọn phương thức thanh toán.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        requireActivity().getSupportFragmentManager()
+                .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new HomeFragment())
+                .commit();
+        ((MainActivity) requireActivity()).showBottomNav();
     }
 }

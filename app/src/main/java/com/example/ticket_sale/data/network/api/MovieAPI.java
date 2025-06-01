@@ -9,12 +9,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MovieAPI {
     String BASE_PATH = "film-service/api";
 
     @GET(BASE_PATH + "/film/all")
     Call<ApiResponse<List<MovieDTO>>> getAllMovies();
+
 
     @GET(BASE_PATH + "/film/{id}")
     Call<ApiResponse<MovieDTO>> getMovieById(@Path("id") String id);
@@ -24,6 +26,16 @@ public interface MovieAPI {
 
     @GET(BASE_PATH + "/film/get/status/{status}")
     Call<ApiResponse<List<MovieDTO>>> getMoviesByStatus(@Path("status") String status);//"ACTIVE","COMMING_SOON", "DELETE"
+
+    //http://localhost:8888/film-service/api/film/get/custom?page=0&limit=10&q=NhaBaNu&asc=asc&status=none&orderBy=name
+    @GET(BASE_PATH + "film/get/custom")
+    Call<ApiResponse<List<MovieDTO>>> getMoviesCustom(@Query("page") String page,
+                                                      @Query("limit") String limit,
+                                                      @Query("q") String searchKey,
+                                                      @Query("asc") String sort,
+                                                      @Query("status") String status,
+                                                      @Query("orderBy") String orderBy);
+
 
     @GET(BASE_PATH + "/typefilm/get/{id}")
     Call<ApiResponse<MovieType>> getMovieTypeById(@Path("id") String id);

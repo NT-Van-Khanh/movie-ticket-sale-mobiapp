@@ -13,28 +13,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.model.FoodCombo;
+import com.example.ticket_sale.model.Food;
 
 import java.util.List;
 
 public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FComboViewHolder> {
-    private List<FoodCombo> foodCombos;
+    private List<Food> foodCombos;
     private final OnQuantityChangeListener onQuantityChangeListener;
 
-    public FoodComboAdapter(List<FoodCombo> foodCombos, OnQuantityChangeListener listener) {
+    public FoodComboAdapter(List<Food> foodCombos, OnQuantityChangeListener listener) {
         this.foodCombos = foodCombos;
         this.onQuantityChangeListener = listener;
     }
 
-    public void setFoodCombos(List<FoodCombo> combos) {
+    public void setFoodCombos(List<Food> combos) {
         this.foodCombos = combos;
         notifyDataSetChanged();
     }
 
     public interface OnQuantityChangeListener{
         int  getAvailableQuantity();
-        void onQuantityChanged(FoodCombo food, int quantity);
+        void onQuantityChanged(Food food, int quantity);
     }
 
     @NonNull
@@ -47,7 +48,7 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
 
     @Override
     public void onBindViewHolder(@NonNull FoodComboAdapter.FComboViewHolder holder, int position) {
-        FoodCombo foodCombo= foodCombos.get(position);
+        Food foodCombo= foodCombos.get(position);
         holder.bind(foodCombo);
     }
 
@@ -66,7 +67,7 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
         private final ImageButton btnSubtractQuantity;
 
         private int currentQuantity = 0;
-        private FoodCombo currentFoodCombo;
+        private Food currentFoodCombo;
         private boolean isUpdating = false;
 
         public FComboViewHolder(@NonNull View itemView) {
@@ -84,12 +85,17 @@ public class FoodComboAdapter extends RecyclerView.Adapter<FoodComboAdapter.FCom
             edtQuantity.addTextChangedListener(quantityWatcher);
         }
 
-        void bind(FoodCombo foodCombo) {
+        void bind(Food foodCombo) {
             currentFoodCombo = foodCombo;
             txtComboDescription.setText(foodCombo.getDescription());
             txtComboTitle.setText(foodCombo.getTitle());
             txtComboPrice.setText(foodCombo.getPrice().toString());
-            imgComboImage.setImageResource(foodCombo.getImageResId());
+//            imgComboImage.setImageResource(foodCombo.getImageResId());
+            Glide.with(itemView.getContext())
+                    .load(foodCombo.getImageLink())
+                    .placeholder(R.drawable.fd_cb_popcorn1)
+                    .error(R.drawable.fd_cb_popcorn1)
+                    .into(imgComboImage);
             isUpdating = true;
             edtQuantity.setText("0");
             isUpdating = false;

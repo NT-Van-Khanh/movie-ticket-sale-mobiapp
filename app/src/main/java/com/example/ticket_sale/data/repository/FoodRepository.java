@@ -7,7 +7,7 @@ import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.dto.FoodTypeDTO;
 import com.example.ticket_sale.data.network.api.FoodAPI;
-import com.example.ticket_sale.data.dto.FoodDTO;
+import com.example.ticket_sale.data.dto.FoodResponseDTO;
 
 import java.util.List;
 
@@ -18,14 +18,14 @@ public class FoodRepository {
         this.foodAPI = foodAPI;
     }
 
-    public LiveData<ApiResponse<List<FoodDTO>>> getAllFoods(){
-        MutableLiveData<ApiResponse<List<FoodDTO>>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<List<FoodResponseDTO>>> getAllFoods(){
+        MutableLiveData<ApiResponse<List<FoodResponseDTO>>> responseData = new MutableLiveData<>();
         foodAPI.getAllFoods().enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getAllFoods"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<FoodDTO>> getFoodById(String foodId){
-        MutableLiveData<ApiResponse<FoodDTO>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<FoodResponseDTO>> getFoodById(String foodId){
+        MutableLiveData<ApiResponse<FoodResponseDTO>> responseData = new MutableLiveData<>();
         foodAPI.getFoodById(foodId).enqueue(new CustomerCallBack<>(responseData,getClass().getSimpleName() + "_getFoodById"));
         return  responseData;
     }

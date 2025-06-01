@@ -33,6 +33,7 @@ public class TheaterFragment extends Fragment {
     private TheaterAdapter theaterAdapter;
 
     private ProgressBar pbLoadTheaters;
+    private View viewOverlay;
     private List<Theater> movieTheaters;
     private TheaterViewModel theaterViewModel;
 
@@ -76,6 +77,7 @@ public class TheaterFragment extends Fragment {
     }
 
     private void initData() {
+        showLoadingUI();
         theaterViewModel = new TheaterViewModel();
         getMovieTheatersFromAPI();
     }
@@ -90,7 +92,7 @@ public class TheaterFragment extends Fragment {
                 movieTheaters = resultData.getData().stream().map(TheaterMapper::toTheater).collect(Collectors.toList());
             }
             theaterAdapter.setTheaters(movieTheaters);
-            pbLoadTheaters.setVisibility(View.GONE);
+            hideLoadingUI();
         });
     }
 
@@ -104,11 +106,13 @@ public class TheaterFragment extends Fragment {
         super.onPause();
     }
 
-    void init(View view){
-        rcViewMovieTheaters = view.findViewById(R.id.rcViewMovieTheaters);
-        btnChooseProvince = view.findViewById(R.id.btnChooseProvince);
+    void init(View root){
+        rcViewMovieTheaters = root.findViewById(R.id.rcViewMovieTheaters);
+        btnChooseProvince = root.findViewById(R.id.btnChooseProvince);
         rcViewMovieTheaters.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        pbLoadTheaters  = view.findViewById(R.id.pbLoadTheaters);
+        pbLoadTheaters  = root.findViewById(R.id.pbLoadTheaters);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
+
         initBtnChooseProvince();
         movieTheaters = new ArrayList<>();
         theaterAdapter = new TheaterAdapter(movieTheaters, this::onItemClick);
@@ -156,6 +160,15 @@ public class TheaterFragment extends Fragment {
                 .commit();
     }
 
+    private void showLoadingUI(){
+        pbLoadTheaters.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        pbLoadTheaters.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
+    }
 
     private List<Theater> getExampleMovieTheaters(){
         Theater mt1 = new Theater("MT1","Rạp Linh Trung, Thủ Đức","Rạp Linh Trung, Hồ Chí Minh",R.drawable.cinema1);

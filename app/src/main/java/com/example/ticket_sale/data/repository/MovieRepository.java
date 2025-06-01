@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.ticket_sale.data.dto.MovieDTO;
+import com.example.ticket_sale.data.dto.PageRequestDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.dto.MovieType;
@@ -44,7 +45,17 @@ public class MovieRepository {
         return responseData;
     }
 
-
+    public LiveData<ApiResponse<List<MovieDTO>>> getMoviesCustom(PageRequestDTO pageRequestDTO){
+        MutableLiveData<ApiResponse<List<MovieDTO>>> responseData = new MutableLiveData<>();
+        movieAPI.getMoviesCustom(pageRequestDTO.getPage(),
+                            pageRequestDTO.getLimit(),
+                            pageRequestDTO.getSearchKey(),
+                            pageRequestDTO.getSort(),
+                            pageRequestDTO.getStatus(),
+                            pageRequestDTO.getOrderBy())
+                .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getMoviesCustom"));
+        return responseData;
+    }
 
 
     public LiveData<ApiResponse<List<MovieType>>> getAllMovieTypes(){

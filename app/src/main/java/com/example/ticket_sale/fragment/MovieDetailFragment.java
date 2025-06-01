@@ -2,6 +2,7 @@ package com.example.ticket_sale.fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -17,11 +19,13 @@ import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
+import com.example.ticket_sale.util.ViLocaleUtil;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.util.List;
+import java.util.Locale;
 
 
 public class MovieDetailFragment extends Fragment {
@@ -38,6 +42,10 @@ public class MovieDetailFragment extends Fragment {
     private TextView txtMovieFormat; //movie format
     private TextView txtMovieContent;
     private Button btnRedirectToShowtime;
+    private ProgressBar pbLoadMovieDetail;
+    private  View viewOverlay;
+
+
 //    VideoView vidMovieTrailer;
     private YouTubePlayerView vidMovieTrailer;
     private Movie movie;
@@ -84,35 +92,39 @@ public class MovieDetailFragment extends Fragment {
     }
 
     private void setDataForView(){
-        if(getArguments() == null) return;
+        showLoadingUI();
+        if(getArguments() == null) getParentFragmentManager().popBackStack();
         movie = getArguments().getParcelable("movie");
-        if (movie == null) return;
+        if (movie == null) getParentFragmentManager().popBackStack();
 
         imgMoviePoster.setImageResource(movie.getImageResId());
         txtMovieTitle.setText(movie.getTitle());
-        txtMovieAge.setText(String.format("T%d",movie.getAge()));
-        txtMovieDuration.setText(String.format("%d phút",movie.getDuration()));
+        txtMovieAge.setText(String.format(Locale.getDefault(), "T%d",movie.getAge()));
+        txtMovieDuration.setText(String.format(Locale.getDefault(), "%d phút",movie.getDuration()));
         txtMovieOpeningDate.setText(movie.getOpeningDate() == null ? "Đang chiếu" : movie.getOpeningDate().toString());
-//        txtMovieGenre.setText(movie.getGenre());
+
         txtMovieActor.setText(movie.getActor());
         txtMovieDirector.setText(movie.getDirector());
 
-//        txtMovieFormat.setText(movie.getMovieFormats());
         txtMovieContent.setText(movie.getDescription());
         vidMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
-            public void onReady(YouTubePlayer youTubePlayer) {
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 String videoId = extractVideoIdFromUrl(movie.getTrailerLink());
                 youTubePlayer.loadVideo(videoId, 0);
             }
         });
-        List<MovieFormat> formats = movie.getMovieFormats();
-        if(formats == null) return;
-        StringBuilder formatString = new StringBuilder();
-        for(MovieFormat format : movie.getMovieFormats()) {
-            formatString.append(format.getName()).append(" ");
-        }
-        txtMovieFormat.setText(formatString);
+        txtMovieGenre.setText(movie.getMovieTypesAsString());
+        txtMovieFormat.setText(movie.getMovieFormatsAsString());
+//        List<MovieFormat> formats = movie.getMovieFormats();
+//        if(formats != null){
+//            StringBuilder formatString = new StringBuilder();
+//            for(MovieFormat format : movie.getMovieFormats()) {
+//                formatString.append(format.getName()).append(" ");
+//            }
+//            txtMovieFormat.setText(formatString);
+//        }
+        hideLoadingUI();
     }
 
     private void initView(View root){
@@ -130,6 +142,10 @@ public class MovieDetailFragment extends Fragment {
         txtMovieFormat = root.findViewById(R.id.txtMovieFormat);
         txtMovieContent = root.findViewById(R.id.txtMovieContent);
         vidMovieTrailer = root.findViewById(R.id.vidMovieTrailer);
+        pbLoadMovieDetail = root.findViewById(R.id.pbLoadMovie);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
+
+
         btnRedirectToShowtime = root.findViewById(R.id.btnRedirectToShowtime);
         btnRedirectToShowtime.setOnClickListener(v ->{
             if(movie == null) return;
@@ -153,5 +169,15 @@ public class MovieDetailFragment extends Fragment {
             return url.substring(url.lastIndexOf("/") + 1, url.indexOf("?"));
         }
         return "";
+    }
+
+    private void showLoadingUI(){
+        pbLoadMovieDetail.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        pbLoadMovieDetail.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
     }
 }

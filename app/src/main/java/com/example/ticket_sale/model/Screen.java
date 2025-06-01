@@ -4,7 +4,8 @@ public class Screen {
     private String id;
     private String name;
     private Theater theater;
-    private Seat[][] seats;
+    private Integer[][] seatPositions;
+//    private SeatPosition[][] seats;
     public Screen() {
     }
 
@@ -14,20 +15,20 @@ public class Screen {
         this.theater = theater;
     }
 
-    public Screen(String id, String name, Theater theater, Seat[][] seats) {
-        this.id = id;
-        this.name = name;
-        this.seats = seats;
-        this.theater = theater;
+    public Integer[][] getSeatPositions() {
+        return seatPositions;
     }
 
-    public Seat[][] getSeats() {
-        return seats;
+    public void setSeatPositions(Integer[][] seatPositions) {
+        this.seatPositions = seatPositions;
     }
-
-    public void setSeats(Seat[][] seats) {
-        this.seats = seats;
-    }
+//    public SeatPosition[][] getSeats() {
+//        return seats;
+//    }
+//
+//    public void setSeats(SeatPosition[][] seats) {
+//        this.seats = seats;
+//    }
 
     public String getId() {
         return id;

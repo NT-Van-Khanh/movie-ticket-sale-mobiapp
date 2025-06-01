@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FEFBFF"
     android:layout_marginTop="2dp">
 
     <TextView
@@ -11,19 +10,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
-        android:paddingHorizontal="3dp"
-        android:paddingVertical="3dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="8dp"
         android:gravity="center_vertical"
         android:text="2D THUYẾT MINH"
-        android:textColor="#494B54"
-        android:textSize="15sp"
-        android:drawableRight="@drawable/ic_arrow_right"/>
+        android:textColor="@color/theme_primary"
+        android:textSize="15sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewMovieShowtimes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="5dp"
-        android:paddingVertical="6dp">
+        android:paddingVertical="6dp"
+        android:background="@color/theme_surface_variant">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

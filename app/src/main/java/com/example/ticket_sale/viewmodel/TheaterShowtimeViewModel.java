@@ -8,10 +8,13 @@ import androidx.lifecycle.ViewModel;
 import com.example.ticket_sale.data.ApiServiceFactory;
 import com.example.ticket_sale.data.dto.MovieDTO;
 import com.example.ticket_sale.data.dto.MovieShowtimeDTO;
+import com.example.ticket_sale.data.dto.ScreenDTO;
+import com.example.ticket_sale.data.dto.TicketDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.repository.MovieRepository;
 import com.example.ticket_sale.data.repository.MovieShowtimeRepository;
 import com.example.ticket_sale.data.repository.ScreenRepository;
+import com.example.ticket_sale.data.repository.TicketRepository;
 import com.example.ticket_sale.model.ShowtimeKey;
 
 import java.util.HashMap;
@@ -21,16 +24,23 @@ import java.util.Map;
 public class TheaterShowtimeViewModel extends ViewModel {
     private final MovieShowtimeRepository showtimeRepository;
     private final MovieRepository movieRepository;
+    private final TicketRepository ticketRepository;
+    private final ScreenRepository screenRepository;
+
+    private LiveData<ApiResponse<ScreenDTO>> screen;
 //    private LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimes;
-    private LiveData<ApiResponse<List<MovieDTO>>> movies;
-    private final Map<ShowtimeKey, LiveData<ApiResponse<List<MovieShowtimeDTO>>>> showtimesMap = new HashMap<>();
+    private LiveData<ApiResponse<List<MovieDTO>>> currentMovies;
+    private Map<ShowtimeKey, LiveData<ApiResponse<List<MovieShowtimeDTO>>>> showtimesMap = new HashMap<>();
+    private LiveData<ApiResponse<List<TicketDTO>>> tickets;
 
     public TheaterShowtimeViewModel() {
+        this.screenRepository = new ScreenRepository(ApiServiceFactory.getScreenAPI());
+        this.ticketRepository = new TicketRepository(ApiServiceFactory.getTicketAPI());
         this.movieRepository = new MovieRepository(ApiServiceFactory.getMovieAPI());
         this.showtimeRepository = new MovieShowtimeRepository(ApiServiceFactory.getMovieShowtimeAPI());
     }
 
-    public void fetchShowtimesGroupedByMovie(ShowtimeKey showtimeKey){
+    private void fetchShowtimesGroupedByMovie(ShowtimeKey showtimeKey){
         if(showtimeKey == null) return;
         if (!showtimesMap.containsKey(showtimeKey)) {
             LiveData<ApiResponse<List<MovieShowtimeDTO>>> showtimes = showtimeRepository
@@ -42,8 +52,12 @@ public class TheaterShowtimeViewModel extends ViewModel {
         }
     }
 
-    public void fetchCurrentMovies(){
-        movies =movieRepository.getMoviesByStatus("ACTIVE");
+    private void fetchCurrentMovies(){
+        currentMovies =movieRepository.getMoviesByStatus("ACTIVE");
+    }
+
+    private void fetchTickets(){
+        tickets = ticketRepository.getAllActiveTickets();
     }
 
     public LiveData<ApiResponse<List<MovieShowtimeDTO>>> getShowtimes(ShowtimeKey showtimeKey) {
@@ -52,13 +66,29 @@ public class TheaterShowtimeViewModel extends ViewModel {
         return showtimesMap.getOrDefault(showtimeKey, new MutableLiveData<>());
     }
 
-    public LiveData<ApiResponse<List<MovieDTO>>> getMovies() {
-        return movies;
+    public LiveData<ApiResponse<List<MovieDTO>>> getCurrentMovies() {
+        fetchCurrentMovies();
+        return currentMovies;
     }
 
-    public void clearShowtimes() {
-        showtimesMap.clear();
+    public LiveData<ApiResponse<List<TicketDTO>>> getTickets(){
+        fetchTickets();
+        return tickets;
     }
+
+    private void fetchScreen(String screenId){
+        this.screen = screenRepository.getScreenById(screenId);
+    }
+
+//    public LiveData<ApiResponse<ScreenDTO>> getScreen(String screenId){
+//        fetchScreen(screenId);
+//        return screen;
+//    }
+//
+//
+//    public void clearShowtimes() {
+//        showtimesMap.clear();
+//    }
 
 //    public LiveData<ApiResponse<List<MovieShowtimeDTO>>> getShowtimes() {
 //        return showtimes;

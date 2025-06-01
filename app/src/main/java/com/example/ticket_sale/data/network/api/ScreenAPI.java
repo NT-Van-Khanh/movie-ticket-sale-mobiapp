@@ -1,5 +1,6 @@
 package com.example.ticket_sale.data.network.api;
 
+import com.example.ticket_sale.data.dto.ChairDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.dto.ScreenDTO;
 
@@ -32,4 +33,57 @@ public interface ScreenAPI {
     Call<ApiResponse<List<ScreenDTO>>> getScreensByBranchId(@Path("branchId") String branchId);
 
 
+    @GET("/payment-service/api/billchair/{filmShowId}")
+    Call<ApiResponse<List<ChairDTO>>> getSoldSeats(
+            @Path("filmShowId") String showtimeId);
 }
+//http://localhost:8888/payment-service/api/billchair/12
+//{
+//    "statusCode": 200,
+//        "message": "Get bill chair successfully",
+//        "data": [
+//    {
+//        "id": null,
+//            "chairCode": "[0,1]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    },
+//    {
+//        "id": null,
+//            "chairCode": "[0,2]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    },
+//    {
+//        "id": null,
+//            "chairCode": "[2,1]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    },
+//    {
+//        "id": null,
+//            "chairCode": "[1,2]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    },
+//    {
+//        "id": null,
+//            "chairCode": "[2,2]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    },
+//    {
+//        "id": null,
+//            "chairCode": "[4,0]",
+//            "price": null,
+//            "ticket": null,
+//            "active": null
+//    }
+//  ]
+//}
+

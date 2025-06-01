@@ -44,12 +44,16 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
     implementation (libs.retrofit)
     implementation (libs.logging.interceptor)
-
     implementation (libs.converter.gson)
     implementation (libs.gson)
-    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+
     implementation(libs.glide)
     implementation (libs.core)
+
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 }

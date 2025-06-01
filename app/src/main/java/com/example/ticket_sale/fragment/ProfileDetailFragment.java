@@ -10,11 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.ticket_sale.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ProfileDetailFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -27,18 +23,8 @@ public class ProfileDetailFragment extends Fragment {
     private String mParam2;
 
     public ProfileDetailFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    }
     public static ProfileDetailFragment newInstance(String param1, String param2) {
         ProfileDetailFragment fragment = new ProfileDetailFragment();
         Bundle args = new Bundle();

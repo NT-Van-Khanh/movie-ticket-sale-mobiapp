@@ -4,16 +4,19 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="@color/white"
+
     android:paddingVertical="6dp"
     android:paddingHorizontal="20dp">
+<!--    android:background="@color/theme_surface_variant"-->
     <RadioButton
         android:id="@+id/radPayMethodChoose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:button="@drawable/radio_custom"
         android:gravity="center"
-        app:buttonTint="#545D79"/>
+        app:buttonTint="#545D79"
+        android:clickable="false"
+        android:focusable="false"/>
     <ImageView
         android:id="@+id/imgPayMethodImage"
         android:layout_width="60dp"
@@ -31,5 +34,6 @@
         android:maxLines="2"
         android:textSize="16sp"
         android:fontFamily="sans-serif"
+        android:textColor="@color/theme_primary_variant"
         android:gravity="center_vertical"/>
 </LinearLayout>

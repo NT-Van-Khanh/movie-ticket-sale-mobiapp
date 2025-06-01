@@ -46,22 +46,22 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
         holder.itemView.setOnClickListener(v -> {
             switch (item.getType()){
                 case SettingItem.TYPE_FRAGMENT:
-                    openFragment(item.getData());
+                    openFragment((Fragment) item.getData());
                     break;
                 case SettingItem.TYPE_ACTIVITY:
-                    openActivity(item.getData());
+                    openActivity(item.getData().toString());
                     break;
                 case SettingItem.TYPE_PHONE:
-                    openCallPhone(item.getData());
+                    openCallPhone(item.getData().toString());
                     break;
                 case SettingItem.TYPE_EMAIL:
-                    openEmail(item.getData());
+                    openEmail(item.getData().toString());
                     break;
                 case SettingItem.TYPE_WEB:
-                    openBrowser(item.getData());
+                    openBrowser(item.getData().toString());
                     break;
                 case SettingItem.TYPE_WEBVIEW:
-                    openWebView(item.getData());
+                    openWebView(item.getData().toString());
                     break;
             }
         });
@@ -94,24 +94,30 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
         }
     }
 
-    private void openFragment(String fragmentName) {//Nên chuyển sang switch case, tránh dùng Reflection cải thiện hiệu suất
-        try{
-            Class<?> fragmentClass = Class.forName(fragmentName);
-
-            if(Fragment.class.isAssignableFrom(fragmentClass)){
-                Fragment fragment = (Fragment) fragmentClass.getDeclaredConstructor().newInstance();
-                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .addToBackStack(null)
-                        .commit();
-            }else{
-                Log.e("openFragment", "Class này không là một Fragment: " + fragmentName);
-            }
-        }catch  (Exception e) {
-            e.printStackTrace();
-            Log.e("openFragment", "Không thể khởi tạo Fragment từ tên Class: " + fragmentName);
-        }
+    private void openFragment(Fragment fragment) {
+        ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
+//    private void openFragment(Fragment fragment) {//Nên chuyển sang switch case, tránh dùng Reflection cải thiện hiệu suất
+//        try{
+//            Class<?> fragmentClass = Class.forName(fragmentName);
+//
+//            if(Fragment.class.isAssignableFrom(fragmentClass)){
+//                Fragment fragment = (Fragment) fragmentClass.getDeclaredConstructor().newInstance();
+//                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.fragment_container, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+//            }else{
+//                Log.e("openFragment", "Class này không là một Fragment: " + fragmentName);
+//            }
+//        }catch  (Exception e) {
+//            e.printStackTrace();
+//            Log.e("openFragment", "Không thể khởi tạo Fragment từ tên Class: " + fragmentName);
+//        }
+//    }
 
 
     private void openCallPhone(String phoneNumber) {

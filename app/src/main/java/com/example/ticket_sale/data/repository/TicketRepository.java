@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.network.PageResponse;
-import com.example.ticket_sale.data.dto.Ticket;
+import com.example.ticket_sale.data.dto.TicketDTO;
 import com.example.ticket_sale.data.network.api.TicketAPI;
 
 import java.util.List;
@@ -18,24 +18,24 @@ public class TicketRepository {
         this.ticketAPI = ticketAPI;
     }
 
-    public LiveData<ApiResponse<Ticket>> getTicketById(String id){
-        MutableLiveData<ApiResponse<Ticket>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<TicketDTO>> getTicketById(String id){
+        MutableLiveData<ApiResponse<TicketDTO>> responseData = new MutableLiveData<>();
         ticketAPI.getTicketById(id)
                 .enqueue(new CustomerCallBack<>(responseData,getClass().getSimpleName() + "-getTicketById"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<List<Ticket>>> getAllActiveTickets(){
-        MutableLiveData<ApiResponse<List<Ticket>>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<List<TicketDTO>>> getAllActiveTickets(){
+        MutableLiveData<ApiResponse<List<TicketDTO>>> responseData = new MutableLiveData<>();
         ticketAPI.getAllActiveTickets()
                 .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getAllActiveTickets"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<PageResponse<Ticket>>> getTicketsFilter(String page, String limit,
-                                                                        String asc, String active,
-                                                                        String orderBy, String q){
-        MutableLiveData<ApiResponse<PageResponse<Ticket>>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<PageResponse<TicketDTO>>> getTicketsFilter(String page, String limit,
+                                                                           String asc, String active,
+                                                                           String orderBy, String q){
+        MutableLiveData<ApiResponse<PageResponse<TicketDTO>>> responseData = new MutableLiveData<>();
         ticketAPI.getTicketsFilter(page, limit, asc, active, orderBy, q)
                 .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getTicketsFilter"));
         return responseData;

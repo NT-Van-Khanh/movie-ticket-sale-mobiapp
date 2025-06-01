@@ -10,7 +10,7 @@
     </item>
     <item>
         <shape>
-            <solid android:color="#F6F5F3"/>
+            <solid android:color="@color/theme_secondary_container"/>
 <!--            <stroke android:width="1.5dp" android:color="#DBDBDB"/>-->
             <corners android:radius="35dp"/>
             <padding android:top="12dp" android:bottom="12dp"/>

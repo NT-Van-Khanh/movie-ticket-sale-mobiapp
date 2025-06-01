@@ -1,7 +1,7 @@
 package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.dto.FoodDTO;
+import com.example.ticket_sale.data.dto.FoodResponseDTO;
 import com.example.ticket_sale.data.dto.FoodTypeDTO;
 
 import java.util.List;
@@ -15,11 +15,11 @@ public interface FoodAPI {
 
     //http://localhost:8888/dish-service/api/dish/3361ff55-72ea-4d7b-b66d-bcf7352bf9ee
     @GET(BASE_PATH + "/dish/{id}")
-    Call<ApiResponse<FoodDTO>> getFoodById(@Path("id") String id);
+    Call<ApiResponse<FoodResponseDTO>> getFoodById(@Path("id") String id);
 
     //http://localhost:8888/dish-service/api/dish/all
     @GET(BASE_PATH + "/dish/all")
-    Call<ApiResponse<List<FoodDTO>>> getAllFoods();
+    Call<ApiResponse<List<FoodResponseDTO>>> getAllFoods();
 
     //http://localhost:8888/dish-service/api/typedish/7b2ae9d0-3aab-4809-9060-282a257eeea9
     @GET(BASE_PATH + "/typedish/{id}")

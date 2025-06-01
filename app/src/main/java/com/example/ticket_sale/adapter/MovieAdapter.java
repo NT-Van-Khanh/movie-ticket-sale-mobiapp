@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private List<Movie> movies;
-    private OnItemClickListener onItemClickListener;
+    private final OnItemClickListener onItemClickListener;
 
     public MovieAdapter(List<Movie> movies, OnItemClickListener listener) {
         this.movies = movies;

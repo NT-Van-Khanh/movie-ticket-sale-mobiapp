@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:contentInsetStart="0dp"
-        android:background="@color/white"
         android:paddingStart="0dp"
         android:layout_alignParentTop="true">
         <TextView
@@ -24,7 +23,7 @@
             android:drawablePadding="-2dp"
             android:gravity="center_vertical"
             android:text="Quay lại"
-            android:textColor="#505050"
+            android:textColor="@color/theme_tertiary"
             android:textSize="18dp"
             android:textStyle="bold"/>
     </Toolbar>
@@ -33,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textColor="@color/white"
-        android:background="#FF8401"
+        android:textColor="@color/theme_on_secondary"
+        android:background="@color/theme_countdown_time"
         android:fontFamily="sans-serif"
         android:text="Thời gian đặt vé còn 7:00 phút"
         android:layout_below="@id/toolBar"/>
@@ -43,8 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
-        android:background="@color/white"
         android:paddingHorizontal="10dp"
         android:layout_below="@id/txtTimeLine"
         android:paddingTop="10dp">
@@ -54,7 +51,7 @@
             android:layout_height="wrap_content"
             android:text="Rạp Linh Trung, Thủ Đức"
             android:textSize="20dp"
-            android:textColor="#2C2A5B"
+            android:textColor="@color/theme_primary"
             android:fontFamily="sans-serif-black"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,15 +93,13 @@
                 android:layout_height="wrap_content"
                 android:text="Combo"
                 android:fontFamily="sans-serif-black"
-                android:textColor="@color/app_primary"
-                android:background="@color/white"
+                android:textColor="@color/theme_primary"
                 android:textSize="20sp"
                 android:paddingHorizontal="8dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="3dp"/>
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtTitle1">
                 <ProgressBar
@@ -112,13 +107,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"/>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcViewCombo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minHeight="230dp"
-                    android:paddingHorizontal="12dp"
-                    android:nestedScrollingEnabled="false"/>
+                    android:nestedScrollingEnabled="false"
+                    android:paddingHorizontal="12dp" />
             </RelativeLayout>
             <TextView
                 android:id="@+id/txtTitle2"
@@ -126,20 +122,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rcViewCombo"
                 android:layout_marginTop="3dp"
-                android:background="@color/white"
                 android:fontFamily="sans-serif-black"
                 android:paddingHorizontal="8dp"
-
                 android:paddingTop="12dp"
                 android:paddingBottom="3dp"
                 android:text="Bắp nước"
-                android:textColor="@color/app_primary"
+                android:textColor="@color/theme_primary"
                 android:textSize="20sp" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtTitle2"
-            android:background="@color/white">
+            android:layout_below="@id/txtTitle2">
             <ProgressBar
                 android:id="@+id/pbLoadFoods"
                 android:layout_width="wrap_content"
@@ -168,8 +161,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
-        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="15dp"
         android:paddingBottom="20dp"
@@ -261,7 +252,17 @@
             android:fontFamily="sans-serif-black"
             android:background="@drawable/bgd_btn_accept"
             app:backgroundTint="@null"
+            android:textColor="@color/theme_on_secondary"
             android:layout_marginTop="5dp"
             android:text=" Hoàn tất thanh toán (2/3)"/>
     </LinearLayout>
+    <View
+        android:id="@+id/viewOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/theme_loading"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
 </RelativeLayout>

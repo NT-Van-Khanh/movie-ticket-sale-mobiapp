@@ -3,15 +3,12 @@ package com.example.ticket_sale.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.ticket_sale.data.dto.MovieDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.dto.MovieShowtimeDTO;
-import com.example.ticket_sale.data.network.api.MovieAPI;
 import com.example.ticket_sale.data.network.api.MovieShowtimeAPI;
 
 import java.util.List;
-import java.util.Map;
 
 public class MovieShowtimeRepository {
     private final MovieShowtimeAPI movieShowtimeAPI;
@@ -32,7 +29,7 @@ public class MovieShowtimeRepository {
         MutableLiveData<ApiResponse<List<MovieShowtimeDTO>>> responseData = new MutableLiveData<>();
         movieShowtimeAPI.getShowtimesByTheaterAndMovie(branchId, date, filmId, subId)
                 .enqueue( new CustomerCallBack<>(responseData,
-                        getClass().getSimpleName() + "getShowtimesByMovieAndTheater"));
+                        getClass().getSimpleName() + "_getShowtimesByMovieAndTheater"));
         return responseData;
     }
 }

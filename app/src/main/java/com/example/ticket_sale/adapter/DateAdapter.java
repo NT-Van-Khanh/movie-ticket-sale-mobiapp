@@ -17,7 +17,7 @@ import java.util.List;
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder> {
     private List<Calendar> dates;
     private final OnDateClickListener listener;
-    private int selectedPosition = RecyclerView.NO_POSITION;
+    private int selectedPosition = RecyclerView.SCROLLBAR_POSITION_DEFAULT;
 
     public interface OnDateClickListener {
         void onDateClick(Calendar date);
@@ -87,8 +87,20 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
 
     public void setDates(List<Calendar> newDates){
         this.dates = newDates;
+        selectedPosition = RecyclerView.SCROLLBAR_POSITION_DEFAULT;
         notifyDataSetChanged();
     }
 
+    public void selectedDate(int position) {
+        if (position < 0 || position >= dates.size()) return;
 
+        int prevPos = selectedPosition;
+        selectedPosition = position;
+        notifyItemChanged(prevPos);
+        notifyItemChanged(selectedPosition);
+
+        if (listener != null) {
+            listener.onDateClick(dates.get(position));
+        }
+    }
 }

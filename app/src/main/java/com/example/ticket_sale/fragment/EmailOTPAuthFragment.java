@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ticket_sale.R;
@@ -25,7 +26,10 @@ public class EmailOTPAuthFragment extends Fragment {
     private TextView txtTimeLeft;
     private TextView txtGoBack;
     private Button btnConfirm;
-    private int timeLeft;
+    private ProgressBar pbLoadVerifyOtp;
+    private View viewOverlay;
+
+    private int timeLeft = 120;
     private Handler handler = new Handler(Looper.getMainLooper());
     private User user;
     private String password;

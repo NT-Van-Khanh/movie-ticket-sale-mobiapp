@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ public class ResetPasswordFragment extends Fragment {
     private TextView txtGoBack;
     private EditText edtPhoneOrMail;
     private Button btnNext;
+    private ProgressBar pbLoadSendOTP;
+    private View viewOverlay;
 //    private View.OnClickListener btnNextListener;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -76,13 +79,17 @@ public class ResetPasswordFragment extends Fragment {
         txtGoBack =  root.findViewById(R.id.txtGoBack);
         edtPhoneOrMail =  root.findViewById(R.id.edtPhoneOrEmail);
         btnNext =  root.findViewById(R.id.btnNext);
+        pbLoadSendOTP = root.findViewById(R.id.pbLoadSendOtp);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
 
         txtGoBack.setOnClickListener(v -> ResetPasswordFragment.this.requireActivity().finish());
 
         btnNext.setOnClickListener(v -> {
+            showLoadingUI();
             String phoneOrMail = edtPhoneOrMail.getText().toString();
             if(phoneOrMail.trim().isEmpty()) {
                 Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
+                hideLoadingUI();
                 return;
             }
 
@@ -107,6 +114,8 @@ public class ResetPasswordFragment extends Fragment {
                         .commit();
                 return;
             }
+
+            hideLoadingUI();
             Toast.makeText(getContext(), "Email hoặc số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
         });
     }
@@ -127,4 +136,13 @@ public class ResetPasswordFragment extends Fragment {
 //        this.btnNextListener = listener;
     }
 
+    private void showLoadingUI(){
+        pbLoadSendOTP.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        pbLoadSendOTP.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
+    }
 }

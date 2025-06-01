@@ -24,7 +24,7 @@
             android:drawablePadding="-2dp"
             android:gravity="center_vertical"
             android:text="Quay lại"
-            android:textColor="#505050"
+            android:textColor="@color/theme_tertiary"
             android:textSize="18sp"
             android:textStyle="bold"/>
     </Toolbar>
@@ -73,7 +73,7 @@
                         android:text="Bí kíp luyện rồng"
                         android:textSize="17sp"
                         android:maxLines="3"
-                        android:textColor="@color/app_primary"
+                        android:textColor="@color/theme_primary"
                         android:fontFamily="sans-serif-medium"
                         android:paddingVertical="2dp"/>
                     <TextView
@@ -109,7 +109,7 @@
                     android:text="Thông tin đơn hàng"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16sp"
-                    android:textColor="@color/app_primary"
+                    android:textColor="@color/theme_primary"
                     android:paddingTop="8dp"
                     android:paddingBottom="2dp"/>
                 <View
@@ -135,7 +135,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="16sp"
-                        android:textColor="@color/app_accent_text"
+                        android:textColor="@color/theme_accent_text"
                         android:fontFamily="sans-serif-medium"
                         android:text="Thành tiền:"
                         android:textAlignment="textEnd"/>
@@ -146,7 +146,7 @@
                         android:layout_weight="1"
                         android:textAlignment="textEnd"
                         android:textSize="16sp"
-                        android:textColor="@color/app_accent_text"
+                        android:textColor="@color/theme_accent_text"
                         android:fontFamily="sans-serif-medium"
                         android:text="110.000đ"/>
                 </LinearLayout>
@@ -164,7 +164,7 @@
                     android:text="Phương thức thanh toán"
                     android:fontFamily="sans-serif-medium"
                     android:textSize="16sp"
-                    android:textColor="@color/app_primary"
+                    android:textColor="@color/theme_primary"
                     android:paddingTop="8dp"
                     android:paddingBottom="2dp"/>
                 <View
@@ -188,8 +188,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="1dp"
-        android:paddingHorizontal="2dp"
-        android:background="@drawable/bgd_group_line_shadow"
+        android:background="@color/theme_outline"
         android:layout_above="@id/lnlPaymentInfo"/>
     <LinearLayout
         android:id="@+id/lnlPaymentInfo"
@@ -215,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:textColor="@color/app_primary"
+                android:textColor="@color/theme_primary"
                 android:fontFamily="sans-serif-black"
                 android:text="Tổng tiền"/>
             <TextView
@@ -238,6 +237,7 @@
             android:background="@drawable/bgd_btn_accept"
             app:backgroundTint="@null"
             android:layout_marginTop="5dp"
+            android:textColor="@color/theme_on_secondary"
             android:text=" Hoàn tất thanh toán (3/3)"/>
     </LinearLayout>
 </RelativeLayout>

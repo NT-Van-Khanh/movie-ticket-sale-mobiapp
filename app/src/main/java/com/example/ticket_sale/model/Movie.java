@@ -28,6 +28,24 @@ public class Movie implements Parcelable {
     private List<MovieFormat> movieFormats;//format movie
     private List<MovieType> movieTypes;
 
+    public String getMovieFormatsAsString(){
+        if(movieFormats == null) return "";
+        StringBuilder formatString = new StringBuilder();
+        for(MovieFormat format : movieFormats) {
+            formatString.append(format.getName()).append(" ");
+        }
+        return formatString.toString().trim();
+    }
+
+    public String getMovieTypesAsString(){
+        if(movieTypes == null) return "";
+        StringBuilder formatString = new StringBuilder();
+        for(MovieType type: movieTypes) {
+            formatString.append(type.getName()).append(" ");
+        }
+        return formatString.toString().trim();
+    }
+
     public Movie() {
     }
 

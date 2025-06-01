@@ -5,6 +5,7 @@
     android:paddingHorizontal="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingVertical="2dp"
+
     android:orientation="vertical">
     <androidx.cardview.widget.CardView
         android:id="@+id/cardImage"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="Bỏng ngô"
         android:textSize="16dp"
+        android:textColor="@color/theme_primary"
         android:maxLines="1"
         android:paddingHorizontal="2dp"
         android:fontFamily="sans-serif-medium"
@@ -41,7 +43,7 @@
             android:paddingHorizontal="2dp"
             android:textSize="16dp"
             android:fontFamily="sans-serif-medium"
-            android:textColor="@color/app_accent_text"
+            android:textColor="@color/theme_tertiary"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"/>
         <ImageButton
@@ -60,7 +62,7 @@
             android:background="@null"
             android:text="1"
             android:textSize="16dp"
-            android:textColor="@color/app_otp_text"
+            android:textColor="@color/theme_tertiary"
             android:inputType="number"
             android:layout_toEndOf="@id/btnRemove"/>
         <ImageButton

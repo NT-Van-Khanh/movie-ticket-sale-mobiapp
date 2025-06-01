@@ -1,40 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ProfileFragment"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="#F6F8FA">
+    android:gravity="center_horizontal">
     <Toolbar
+        android:id="@+id/toolBar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/white">
+        android:layout_height="50dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thông tin cá nhân"
-            android:textColor="#474D61"
-            android:textSize="20sp"
+            android:text="Trang cá nhân"
+            android:textColor="@color/theme_primary"
+            android:textSize="19sp"
             android:fontFamily="sans-serif-medium"/>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swDarkMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:checked="false"
+            android:thumb="@drawable/switch_thumb_color"
+            app:thumbTint="@null"
+            app:track="@drawable/switch_track_selector"
+            app:trackTint="@null"
+            android:layout_marginEnd="8dp"/>
+
     </Toolbar>
     <androidx.core.widget.NestedScrollView
+        android:layout_below="@id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/theme_outline"/>
                 <LinearLayout
                     android:id="@+id/lnRequireUserLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@color/white"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="2dp"
                     android:paddingTop="30dp"
                     android:paddingBottom="30dp">
                     <ImageView
@@ -46,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:text="Xin chào!"
                         android:textAlignment="center"
-                        android:textColor="#1E2E3D"
+                        android:textColor="@color/theme_primary"
                         android:fontFamily="sans-serif-black"
                         android:textSize="20sp"
                         android:layout_marginTop="2dp"/>
@@ -69,7 +82,7 @@
                             android:layout_marginEnd="15dp"/>
                         <Button
                             android:id="@+id/btnRedirectRegister"
-                            android:layout_width="120dp"
+                            android:layout_width="125dp"
                             android:layout_height="42dp"
                             android:background="@drawable/bgd_btn_another_login"
                             android:paddingHorizontal="0dp"
@@ -79,12 +92,15 @@
                             app:backgroundTint="@null" />
                     </LinearLayout>
                 </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/theme_outline"/>
             <LinearLayout
                 android:id="@+id/lnPersonalInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="2dp" >
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -92,7 +108,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:background="@color/white"
                         android:paddingHorizontal="22dp"
                         android:paddingVertical="16dp">
                         <LinearLayout
@@ -117,7 +132,7 @@
                                     android:fontFamily="sans-serif-medium"
                                     android:textSize="18sp"
                                     android:textAlignment="center"
-                                    android:textColor="@color/app_primary"
+                                    android:textColor="@color/theme_primary"
                                     android:paddingVertical="6dp"/>
                                </LinearLayout>
                         <TextView
@@ -163,25 +178,35 @@
                         android:layout_centerVertical="true"
                         android:layout_centerHorizontal="true"/>
                 </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/theme_outline"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcViewSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:background="@color/white"
                     android:overScrollMode="never"/>
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/theme_outline"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcViewContacts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:background="@color/white"
                 android:overScrollMode="never"
                 android:paddingVertical="6dp"
                 android:paddingHorizontal="6dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-</LinearLayout>
+    <View
+        android:id="@+id/viewOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/theme_loading"
+        android:clickable="true"
+        android:focusable="true"/>
+</RelativeLayout>

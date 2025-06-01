@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
     private final int maxShowedMovie = 5;
     private ProgressBar pgbLoadMovies;
     private ProgressBar pgbLoadSliders;
-
+    private  View viewOverlay;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -105,6 +105,7 @@ public class HomeFragment extends Fragment {
         rcViewMovies = root.findViewById(R.id.rcViewCurrentMovies);
         pgbLoadSliders = root.findViewById(R.id.pbLoadPosters);
         pgbLoadMovies = root.findViewById(R.id.pbLoadMovies);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
 
         posterAdapter = new PosterAdapter(currentPosters);
         bannerSlider.setAdapter(posterAdapter);
@@ -267,6 +268,7 @@ public class HomeFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
     }
+
 
     private List<Slider> getExamplePosters() {
         List<Slider> sliders = new ArrayList<>();

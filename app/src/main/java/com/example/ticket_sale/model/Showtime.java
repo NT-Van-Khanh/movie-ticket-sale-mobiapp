@@ -6,27 +6,27 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 public class Showtime implements Parcelable {
-    String id;
-    String timeStart;
-    String timeEnd;
-    String screenId;
-    String movieId;
-    String date;
+    private int id;
+    private String timeStart;
+    private String timeEnd;
+    private String screenId;
+    private String movieId;
+    private String date;
 
     public Showtime() {
     }
 
-    public Showtime(String id, String timeStart, String timeEnd, String roomId, String movieId, String date) {
-        this.id = id;
-        this.timeStart = timeStart;
-        this.timeEnd = timeEnd;
-        this.screenId = roomId;
-        this.movieId = movieId;
+    public Showtime( int id, String timeStart, String timeEnd,String screenId, String movieId, String date) {
         this.date = date;
+        this.id = id;
+        this.movieId = movieId;
+        this.screenId = screenId;
+        this.timeEnd = timeEnd;
+        this.timeStart = timeStart;
     }
 
     protected Showtime(Parcel in) {
-        id = in.readString();
+        id = in.readInt();
         timeStart = in.readString();
         timeEnd = in.readString();
         screenId = in.readString();
@@ -54,11 +54,11 @@ public class Showtime implements Parcelable {
         this.date = date;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -101,7 +101,7 @@ public class Showtime implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeInt(id);
         dest.writeString(timeStart);
         dest.writeString(timeEnd);
         dest.writeString(screenId);

@@ -9,8 +9,7 @@
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:contentInsetStart="12dp"
-        android:background="@color/white">
+        android:contentInsetStart="12dp">
         <TextView
             android:id="@+id/txtMoviesTitle"
             android:layout_width="wrap_content"
@@ -18,14 +17,13 @@
             android:text="Phim đang chiếu"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/app_primary"/>
+            android:textColor="@color/theme_primary"/>
     </Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:background="@color/white"
         android:orientation="horizontal"
         android:paddingVertical="3dp">
 
@@ -44,6 +42,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
                 android:paddingHorizontal="5dp"
                 android:text="Đang chiếu"
                 android:textSize="18sp"/>

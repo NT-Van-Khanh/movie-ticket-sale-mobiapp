@@ -18,11 +18,12 @@ public class ChooseFoodViewModel extends ViewModel {
         this.foodRepository = new FoodRepository(ApiServiceFactory.getFoodAPI());
     }
 
-    public void fetchFoods(){
+    private void fetchFoods(){
         foodTypes = foodRepository.getAllFoodTypes();
     }
 
     public LiveData<ApiResponse<List<FoodTypeDTO>>> getFoods(){
+        fetchFoods();
         return foodTypes;
     }
 }

@@ -3,6 +3,7 @@ package com.example.ticket_sale.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ticket_sale.data.dto.ChairDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.dto.ScreenDTO;
@@ -43,8 +44,18 @@ public class ScreenRepository {
                                                                    String asc, String q,
                                                                    String status, String orderBy) {
         MutableLiveData<ApiResponse<List<ScreenDTO>>> responseData = new MutableLiveData<>();
-        screenAPI.getScreensFilter(page, limit, asc, q, status, orderBy).enqueue(new CustomerCallBack<>(responseData,
+        screenAPI.getScreensFilter(page, limit, asc, q, status, orderBy)
+                .enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName() + "_getScreensFilter"));
         return responseData;
+    }
+
+    public LiveData<ApiResponse<List<ChairDTO>>> getSoldSeats(String showtimeId){
+        MutableLiveData<ApiResponse<List<ChairDTO>>> responseData = new MutableLiveData<>();
+        screenAPI.getSoldSeats(showtimeId)
+                .enqueue( new CustomerCallBack<>(responseData,
+                        getClass().getSimpleName() + "_getBillChair"));
+        return responseData;
+
     }
 }

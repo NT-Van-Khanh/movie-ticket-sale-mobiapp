@@ -9,10 +9,10 @@ public class SettingItem {
     public static final int TYPE_WEBVIEW = 5;
     private int type;
     private String title;
-    private String data;
+    private Object data;
     private Integer iconResId;
 
-    public SettingItem(int type, String title, String data, Integer iconResId) {
+    public SettingItem(int type, String title, Object data, Integer iconResId) {
         this.type = type;
         this.title = title;
         this.data = data;
@@ -36,7 +36,7 @@ public class SettingItem {
         this.title = title;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 

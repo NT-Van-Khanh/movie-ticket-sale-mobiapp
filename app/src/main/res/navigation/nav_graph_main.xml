@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.ticket_sale.fragment.HomeFragment"
+        android:label="Home" >
+        <!-- action chuyển sang fragment khác -->
+<!--        <action-->
+<!--            android:id="@+id/action_home_to_chooseSeat"-->
+<!--            app:destination="@id/chooseSeatFragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseSeatFragment"
+        android:name="com.example.ticket_sale.fragment.ChooseSeatFragment"
+        android:label="Choose Seat" >
+<!--        <action-->
+<!--            android:id="@+id/action_chooseSeat_to_chooseFood"-->
+<!--            app:destination="@id/chooseFoodFragment" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseFoodFragment"
+        android:name="com.example.ticket_sale.fragment.ChooseFoodFragment"
+        android:label="Choose Food" />
+</navigation>

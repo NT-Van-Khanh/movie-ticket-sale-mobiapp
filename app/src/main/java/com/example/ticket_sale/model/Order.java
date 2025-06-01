@@ -1,26 +1,27 @@
 package com.example.ticket_sale.model;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Order implements Parcelable {
     private String id;
-    private Map<Item, Integer> foods;
-    private List<Seat> seats;
+
+    private Ticket selectedTicket;
+    private Map<Food, Integer> foods;
+    private List<SeatPosition> selectedSeats;
+
     private User user;
     private Movie movie;
     private MovieFormat movieFormat;
     private Showtime showtime;
     private Screen screen;
-    private OrderStatus orderStatus;
-    private LocalDateTime createdAt;
+//    private OrderStatus orderStatus;
 
     protected Order(Parcel in) {
         id = in.readString();
@@ -54,43 +55,63 @@ public class Order implements Parcelable {
         dest.writeParcelable(showtime, flags);
     }
 
-
-    public enum OrderStatus{
-        SUCCESS, FAILED, CANCELLED, WAITING_PAYMENT
-    }
+//    public enum OrderStatus{
+//        SUCCESS, FAILED, CANCELLED, WAITING_PAYMENT
+//    }
 
     public Order() {
     }
 
-    public Order(LocalDateTime createdAt, Map<Item, Integer> foods, String id, Movie movie, OrderStatus orderStatus,
-                 Screen screen, List<Seat> seats, Showtime showtime, User user) {
-        this.createdAt = createdAt;
-        this.foods = foods;
-        this.id = id;
-        this.movie = movie;
-        this.orderStatus = orderStatus;
-        this.screen = screen;
-        this.seats = seats;
-        this.showtime = showtime;
-        this.user = user;
-    }
+//    public Order( Map<Item, Integer> foods, String id, Movie movie, OrderStatus orderStatus,
+//                 Screen screen, List<Seat> seats, Showtime showtime, User user) {
+//
+//        this.foods = foods;
+//        this.id = id;
+//        this.movie = movie;
+//        this.orderStatus = orderStatus;
+//        this.screen = screen;
+//        this.seats = seats;
+//        this.showtime = showtime;
+//        this.user = user;
+//    }
+
+//    public Long getTotalCostOfSeats(){
+//        if(selectedSeats == null) return 0L;
+//        Long totalcost = 0L;
+//        for(SeatPosition s: selectedSeats){
+//            totalcost += s.getPrice();
+//        }
+//        return totalcost;
+//    }
 
     public Long getTotalCostOfSeats(){
-        if(seats == null) return 0L;
-        Long totalcost = 0L;
-        for(Seat s: seats){
-            totalcost += s.getPrice();
-        }
-        return totalcost;
+        if(selectedSeats == null || selectedTicket == null) return 0L;
+        return selectedTicket.getPrice() * selectedSeats.size();
     }
 
     public Long getTotalCostOfFoods(){
         if(foods == null) return 0L;
         Long totalCost = 0L;
-        for (Map.Entry<Item, Integer> foodEntry : foods.entrySet()) {
+        for (Map.Entry<Food, Integer> foodEntry : foods.entrySet()) {
             totalCost += foodEntry.getKey().getPrice() * foodEntry.getValue();
         }
         return totalCost;
+    }
+
+    public List<SeatPosition> getSelectedSeats() {
+        return selectedSeats;
+    }
+
+    public void setSelectedSeats(List<SeatPosition> selectedSeats) {
+        this.selectedSeats = selectedSeats;
+    }
+
+    public Ticket getSelectedTicket() {
+        return selectedTicket;
+    }
+
+    public void setSelectedTicket(Ticket selectedTicket) {
+        this.selectedTicket = selectedTicket;
     }
 
     public Long getTotalCost(){
@@ -104,19 +125,12 @@ public class Order implements Parcelable {
         this.movieFormat = movieFormat;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Map<Item, Integer> getFoods() {
+    public Map<Food, Integer> getFoods() {
         return foods;
     }
 
-    public void setFoods(Map<Item, Integer> foods) {
+    public void setFoods(Map<Food, Integer> foods) {
         this.foods = foods;
     }
 
@@ -135,14 +149,14 @@ public class Order implements Parcelable {
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
-    }
+//
+//    public OrderStatus getOrderStatus() {
+//        return orderStatus;
+//    }
+//
+//    public void setOrderStatus(OrderStatus orderStatus) {
+//        this.orderStatus = orderStatus;
+//    }
 
     public Screen getScreen() {
         return screen;
@@ -152,12 +166,18 @@ public class Order implements Parcelable {
         this.screen = screen;
     }
 
-    public List<Seat> getSeats() {
-        return seats;
+    public List<SeatPosition> getSeats() {
+        return selectedSeats;
+    }
+    public String getSelectedSeatsString(){
+        if(selectedSeats == null|| selectedSeats.isEmpty()) return "";
+        String stringSeats = selectedSeats.stream()
+                .map(seat -> " "+ seat.getTitle()).collect(Collectors.joining());
+        return stringSeats;
     }
 
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
+    public void setSeats(List<SeatPosition> seats) {
+        this.selectedSeats = seats;
     }
 
     public Showtime getShowtime() {
@@ -177,12 +197,18 @@ public class Order implements Parcelable {
     }
 
     public Long calculateTotalCost() {
-        Long totalFoodCosts = foods.entrySet().stream()
-                .map(entry -> entry.getKey().getPrice() * entry.getValue())
-                .reduce(0L, Long::sum);
-        Long totalTicketCosts = seats.stream()
-                .map(seat -> seat.getPrice())  // Lấy giá của ghế
-                .reduce(0L, Long::sum);
+        Long totalFoodCosts = getTotalCostOfFoods();
+        Long totalTicketCosts = getTotalCostOfSeats();
         return totalFoodCosts + totalTicketCosts;
     }
+
+//    public Long calculateTotalCost() {
+//        Long totalFoodCosts = foods.entrySet().stream()
+//                .map(entry -> entry.getKey().getPrice() * entry.getValue())
+//                .reduce(0L, Long::sum);
+//        Long totalTicketCosts = selectedSeats.stream()
+//                .map(seat -> seat.getPrice())  // Lấy giá của ghế
+//                .reduce(0L, Long::sum);
+//        return totalFoodCosts + totalTicketCosts;
+//    }
 }

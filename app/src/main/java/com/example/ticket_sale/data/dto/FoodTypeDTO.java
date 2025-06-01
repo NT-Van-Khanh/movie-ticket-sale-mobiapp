@@ -5,7 +5,7 @@ import java.util.List;
 public class FoodTypeDTO {
     private String id;
     private String name;
-    private List<FoodDTO> dishes;
+    private List<FoodResponseDTO> dishes;
     private String active;
 
     public FoodTypeDTO() {
@@ -19,11 +19,11 @@ public class FoodTypeDTO {
         this.active = active;
     }
 
-    public List<FoodDTO> getDishes() {
+    public List<FoodResponseDTO> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<FoodDTO> dishes) {
+    public void setDishes(List<FoodResponseDTO> dishes) {
         this.dishes = dishes;
     }
 

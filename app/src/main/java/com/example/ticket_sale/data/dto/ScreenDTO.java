@@ -6,7 +6,6 @@ public class ScreenDTO {
     private String id;
     private String name;
     private Integer [][] positionChair;
-//    private List<List<Integer>> positionChair;
     private String status;
 
     @SerializedName("branch")
@@ -53,5 +52,9 @@ public class ScreenDTO {
 
     public void setTheater(TheaterDTO theater) {
         this.theater= theater;
+    }
+
+    public boolean isValid() {
+        return true;
     }
 }

@@ -13,12 +13,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticket_sale.activity.LoginActivity;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.User;
+import com.example.ticket_sale.viewmodel.RegisterViewModel;
 
 public class RegisterUserFragment extends Fragment {
     private View.OnClickListener btnNextListener;
@@ -33,8 +35,11 @@ public class RegisterUserFragment extends Fragment {
     private EditText edtPassword;
     private EditText edtConfirmPassword;
     private CheckBox cbAgreeTerms;
-
+    private ProgressBar pbLoadData;
+    private View viewOverlay;
     private User user;
+
+    private RegisterViewModel registerViewModel;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -80,6 +85,7 @@ public class RegisterUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_register_user, container, false);
         initView(root);
+        registerViewModel = new RegisterViewModel();
         return root;
     }
 
@@ -94,10 +100,10 @@ public class RegisterUserFragment extends Fragment {
         cbAgreeTerms = root.findViewById(R.id.cbAgreeTerms);
         btnNext= root.findViewById(R.id.btnRegister);
         btnRedirectLogin = root.findViewById(R.id.btnRedirectLogin);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
+        pbLoadData = root.findViewById(R.id.pbLoadRegisterAccount);
 
-        btnNext.setOnClickListener(v -> {
-            authEmail();
-        });
+        btnNext.setOnClickListener(v -> registerAccount());
 
         txtGoBack.setOnClickListener(v -> {
             if (RegisterUserFragment.this.getActivity() != null) {
@@ -116,9 +122,42 @@ public class RegisterUserFragment extends Fragment {
         });
     }
 
-    private void authEmail() {
+    private void registerAccount() {
         user = getUserFromView();
+        fetchAddAccount(user);
+    }
+
+    private void fetchAddAccount(User user){
         if(user == null)  return;
+        showLoadingUI();
+        registerViewModel.addAccount(user,"123123123").observe(getViewLifecycleOwner(), response ->{
+            if(response == null) {
+                Toast.makeText(getContext(), "Không thể thêm tải khoản.", Toast.LENGTH_LONG).show();
+                hideLoadingUI();
+                return;
+            }
+            if(response.getStatusCode() == 201){
+                fetchSendOtpToEmail();
+            }else if(response.getMessage() != null){
+                Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_LONG).show();
+                hideLoadingUI();
+            }
+        });
+    }
+
+    private void fetchSendOtpToEmail() {
+        if(user == null)  return;
+        registerViewModel.sendOtToEmail(user.getEmail()).observe(getViewLifecycleOwner(), response ->{
+            if(response != null && response.getStatusCode()==200){
+                navigateToAuthEmailFragment();
+            }else{
+                Toast.makeText(getContext(), "Không thể xác thực email này.", Toast.LENGTH_LONG).show();
+            }
+            hideLoadingUI();
+        });
+    }
+
+    private void navigateToAuthEmailFragment() {
         String password =edtPassword.getText().toString().trim();
         Bundle b = new Bundle();
         b.putParcelable("user",user);
@@ -195,5 +234,15 @@ public class RegisterUserFragment extends Fragment {
             return null;
         }
         return new User(fullName, phone, email, username);
+    }
+
+    private void showLoadingUI(){
+        pbLoadData.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        pbLoadData.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
     }
 }

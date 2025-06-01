@@ -5,9 +5,8 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginVertical="3dp"
-    android:paddingVertical="6dp"
-    android:paddingHorizontal="8dp"
-    android:background="#FEFCFF">
+    android:paddingVertical="10dp"
+    android:paddingHorizontal="8dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,7 +77,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="9.5"
-                        android:textColor="@android:color/black"
                         android:paddingHorizontal="3dp"/>
                     <ImageView
                         android:layout_width="18dp"
@@ -107,7 +105,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/bgd_group_line_shadow"
+        android:background="@color/theme_outline"
         android:layout_marginVertical="5dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewMovieFormats"

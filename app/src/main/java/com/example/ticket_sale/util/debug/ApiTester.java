@@ -6,8 +6,9 @@ import android.util.Log;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.example.ticket_sale.data.ApiServiceFactory;
+import com.example.ticket_sale.data.dto.BillRequestDTO;
+import com.example.ticket_sale.data.dto.BillResponseDTO;
 import com.example.ticket_sale.util.TokenManager;
-import com.example.ticket_sale.data.dto.Bill;
 import com.example.ticket_sale.data.repository.AuthRepository;
 import com.example.ticket_sale.data.repository.BillRepository;
 import com.example.ticket_sale.data.repository.FoodRepository;
@@ -75,7 +76,7 @@ public class ApiTester {
 //            testSeatApi();//DONE
 //            testSliderApi();//DONE
 
-////            testBillApi();//check lại add Bill
+////            testBillApi();//check lại add BillResponseDTO
 ////            testPaymentApi(); //payment chua thong nhat api
 ////            testRateApi();// check lại hàm xóa đánh giá
 
@@ -247,7 +248,7 @@ public class ApiTester {
         });
 
         // Test addBill
-        Bill newBill = new Bill(); // khởi tạo bill mới, set dữ liệu nếu cần
+        BillRequestDTO newBill = new BillRequestDTO(); // khởi tạo bill mới, set dữ liệu nếu cần
         billRepository.addBill(newBill).observe(lifecycleOwner, data -> {
             if (data != null ) {
                 Log.d("testBillApi", "addBill: " + data.getData());

@@ -1,8 +1,11 @@
 package com.example.ticket_sale.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -42,17 +46,20 @@ public class ProfileFragment extends Fragment {
     private TextView txtUserEmail;
     private TextView txtUserPhone;
     private ProgressBar pbLoadUser;
+    private View viewOverlay;
     private RecyclerView rcViewSettings;
     private RecyclerView rcViewContacts;
     private LinearLayout lnRequireUserLogin;
     private LinearLayout lnPersonalInfo;
+    private SwitchCompat swDarkMode;
+
     private SettingAdapter settingAdapter;
     private SettingAdapter contactAdapter;
+
     private List<SettingItem> settingItems;
     private List<SettingItem> contactItems;
     private User user;
     private ProfileViewModel profileViewModel;
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -123,6 +130,11 @@ public class ProfileFragment extends Fragment {
         lnPersonalInfo = v.findViewById(R.id.lnPersonalInfo);
         btnLogout = v.findViewById(R.id.btnLogout);
         pbLoadUser = v.findViewById(R.id.pbloadUser);
+        viewOverlay = v.findViewById(R.id.viewOverlay);
+
+        swDarkMode = v.findViewById(R.id.swDarkMode);
+        swDarkMode.setOnCheckedChangeListener(this::changeThemeMode);
+
         rcViewSettings.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rcViewContacts.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
@@ -141,6 +153,13 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(v1 -> logout());
     }
 
+    private void changeThemeMode(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
 
     private void getUserFromAPI() {
         if(profileViewModel == null) profileViewModel = new ProfileViewModel();
@@ -172,6 +191,7 @@ public class ProfileFragment extends Fragment {
             }
             showUserInfo(user);
             pbLoadUser.setVisibility(View.GONE);
+            viewOverlay.setVisibility(View.GONE);
 
         });
     }
@@ -195,15 +215,18 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+
+
+
     private User getExampleUser() {
         return new User("US1","username1","Nguyễn Bình Quốc An","nbq***123@gmail.com","0938328288");
     }
 
     private List<SettingItem> initSettingsItem(){
         List<SettingItem> settingItems = new ArrayList<>();
-        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Đổi mật khẩu","ChangePasswordFragment",R.drawable.ic_profile ));
-        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Chỉnh sửa thông tin cá nhân","DetailProfileFragment",R.drawable.ic_profile ));
-        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Lịch sử mua hàng","HistoryFragment",R.drawable.ic_history ));
+        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Đổi mật khẩu",new ChangePasswordFragment(),R.drawable.ic_profile ));
+        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Chỉnh sửa thông tin cá nhân",new ProfileDetailFragment(),R.drawable.ic_profile ));
+        settingItems.add(new SettingItem(SettingItem.TYPE_FRAGMENT,"Lịch sử mua hàng",new HistoryFragment(),R.drawable.ic_history ));
         return settingItems;
     }
 

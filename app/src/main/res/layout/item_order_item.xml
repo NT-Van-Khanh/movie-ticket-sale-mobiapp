@@ -7,14 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="34dp"
         android:orientation="horizontal"
-        android:paddingHorizontal="2dp"
-        android:background="@color/white">
+        android:paddingHorizontal="2dp">
         <TextView
             android:id="@+id/txtItemQuantity"
             android:layout_width="42dp"
             android:layout_height="match_parent"
             android:text="x10"
-            android:textColor="@color/app_primary"
+            android:textColor="@color/theme_tertiary"
             android:textSize="15sp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"

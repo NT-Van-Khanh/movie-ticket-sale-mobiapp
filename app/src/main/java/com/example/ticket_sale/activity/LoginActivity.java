@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.base.BaseAuthActivity;
 import com.example.ticket_sale.viewmodel.AuthViewModel;
+import com.google.android.material.button.MaterialButton;
 
 public class LoginActivity extends BaseAuthActivity {
     private TextView txtGoBack;
@@ -25,6 +27,9 @@ public class LoginActivity extends BaseAuthActivity {
     private TextView txtForgotPassword;
     private Button btnLogin;
     private Button btnRedirectRegister;
+    private View viewOverlay;
+    private ProgressBar pbLoadLogin;
+
 
     private AuthViewModel authViewModel;
 
@@ -49,38 +54,26 @@ public class LoginActivity extends BaseAuthActivity {
         txtForgotPassword = findViewById(R.id.txtForgotPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnRedirectRegister = findViewById(R.id.btnRedirectRegister);
+        pbLoadLogin = findViewById(R.id.pbLoadLogin);
+        viewOverlay = findViewById(R.id.viewOverlay);
 
         txtGoBack.setOnClickListener(v -> finish());
-
-        txtForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
-                startActivity(intent);
-            }
+        txtForgotPassword.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
         });
 
         btnLogin.setOnClickListener(v -> {
+            showLoadingUI();
             String username = edtUsername.getText().toString().trim();
             String password = edtPassword.getText().toString().trim();
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(LoginActivity.this, "Tên đăng nhập và mật khẩu không được để trống",
                         Toast.LENGTH_SHORT).show();
+                hideLoadingUI();
                 return;
             }
-            authViewModel.auth(username, password).observe(LoginActivity.this, result -> {
-                if (result == null || !result.containsKey("accessToken")) {
-                    Log.e("authRepository.auth", "Can't not get token!");
-                    Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            });
-//
-//
-//
+            login(username, password);
 //            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //            startActivity(intent);
         });
@@ -89,5 +82,30 @@ public class LoginActivity extends BaseAuthActivity {
             Intent intent  = new Intent(LoginActivity.this,RegisterActivity.class);
             startActivity(intent);
         });
+    }
+
+    private void login(String username, String password) {
+        authViewModel.auth(username, password).observe(LoginActivity.this, result -> {
+            if (result == null || !result.containsKey("accessToken")) {
+                Log.e("authRepository.auth", "Can't not get token!");
+                Toast.makeText(LoginActivity.this, "Tên đăng nhập hoặc mật khẩu không chính xác", Toast.LENGTH_SHORT).show();
+                hideLoadingUI();
+                return;
+            }
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            hideLoadingUI();
+            finish();
+        });
+    }
+
+    public void  showLoadingUI(){
+        pbLoadLogin.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoadingUI(){
+        pbLoadLogin.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
     }
 }

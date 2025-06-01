@@ -5,18 +5,18 @@ public class UserDTO {
     private String name;
     private String phoneNumber;
     private String email;
-    private Account account;
+    private AccountDTO account;
     private String timestamp;
     private String status;
 
     public UserDTO() {
     }
 
-    public Account getAccount() {
+    public AccountDTO getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(AccountDTO account) {
         this.account = account;
     }
 

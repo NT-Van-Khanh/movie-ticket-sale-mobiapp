@@ -4,22 +4,27 @@ public class Seat {
     private String id;
     private String title;
     private Long price;
-    private String status;
     private String description;
     private Integer slot;
-    private SeatType seatType;
+//    private SeatType seatType;
     public Seat() {
     }
 
-    public Seat(String id, String title, String status, String description, Integer slot, SeatType seatType, Long price) {
+    public Seat(String id, String title, String description, Integer slot, Long price) {
         this.id = id;
         this.title = title;
-        this.status = status;
         this.description = description;
         this.slot = slot;
-        this.seatType = seatType;
         this.price = price;
     }
+
+//    public Seat( String id, String title, String description, Integer slot, SeatType seatType) {
+//        this.description = description;
+//        this.id = id;
+//        this.seatType = seatType;
+//        this.slot = slot;
+//        this.title = title;
+//    }
 
     public Long getPrice() {
         return price;
@@ -29,13 +34,13 @@ public class Seat {
         this.price = price;
     }
 
-    public SeatType getSeatType() {
-        return seatType;
-    }
-
-    public void setSeatType(SeatType seatType) {
-        this.seatType = seatType;
-    }
+//    public SeatType getSeatType() {
+//        return seatType;
+//    }
+//
+//    public void setSeatType(SeatType seatType) {
+//        this.seatType = seatType;
+//    }
 
     public String getId() {
         return id;
@@ -52,14 +57,6 @@ public class Seat {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getDescription() {

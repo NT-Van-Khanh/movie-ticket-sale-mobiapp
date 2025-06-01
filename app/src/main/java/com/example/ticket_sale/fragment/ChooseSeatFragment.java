@@ -14,22 +14,29 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.activity.MainActivity;
+import com.example.ticket_sale.mapper.SeatMapper;
 import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.model.SeatPosition;
+import com.example.ticket_sale.model.SeatType;
 import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
 import com.example.ticket_sale.model.Seat;
-import com.example.ticket_sale.model.SeatType;
 import com.example.ticket_sale.model.Showtime;
+import com.example.ticket_sale.model.Ticket;
 import com.example.ticket_sale.util.AuthGuard;
 import com.example.ticket_sale.mapper.ScreenMapper;
+import com.example.ticket_sale.util.ViLocaleUtil;
 import com.example.ticket_sale.viewmodel.ChooseSeatViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -46,10 +53,13 @@ public class ChooseSeatFragment extends Fragment {
     private GridLayout gdlSeats;
     private TextView txtGoBack;
     private ProgressBar pbLoadSeats;
-//    private List<List<Seat>> seats;
-    private List<Seat> selectedSeats;
-    private Order order;
+    private View viewOverlay;
+
+
     private Screen screen;
+    private List<Seat> seatClasses;
+    private List<SeatPosition> selectedSeats;
+    private Order order;
     private ChooseSeatViewModel chooseSeatViewModel;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -86,12 +96,72 @@ public class ChooseSeatFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_choose_seat, container, false);
         initViews(root);
         initData();
-        setDataForViews();
+//        setDataForViews();
         return root;
     }
 
+    private void initData(){
+        showLoadingUI();
+        if(getArguments() == null) return;
+        order = getArguments().getParcelable("order");
+        if(order == null) return;
+
+        chooseSeatViewModel  = new ChooseSeatViewModel();
+        getScreenFromAPI();
+//        getSeatClassesFromAPI();
+    }
+
+    private void getScreenFromAPI(){
+        chooseSeatViewModel.getScreen(order.getShowtime().getScreenId()).observe(getViewLifecycleOwner(), response ->{
+                if(response!=null && response.getStatusCode() == 200){
+                    this.screen = ScreenMapper.toScreen(response.getData());
+                    getSoldSeatFromAPI();
+                }else{
+                    Toast.makeText(getContext(),"Không thể lấy thông tin rạp.",Toast.LENGTH_SHORT).show();
+                    screen = getExampleScreen();
+                    Integer[][] seatPositions = screen.getSeatPositions();
+                    if(seatPositions != null){
+                        initSeatRowName(seatPositions.length);
+                        initSeatViews(seatPositions, null);
+                    }
+                    setDataForViews();
+                    hideLoadingUI();
+                }
+            });
+    }
+
+//    private void getSeatClassesFromAPI(){
+//        chooseSeatViewModel.getSeatClasses().observe(getViewLifecycleOwner(), response ->{
+//            if(response!=null && response.getStatusCode() == 200) {
+//                seatClasses = response.getData()
+//                        .stream().map(SeatMapper::toSeat)
+//                        .collect(Collectors.toList());
+//                getScreenFromAPI();
+//            }else{
+//                Toast.makeText(getContext(),"Không thể lấy hạng ghế.",Toast.LENGTH_SHORT).show();
+//                hideLoadingUI();
+//            }
+//        });
+//    }
+
+    private void getSoldSeatFromAPI(){
+        chooseSeatViewModel.getSoleSeats(this.order.getShowtime().getScreenId()).observe(getViewLifecycleOwner(),response ->{
+            if(response!=null && response.getStatusCode() == 200){
+                List<SeatPosition> soldSeats = response.getData().stream()
+                        .map(SeatMapper::toSeatPosition)
+                        .collect(Collectors.toList());
+                Integer[][] seatPositions = screen.getSeatPositions();
+                if(seatPositions != null){
+                    initSeatRowName(seatPositions.length);
+                    initSeatViews(seatPositions, soldSeats);
+                }
+            }
+            setDataForViews();
+            hideLoadingUI();
+        });
+    }
+
     private void setDataForViews() {
-        Screen screen = order.getScreen();
         if(screen == null) return;
         txtScreen.setText(screen.getName());
 
@@ -106,6 +176,7 @@ public class ChooseSeatFragment extends Fragment {
         Movie movie = order.getMovie();
         if(movie == null) return;
         txtMovieTitle.setText(movie.getTitle());
+
         if(order.getMovieFormat() == null) return;
         showSelectedSeats();
 //        initSeatRowName(screen.getSeats().length);
@@ -122,29 +193,11 @@ public class ChooseSeatFragment extends Fragment {
         lnlSeatRowName = root.findViewById(R.id.lnlSeatRowName);
         gdlSeats = root.findViewById(R.id.gdlSeats);
         pbLoadSeats = root.findViewById(R.id.pbLoadSeats);
+        viewOverlay = root.findViewById(R.id.viewOverlay);
         selectedSeats = new ArrayList<>();
         btnNext = root.findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(selectedSeats == null || selectedSeats.size()<1){
-                    Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(AuthGuard.checkLogin(requireActivity())) {
-                ChooseFoodFragment chooseFoodFragment = new ChooseFoodFragment();
-                Bundle b = new Bundle();
-                order.setSeats(selectedSeats);
-                b.putParcelable("order", order);
-                chooseFoodFragment.setArguments(b);
-                getParentFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //hieu ung chuyen fragment
-                        .add(R.id.fragment_container, chooseFoodFragment)
-                        .hide(Objects.requireNonNull(getParentFragmentManager().findFragmentById(R.id.fragment_container)))
-                        .addToBackStack(null)
-                        .commit();
-                }
-            }
+        btnNext.setOnClickListener(v -> {
+            btnNextListener();
         });
 
         txtGoBack = root.findViewById(R.id.txtGoBack);
@@ -161,48 +214,24 @@ public class ChooseSeatFragment extends Fragment {
         String stringSeats = selectedSeats.stream()
                 .map(seat -> " "+ seat.getTitle()).collect(Collectors.joining());
         txtSeatsSelected.setText(stringSeats);
-
-    }
-
-    private void initData(){
-        if(getArguments() == null) return;
-        order = getArguments().getParcelable("order");
-        if(order == null) return;
-        if(chooseSeatViewModel == null) chooseSeatViewModel  = new ChooseSeatViewModel();
-        getScreenFromAPI();
-//        seats = getSeats(10,14);
-    }
-
-    private void getScreenFromAPI(){
-        chooseSeatViewModel.fetchScreen(order.getScreen().getId());
-        chooseSeatViewModel.getScreen().observe(getViewLifecycleOwner(), response ->{
-            if(response!=null && response.getStatusCode() == 200){
-                screen = ScreenMapper.toScreen(response.getData());
-            }else{
-                screen = getExampleScreen();
-
-            }
-            initSeatRowName(screen.getSeats().length);
-            initSeatViews(screen.getSeats());
-            pbLoadSeats.setVisibility(View.GONE);
-        });
     }
 
     private Screen getExampleScreen() {
-        Screen s = order.getScreen();
-        Seat[][] seats = getSeats(10, 14);
-        s.setSeats(seats);
+        Screen s = new Screen("SC2","Phòng 2", new Theater("TH1","Rạp", "address", R.drawable.cinema2));
+        Integer[][] seats = getSeats(10, 14);
+        s.setSeatPositions(seats);
         return s;
     }
 
 
-    private Seat[][] getSeats(int row, int column){
-        Seat[][] seats = new Seat[row][column];
+    private Integer[][] getSeats(int row, int column){
+        Integer[][] seats = new Integer[row][column];
         for (int seatRow = 0; seatRow < seats.length; seatRow++) {
             for (int seatColumn = 0; seatColumn < seats[seatRow].length; seatColumn++) {
-                seats[seatRow][seatColumn] = new Seat("C1",
-                        String.format("%s%d",(char)('A'+ seatRow), seatColumn), "STANDARD",
-                        "", 1, SeatType.STANDARD, 60000L);
+                seats[seatRow][seatColumn] = 1;
+//                seats[seatRow][seatColumn] = new Seat("C1",
+//                        String.format(ViLocaleUtil.localeVN,"%s%d",(char)('A'+ seatRow), seatColumn),
+//                        "", 1, SeatType.STANDARD, 60000L);
             }
         }
         return seats;
@@ -221,41 +250,133 @@ public class ChooseSeatFragment extends Fragment {
 
     }
 
-    private void initSeatViews(Seat[][] seats){
-        for(int row = 0; row < seats.length; ++ row) {
-            for(int column = 0; column < seats[row].length; ++ column) {
-                Seat seat = seats[row][column];
-                if(seat == null) continue;
+//    private ImageView initImgSeatView(Seat seat) {
+//        ImageView imgSeatIcon = new ImageView(getContext());
+//        imgSeatIcon.setImageResource(R.drawable.ic_chair);
+//        imgSeatIcon.setColorFilter(seat.getSeatType().getTypeOfSeat(getContext()));
+//        GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+//        param.width = dpToPx(24);
+//        param.height = dpToPx(24);
+//        param.rowSpec = GridLayout.spec(seat.getRow());
+//        param.columnSpec = GridLayout.spec(seat.getColumn());
+//        imgSeatIcon.setLayoutParams(param);
+//        imgSeatIcon.setTag(seat);
+//        return imgSeatIcon;
+//    }
 
-                ImageView seatView = new ImageView(getContext());
-                seatView.setImageResource(R.drawable.ic_chair);
-                seatView.setTag(seat);
+    private ImageView initSeatImageIcon(SeatPosition seatPosition) {
+        if(seatPosition == null) return null;
+        ImageView imgSeatIcon = new ImageView(getContext());
+        imgSeatIcon.setImageResource(R.drawable.ic_chair);
+        GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+        param.width = dpToPx(24);
+        param.height = dpToPx(24);
+        param.rowSpec = GridLayout.spec(seatPosition.getRow());
+        param.columnSpec = GridLayout.spec(seatPosition.getColumn());
+        imgSeatIcon.setLayoutParams(param);
+        imgSeatIcon.setTag(seatPosition);
 
-                GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-                param.rowSpec = GridLayout.spec(row);     // row là số nguyên
-                param.columnSpec = GridLayout.spec(column); // column cũng là số nguyên
-                param.width = dpToPx(24);
-                param.height = dpToPx(24);
+        SeatType seatType = seatPosition.getSeatType();
+        imgSeatIcon.setColorFilter(seatType.getTypeOfSeat(getContext()));
+        if(seatType != SeatType.SOLD && seatType != SeatType.NONE){
+            imgSeatIcon.setOnClickListener(v -> {
+                SeatPosition clickedSeat = (SeatPosition) v.getTag();
+                if (selectedSeats.contains(clickedSeat)) {
+                    selectedSeats.remove(clickedSeat);
+                    imgSeatIcon.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                } else {
+                    selectedSeats.add(clickedSeat);
+                    imgSeatIcon.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                }
+                showSelectedSeats();
+                showTotalCost();
+            });
+        }
+        return imgSeatIcon;
+    }
 
-                seatView.setLayoutParams(param);
-                seatView.setOnClickListener(v -> {
-                    Seat clickedSeat = (Seat) v.getTag();
-                    if (selectedSeats.contains(clickedSeat)) {
-                        selectedSeats.remove(clickedSeat);
-                        seatView.setColorFilter(seat.getSeatType().getTypeOfSeat(getContext()));
-                    } else {
-                        selectedSeats.add(clickedSeat);
-                        seatView.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
-                    }
-                    showSelectedSeats();
-                    showTotalCost();
-                });
+    private Space intSeatSpace(int row, int column){
+        Space space = new Space(getContext());
+        GridLayout.LayoutParams param = new GridLayout.LayoutParams();
+        param.width = dpToPx(24);
+        param.height = dpToPx(24);
+        param.rowSpec = GridLayout.spec(row);
+        param.columnSpec = GridLayout.spec(column);
+        space.setLayoutParams(param);
+        return space;
+    }
 
-                gdlSeats.addView(seatView);
+    private void initSeatViews(Integer[][] seatPositions, List<SeatPosition> soldSeats){
+        if(soldSeats != null){
+            for(SeatPosition position : soldSeats){
+                seatPositions[position.getRow()][position.getColumn()] = -1;
+            }
+        }
+        for(int row = 0; row <  seatPositions.length; ++ row) {
+            for(int column = 0; column <  seatPositions[row].length; ++ column) {
+                Integer seatTypeId =  seatPositions[row][column];
+                if(seatTypeId == null) continue;
+                if(seatTypeId == 0){
+                    Space space = intSeatSpace(row, column);
+                    gdlSeats.addView(space);
+                    continue;
+                }
+                SeatPosition seatPosition = new SeatPosition(row, column, String.valueOf(seatTypeId));
+                ImageView imgSeatIcon = initSeatImageIcon(seatPosition);
+                gdlSeats.addView(imgSeatIcon);
             }
         }
     }
 
+    private void  btnNextListener(){
+        if(selectedSeats == null || selectedSeats.size()<1){
+            Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG).show();
+            return;
+        }
+        if(AuthGuard.checkLogin(requireActivity())) {
+            ChooseFoodFragment chooseFoodFragment = new ChooseFoodFragment();
+            Bundle b = new Bundle();
+            order.setScreen(screen);
+            order.setSeats(selectedSeats);
+            b.putParcelable("order", order);
+            chooseFoodFragment.setArguments(b);
+            getParentFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //hieu ung chuyen fragment
+                    .add(R.id.fragment_container, chooseFoodFragment)
+                    .hide(Objects.requireNonNull(getParentFragmentManager().findFragmentById(R.id.fragment_container)))
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+//    private void initSeatViews(Seat[][] seats){
+//        for(int row = 0; row < seats.length; ++ row) {
+//            for(int column = 0; column < seats[row].length; ++ column) {
+//                Seat seat = seats[row][column];
+//                if(seat == null) continue;
+//                ImageView imgSeatView = initImgSeatView(seat);
+//                imgSeatView.setOnClickListener(v -> {
+//                    Seat clickedSeat = (Seat) v.getTag();
+//                    if (selectedSeats.contains(clickedSeat)) {
+//                        selectedSeats.remove(clickedSeat);
+//                        imgSeatView.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+//                    } else {
+//                        selectedSeats.add(clickedSeat);
+//                        imgSeatView.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+//                    }
+//                    showSelectedSeats();
+//                    showTotalCost();
+//                });
+//                gdlSeats.addView(imgSeatView);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((MainActivity) requireActivity()).hideBottomNav();
+//    }
 
     private int dpToPx(int dp) {
         return (int) TypedValue.applyDimension(
@@ -263,17 +384,63 @@ public class ChooseSeatFragment extends Fragment {
     }
 
     private void showTotalCost(){
-        if(order == null) return;
-        Long totalCost = 0L;
-        for(Seat s : selectedSeats){
-            totalCost += s.getPrice();
-        }
-        txtTotalCost.setText(String.valueOf(totalCost));
+        if(order == null || selectedSeats == null) return;
+//        Long totalCost = 0L;
+//        for(Seat s : selectedSeats){
+//            totalCost += s.getPrice();
+//        }
+        Long totalCost = selectedSeats.size() * order.getSelectedTicket().getPrice();
+        txtTotalCost.setText(ViLocaleUtil.formatLocalCurrency(totalCost));
+    }
+
+    private void showLoadingUI(){
+        pbLoadSeats.setVisibility(View.VISIBLE);
+        viewOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        pbLoadSeats.setVisibility(View.GONE);
+        viewOverlay.setVisibility(View.GONE);
     }
 
 }
 
-//    private ColorStateList getTypeOfSeat(Seat seat){
+//    private void initSeatViews(int[][] seatMatrix, List<Seat> seats){
+//        for(int row =0; row < seatMatrix.length; ++row){
+//            for(int column = 0; column < seatMatrix[row].length; ++ column){
+//                int seatId = seatMatrix[row][column];
+//                Seat seat = findSeatById(String.valueOf(seatId), seats);
+//                if (seat == null) continue;
+//                SeatPosition seatPosition = new SeatPosition(row, column, SeatType.fromInt(seatId));
+//                ImageView imgSeatIcon = initImgSeatView(seatPosition);
+//                imgSeatIcon.setOnClickListener(v -> {
+//                    SeatPosition clickedSeat = (SeatPosition) v.getTag();
+//                    if (selectedSeats.contains(clickedSeat)) {
+//                        selectedSeats.remove(clickedSeat);
+//                        imgSeatIcon.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+//                    } else {
+//                        selectedSeats.add(clickedSeat);
+//                        imgSeatIcon.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+//                    }
+//                    showSelectedSeats();
+//                    showTotalCost();
+//                });
+//
+//                gdlSeats.addView(imgSeatIcon);
+//            }
+//        }
+//    }
+//    private Seat findSeatById(String id, List<Seat> allSeats) {
+//        for (Seat seat : allSeats) {
+//            if (seat.getId().equals(id)) {
+//                return seat;
+//            }
+//        }
+//        return null;
+//    }
+
+
+//    private ColorStateList getTypeOfSeat(SeatTypeDTO seat){
 //        if(seat == null) return null;
 //        SeatType seatType = seat.getSeatType();
 //        if(seatType == null) return null;
@@ -281,11 +448,11 @@ public class ChooseSeatFragment extends Fragment {
 //    }
 
 
-//    private void initSeats(List<List<Seat>> seats){
+//    private void initSeats(List<List<SeatTypeDTO>> seats){
 //        for(int row = 0; row < seats.size(); ++row) {
-//            List<Seat> seatRow = seats.get(row);
+//            List<SeatTypeDTO> seatRow = seats.get(row);
 //            for(int column = 0; column < seatRow.size(); ++column) {
-//                Seat seat = seatRow.get(column);
+//                SeatTypeDTO seat = seatRow.get(column);
 //                ImageView seatView = new ImageView(getContext());
 //                seatView.setImageResource(R.drawable.ic_chair);
 //                seatView.setTag(seat);
@@ -299,7 +466,7 @@ public class ChooseSeatFragment extends Fragment {
 //
 //
 //                seatView.setOnClickListener(v -> {
-//                    Seat clickedSeat = (Seat) v.getTag();
+//                    SeatTypeDTO clickedSeat = (SeatTypeDTO) v.getTag();
 //                    if (selectedSeats.contains(clickedSeat)) {
 //                        selectedSeats.remove(clickedSeat);
 //                        seatView.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(getContext(),R.color.seat_standard)));

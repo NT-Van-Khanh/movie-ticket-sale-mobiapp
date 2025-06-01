@@ -73,13 +73,13 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
             rcViewMovieShowtimes = itemView.findViewById(R.id.rcViewMovieShowtimes);
             int spanCount = calculateSpanCount(itemView.getContext(), 65);
             rcViewMovieShowtimes.setLayoutManager(new GridLayoutManager(itemView.getContext(),5));
-            txtMovieFormatName.setOnClickListener(v ->{
-                if(rcViewMovieShowtimes.getVisibility() == View.VISIBLE){
-                    setMovieFormatsVisibility(false);
-                }else{
-                    setMovieFormatsVisibility(true);
-                }
-            });
+//            txtMovieFormatName.setOnClickListener(v ->{
+//                if(rcViewMovieShowtimes.getVisibility() == View.VISIBLE){
+//                    setMovieFormatsVisibility(false);
+//                }else{
+//                    setMovieFormatsVisibility(true);
+//                }
+//            });
             txtMovieFormatName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, arrowRight, null);
         }
 
@@ -92,11 +92,11 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
             }else{
                 showtimeAdapter.updateData(movieFormat.getShowtimes(), movieIndex, getAdapterPosition());
             }
-            if(movieIndex == 0){
-                setMovieFormatsVisibility(true);
-            }else{
-                setMovieFormatsVisibility(false);
-            }
+//            if(movieIndex == 0){
+//                setMovieFormatsVisibility(true);
+//            }else{
+//                setMovieFormatsVisibility(false);
+//            }
         }
 
         public void setMovieFormatsVisibility(boolean status){

@@ -5,22 +5,22 @@ import java.util.List;
 public class FoodType {
     private String id;
     private String name;
-    private List<Item> foods;
+    private List<Food> foods;
 
     public FoodType() {
     }
 
-    public FoodType(String id, String name, List<Item> foods) {
+    public FoodType(String id, String name, List<Food> foods) {
         this.foods = foods;
         this.id = id;
         this.name = name;
     }
 
-    public List<Item> getFoods() {
+    public List<Food> getFoods() {
         return foods;
     }
 
-    public void setFoods(List<Item> foods) {
+    public void setFoods(List<Food> foods) {
         this.foods = foods;
     }
 

@@ -4,14 +4,69 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#616161</color>
     <color name="dark_gray">#565656</color>
-    <color name="app_primary">#1E2E3D</color><!-- màu chủ đạo -->
-    <color name="app_accent">#FFCD01</color><!-- màu nhấn -->
-    <color name="app_accent_text">#ED8E00</color><!-- màu nhấn text -->
-    <color name="app_otp_text">#76705D</color>
 
     <color name="seat_selected">#217C25</color>
     <color name="seat_sold">#928080</color>
     <color name="seat_standard">#192340</color>
     <color name="seat_vip">#E77715</color>
     <color name="seat_couple">#1A237E</color>
+
+<!--    <color name="app_accent">#FFCD01</color>   &lt;!&ndash; màu nhấn &ndash;&gt;-->
+<!--    <color name="app_accent_text">#ED8E00</color>&lt;!&ndash; màu nhấn text &ndash;&gt;-->
+<!--    <color name="app_otp_text">#76705D</color>-->
+
+    <color name="theme_accent">#FFCD01</color>
+    <color name="theme_accent_text">#ED8E00</color>
+    <color name="theme_otp">#F8F8F3</color>
+    <color name="theme_on_otp">#76705D</color>
+    <!-- Màu chủ đạo (primary) -->
+    <color name="theme_primary">#1E2E3D</color>
+    <color name="theme_on_primary">#FFFFFF</color>
+    <color name="theme_primary_container">#EDF0F2</color>    <!-- Container chứa các thành phần như button, switch, ... -->
+    <color name="theme_on_primary_container">#596A7A</color>
+    <color name="theme_primary_variant">#273B4E</color>
+    <color name="theme_on_primary_variant">#F8F8F8</color>
+    <!-- Màu thứ cấp (secondary) -->
+    <color name="theme_secondary">#FFD301</color> <!-- Màu phụ dùng trong giao diện #CB40536F -->
+    <color name="theme_secondary_pressed">#FFCF22</color> <!-- Màu phụ dùng trong giao diện #CB40536F -->
+    <color name="theme_on_secondary">#FFFFFF</color> <!-- Màu chữ trên nền secondary -->
+    <color name="theme_secondary_container">#F6F5F3</color> <!-- Màu nền container của secondary -->
+    <color name="theme_on_secondary_container">#CD452E0A</color> <!-- Màu chữ trên nền container secondary -->
+
+
+    <color name="theme_background">#FFFFFF</color>
+    <color name="theme_on_background">#424249</color>
+
+    <!-- Nền của card, hộp thoại, bottom sheet -->
+    <color name="theme_surface">#F9F9FA</color> <!-- Nền chính của các thành phần nổi -->
+    <color name="theme_on_surface">#BF16203E</color> <!-- Màu chữ trên nền surface -->
+    <color name="theme_surface_tint">#825500</color> <!-- Màu tint phủ trên surface -->
+    <color name="theme_surface_variant">#F5F6F8</color> <!-- Biến thể nền surface -->
+    <color name="theme_on_surface_variant">#434349</color> <!-- Màu chữ trên nền surface variant -->
+
+    <color name="theme_loading">#34000000</color>
+    <color name="theme_countdown_time">#FF8401</color>
+
+    <color name="theme_outline">#E5EBEB</color> <!-- Màu đường viền UI -->
+    <color name="theme_shadow">#000000</color> <!-- Màu bóng đổ -->
+    <color name="theme_outline_variant">#D3C4B4</color> <!-- Màu biến thể đường viền -->
+    <color name="theme_scrim">#80000000</color> <!-- Màu che phủ màn hình khi modal/dialog mở -->
+
+    <!-- Màu thứ ba (tertiary) -->
+    <color name="theme_tertiary">#E62D4154</color> <!-- Màu hỗ trợ thứ ba -->
+    <color name="theme_on_tertiary">#FFFFFF</color> <!-- Màu chữ trên nền tertiary -->
+    <color name="theme_tertiary_container">#FBDEBC</color> <!-- Màu nền container của tertiary -->
+    <color name="theme_on_tertiary_container">#102004</color> <!-- Màu chữ trên nền container tertiary -->
+
+
+
+    <color name="theme_inverse_on_surface">#7A7A7A</color>
+    <color name="theme_inverse_surface">#34302A</color>
+    <color name="theme_inverse_primary">#FFB951</color>
+
+    <color name="theme_error">#B00020</color>
+    <color name="theme_on_error">#FFFFFF</color>
+    <color name="theme_error_container">#FFdad6</color>
+    <color name="theme_on_error_container">#410002</color>
+
 </resources>

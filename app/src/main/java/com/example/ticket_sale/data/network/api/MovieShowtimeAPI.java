@@ -24,6 +24,7 @@ public interface MovieShowtimeAPI {
             @Path("time") String date,
             @Path("filmId") String filmId,
             @Path("subId") String subId);
+
     //http://localhost:8888/filmshowtime-service/api/filmshowtime/get/739baa73-1d11-47c3-a049-c37da5f3da2b/2025-03-26/1/2
     //http://localhost:8888/filmshowtime-service/api/filmshowtime/get/739baa73-1d11-47c3-a049-c37da5f3da2b/2025-03-21/9d7226db-6e50-4370-a50b-f0f2b5f28024/1
 }

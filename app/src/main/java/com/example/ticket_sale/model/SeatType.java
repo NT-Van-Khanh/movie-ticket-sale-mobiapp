@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat;
 import com.example.ticket_sale.R;
 
 public enum SeatType {
-
+    NONE(R.color.white),
     STANDARD(R.color.seat_standard),
     VIP(R.color.seat_vip),
     COUPLE(R.color.seat_couple),
@@ -16,9 +16,28 @@ public enum SeatType {
 
     private final int colorResId;
     private Integer cachedColor;
+
     SeatType (int colorResId){
         this.colorResId = colorResId;
     }
+
+    public static SeatType getSeatTypeFromId(String seatTypeId) {
+        switch (seatTypeId) {
+            case "1":
+                return SeatType.STANDARD;
+            case "3":
+                return SeatType.VIP;
+            case "2":
+                return SeatType.COUPLE;
+            case "-1":
+                return SeatType.SOLD;
+            case "5":
+                return SeatType.SELECTED;
+            default:
+                return SeatType.NONE;
+        }
+    }
+
 
     public int getColorResId(){
         return this.colorResId;

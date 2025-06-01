@@ -26,10 +26,10 @@ import java.util.List;
 public class TheaterShowtimeAdapter extends RecyclerView.Adapter<TheaterShowtimeAdapter.TheaterShowtimeViewHolder> {
     private List<Theater> theaters;
     private Movie movie;
-    private Context context;
-    private Drawable arrowDown;
-    private  Drawable arrowRight;
-    private ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
+    private final Context context;
+    private final Drawable arrowDown;
+    private final Drawable arrowRight;
+    private final ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
 
     public TheaterShowtimeAdapter(List<Theater> theaters, Movie movie, Context context,
                                   ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
@@ -51,9 +51,9 @@ public class TheaterShowtimeAdapter extends RecyclerView.Adapter<TheaterShowtime
     @Override
     public void onBindViewHolder(@NonNull TheaterShowtimeViewHolder holder, int position) {
         Theater theater = theaters.get(position);
+        if(movie == null || movie.getMovieFormats() == null) return;
         holder.bind(theater, movie.getMovieFormats());
-        if(position == 0) holder.setMovieFormatsVisibility(true);
-        else holder.setMovieFormatsVisibility(false);
+        holder.setMovieFormatsVisibility(position == 0);
     }
 
     @Override
@@ -61,9 +61,8 @@ public class TheaterShowtimeAdapter extends RecyclerView.Adapter<TheaterShowtime
         return theaters == null ? 0 : theaters.size();
     }
 
-    public void setTheaters(List<Theater> theaters, Movie movie) {
+    public void setTheaters(List<Theater> theaters) {
         this.theaters = theaters;
-        this.movie = movie;
         notifyDataSetChanged();
     }
 
