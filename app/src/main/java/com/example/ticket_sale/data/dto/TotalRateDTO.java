@@ -6,27 +6,27 @@ import java.util.List;
 
 public class TotalRateDTO {
     @SerializedName("rate")
-    private int totalRate;
-    private List<Rate> comments;
+    private Float totalRate;
+    private List<RateDTO> comments;
 
-    public TotalRateDTO(List<Rate> comments, int totalRate) {
+    public TotalRateDTO(List<RateDTO> comments, Float totalRate) {
         this.comments = comments;
         this.totalRate = totalRate;
     }
 
-    public List<Rate> getComments() {
+    public List<RateDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<Rate> comments) {
+    public void setComments(List<RateDTO> comments) {
         this.comments = comments;
     }
 
-    public int getTotalRate() {
+    public Float getTotalRate() {
         return totalRate;
     }
 
-    public void setTotalRate(int totalRate) {
+    public void setTotalRate(Float totalRate) {
         this.totalRate = totalRate;
     }
 }

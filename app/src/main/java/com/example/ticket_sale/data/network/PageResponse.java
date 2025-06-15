@@ -6,7 +6,7 @@ public class PageResponse<T> {
     private List<T> content;
     private int pageCurrent;
     private int totalPages;
-
+    private T data;
 //    private int totalElements;
 //    private int size;
 //    private int number;
@@ -16,6 +16,30 @@ public class PageResponse<T> {
 //    private Pageable pageable;
 //    private boolean last;
     public PageResponse() {
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public int getPageCurrent() {
+        return pageCurrent;
+    }
+
+    public void setPageCurrent(int pageCurrent) {
+        this.pageCurrent = pageCurrent;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 
     public List<T> getContent() {

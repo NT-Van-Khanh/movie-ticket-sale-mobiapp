@@ -1,14 +1,13 @@
-package com.example.ticket_sale.data.dto;
+package com.example.ticket_sale.model;
 
-import com.example.ticket_sale.model.Movie;
+import com.example.ticket_sale.data.dto.UserDTO;
 
 public class Rate {
     private String id;
     private int star;
     private String content;
     private String timeStamp;
-    private UserDTO customer;
-    private Movie film;
+    private String customerName;
     private String active;
 
     public Rate() {
@@ -30,20 +29,12 @@ public class Rate {
         this.content = content;
     }
 
-    public UserDTO getCustomer() {
-        return customer;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setCustomer(UserDTO customer) {
-        this.customer = customer;
-    }
-
-    public Movie getFilm() {
-        return film;
-    }
-
-    public void setFilm(Movie film) {
-        this.film = film;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getId() {

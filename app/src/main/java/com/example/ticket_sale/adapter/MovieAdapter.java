@@ -51,14 +51,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         private final TextView txtMovieTitle;
         private final TextView txtMovieDuration;
         private final TextView txtMovieAge;
-        private final TextView txtMovieRating;
+//        private final TextView txtMovieRating;
         public MovieViewHolder(@NonNull View itemView) {
             super(itemView);
             imgMovieImage = itemView.findViewById(R.id.imgMovieImage);
             txtMovieTitle =itemView.findViewById(R.id.txtMovieTitle);
             txtMovieDuration = itemView.findViewById(R.id.txtMovieDuration);
             txtMovieAge = itemView.findViewById(R.id.txtMovieAge);
-            txtMovieRating = itemView.findViewById(R.id.txtMovieRating);
+//            txtMovieRating = itemView.findViewById(R.id.txtMovieRating);
         }
 
         public void bind(final Movie movie, final OnItemClickListener listener) {
@@ -68,8 +68,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 txtMovieAge.setText(String.valueOf(movie.getAge()));
             Integer duration = movie.getDuration();
             if(duration != null) txtMovieDuration.setText(String.format(ViLocaleUtil.localeVN,"%d phút", duration));
-            Float rating = movie.getRating();
-            if(rating != null) txtMovieRating.setText(String.valueOf(rating));
+//            String rating = movie.getRating() == null ? "Chưa có": String.format(ViLocaleUtil.localeVN,"%01f sao",movie.getRating());
+//            txtMovieRating.setText(rating);
             Glide.with(itemView.getContext())
                     .load(movie.getImageLink())
                     .placeholder(R.drawable.mv_dai_chien_nguoi_khong_lo)

@@ -5,6 +5,7 @@ import com.example.ticket_sale.data.dto.MovieDTO;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
 import com.example.ticket_sale.model.MovieType;
+import com.example.ticket_sale.util.ViLocaleUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class MovieMapper {
         movie.setDescription(movieDTO.getDescription());
         movie.setImageLink(movieDTO.getImageLink());
         movie.setTrailerLink(movieDTO.getTrailerLink());
-//        movie.setMovieTypes(movieDTO.getMovieTypes());
+
         List<MovieFormat> mvFormats = movieDTO.getFormat().stream()
                                                     .map(MovieFormatMapper::toMovieFormat)
                                                     .collect(Collectors.toList());
@@ -34,14 +35,30 @@ public class MovieMapper {
         try {
             movie.setDuration(Integer.parseInt(movieDTO.getDuration()));
         } catch (NumberFormatException e) {
-            movie.setDuration(null); // hoặc gán giá trị mặc định nếu muốn
+            movie.setDuration(120); // hoặc gán giá trị mặc định nếu muốn
         }
 
-        // Các trường không có trong DTO
-        movie.setOpeningDate(null);  // Không có trong DTO
-        movie.setRating(5F);       // Không có trong DTO
-        movie.setActor(null);        // Không có trong DTO
-        movie.setDirector(null);     // Không có trong DTO
+        String content = movieDTO.getContent();
+        List<String> openingDate = ViLocaleUtil.extractValuesFromHtml(content,"Khởi chiếu:");
+        movie.setOpeningDate(openingDate.isEmpty() ? null : openingDate.get(0));
+        movie.setRating(null);
+        List<String> actors = ViLocaleUtil.extractValuesFromHtml(content,"Diễn viên:");
+        movie.setActor(String.join(", ", actors));
+        List<String> directors = ViLocaleUtil.extractValuesFromHtml(content,"Đạo diễn:");
+        movie.setDirector(String.join(", ", directors));
         return movie;
     }
+
+    private String extractActor(String content){
+        String keyword = "Diễn viên:";
+        int start = content.indexOf(keyword);
+        if (start == -1) return "";
+
+        start += keyword.length();
+        int end = content.indexOf("</p>", start);
+        if (end == -1) end = content.length();
+
+        return content.substring(start, end).trim();
+    }
+
 }

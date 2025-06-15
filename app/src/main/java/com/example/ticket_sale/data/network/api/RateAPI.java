@@ -3,7 +3,7 @@ package com.example.ticket_sale.data.network.api;
 import com.example.ticket_sale.data.dto.TotalRateDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.network.PageResponse;
-import com.example.ticket_sale.data.dto.Rate;
+import com.example.ticket_sale.data.dto.RateDTO;
 
 import java.util.Map;
 
@@ -11,7 +11,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -33,12 +32,12 @@ public interface RateAPI {
 
     // http://localhost:8888/rate-service/api/rate/get/rate?page=0&limit=10&asc=asc&orderBy=timeStamp&status=none
     @GET(BASE_PATH + "/get/rate")
-    Call<ApiResponse<PageResponse<Rate>>> getCustomerRatesWithFilter(@Query("page") int page,
-                       @Query("limit") int limit,
-                       @Query("q") String q,
-                       @Query("asc") String asc,
-                       @Query("orderBy") String orderBy,
-                       @Query("status") String status);
+    Call<ApiResponse<PageResponse<RateDTO>>> getCustomerRatesWithFilter(@Query("page") int page,
+                                                                        @Query("limit") int limit,
+                                                                        @Query("q") String q,
+                                                                        @Query("asc") String asc,
+                                                                        @Query("orderBy") String orderBy,
+                                                                        @Query("status") String status);
 
     //http://localhost:8888/rate-service/api/rate/add/cd664219-042d-4ffc-b851-5bbba4005d8b/1
     //Request body
@@ -50,9 +49,9 @@ public interface RateAPI {
     //  "active": "ACTIVE"
     //}
     @POST(BASE_PATH + "/add/{userId}/{filmId}")
-    Call<ApiResponse<Rate>> addRate(@Path("filmId") String movieId,
-                       @Path("userId") String userId,
-                       @Body Map<String,Object> rate);
+    Call<ApiResponse<RateDTO>> addRate(@Path("filmId") String movieId,
+                                       @Path("userId") String userId,
+                                       @Body Map<String,Object> rate);
 
 }
 

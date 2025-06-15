@@ -5,7 +5,8 @@ public class ApiResponse <T>{
     private String message;
     private T data;
     public enum Status { SUCCESS, ERROR, LOADING }
-    public ApiResponse() {
+    public ApiResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
     }
 
     public ApiResponse(int statusCode, String message,T data) {

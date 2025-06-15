@@ -21,8 +21,10 @@ import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.mapper.RateMapper;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
+import com.example.ticket_sale.model.Rate;
 import com.example.ticket_sale.util.ViLocaleUtil;
 import com.example.ticket_sale.viewmodel.MovieDetailViewModel;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -31,6 +33,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 
 public class MovieDetailFragment extends Fragment {
@@ -55,13 +58,15 @@ public class MovieDetailFragment extends Fragment {
     private RatingBar ratingBar;
     private EditText edtComment;
     private Button btnAddComment;
+    private YouTubePlayerView vidMovieTrailer;
 
     private MovieDetailViewModel movieDetailViewModel;
 
 
 //    VideoView vidMovieTrailer;
-    private YouTubePlayerView vidMovieTrailer;
     private Movie movie;
+    private List<Rate> rate;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -99,15 +104,40 @@ public class MovieDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         initView(root);
+        initData();
         setDataForView();
         return root;
     }
 
-    private void setDataForView(){
+    private void initData() {
         showLoadingUI();
         if(getArguments() == null) getParentFragmentManager().popBackStack();
         movie = getArguments().getParcelable("movie");
         if (movie == null) getParentFragmentManager().popBackStack();
+        movieDetailViewModel = new MovieDetailViewModel();
+        getRateOfMovie(movie.getId());
+    }
+
+    private void getRateOfMovie(String movieId) {
+        movieDetailViewModel.getRatesOfMovie(movieId).observe(getViewLifecycleOwner(), response ->{
+            if(response == null){
+                Toast.makeText(getContext(), "Lỗi kết nối. Không thể lấy dữ liệu đánh giá", Toast.LENGTH_SHORT).show();
+            }else if(response.getStatusCode() != 200){
+                Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu đánh giá", Toast.LENGTH_SHORT).show();
+            }else{
+                movie.setRating(response.getData().getData().getTotalRate());
+                rate = response.getData().getData().getComments()
+                        .stream()
+                        .map(RateMapper::toRate)
+                        .collect(Collectors.toList());
+                txtMovieRating.setText(movie.getRating() == 0.0 ? "Chưa có" : String.format(Locale.getDefault(),"%.1f sao", movie.getRating()));
+
+            }
+            checkCommented();
+        });
+    }
+
+    private void setDataForView(){
         Glide.with(this)
                 .load(movie.getImageLink())
                 .placeholder(R.drawable.mv_elio)
@@ -121,7 +151,6 @@ public class MovieDetailFragment extends Fragment {
         txtMovieAge.setText( movie.getAge() == null ? "P" : String.format(Locale.getDefault(), "T%d",movie.getAge()));
         txtMovieDuration.setText(movie.getDuration() == null ? " - " : String.format(Locale.getDefault(), "%d phút",movie.getDuration()));
         txtMovieOpeningDate.setText(movie.getOpeningDate() == null ? "Đang chiếu" : movie.getOpeningDate().toString());
-        txtMovieRating.setText(movie.getRating() == null ? "Chưa có đánh giá" : String.format(Locale.getDefault(),"%f sao", movie.getRating()));
         txtMovieActor.setText(movie.getActor() == null ? " - ": movie.getActor());
         txtMovieDirector.setText(movie.getDirector() == null ? " - ":movie.getDirector());
 
@@ -135,8 +164,7 @@ public class MovieDetailFragment extends Fragment {
         });
         txtMovieGenre.setText(movie.getMovieTypesAsString());
         txtMovieFormat.setText(movie.getMovieFormatsAsString());
-        movieDetailViewModel = new MovieDetailViewModel();
-        checkCommented();
+
     }
 
     private void checkCommented(){

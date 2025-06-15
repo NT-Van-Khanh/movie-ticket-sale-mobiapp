@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.ticket_sale.data.ApiServiceFactory;
-import com.example.ticket_sale.data.dto.Rate;
+import com.example.ticket_sale.data.dto.RateDTO;
 import com.example.ticket_sale.data.dto.TotalRateDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.network.PageResponse;
@@ -13,7 +13,7 @@ import com.example.ticket_sale.util.TokenManager;
 
 public class MovieDetailViewModel extends ViewModel {
     private final RateRepository rateRepository;
-    private LiveData<ApiResponse<Rate>> addRateResult;
+    private LiveData<ApiResponse<RateDTO>> addRateResult;
     private LiveData<ApiResponse<PageResponse<TotalRateDTO>>> ratesOfMovie;
     private LiveData<ApiResponse<Void>> userCommented;
 
@@ -26,7 +26,7 @@ public class MovieDetailViewModel extends ViewModel {
         this.addRateResult = rateRepository.addRate(userId, movieId, star, comment);
     }
 
-    public LiveData<ApiResponse<Rate>> addRate(String movieId, int star, String comment) {
+    public LiveData<ApiResponse<RateDTO>> addRate(String movieId, int star, String comment) {
         fetchAddRate(movieId, star, comment);
         return addRateResult;
     }

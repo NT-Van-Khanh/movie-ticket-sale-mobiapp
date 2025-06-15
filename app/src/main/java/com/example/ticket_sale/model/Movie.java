@@ -13,7 +13,7 @@ public class Movie implements Parcelable {
     private String title;
     private Integer age;
     private Integer duration;//String
-    private LocalDate openingDate;    //release date
+    private String openingDate;    //release date
     private Float rating;
 
     private String actor;
@@ -53,7 +53,7 @@ public class Movie implements Parcelable {
     }
 
     public Movie( String id, String title, Integer age, Integer duration,
-                  Integer imageResId, String nation, LocalDate openingDate, Float rating,
+                  Integer imageResId, String nation, String openingDate, Float rating,
                   String description, String actor, String director,
                   List<MovieFormat> movieFormats, List<MovieType> movieTypes) {
         this.actor = actor;
@@ -226,11 +226,11 @@ public class Movie implements Parcelable {
         this.nation = nation;
     }
 
-    public LocalDate getOpeningDate() {
+    public String getOpeningDate() {
         return openingDate;
     }
 
-    public void setOpeningDate(LocalDate openingDate) {
+    public void setOpeningDate(String openingDate) {
         this.openingDate = openingDate;
     }
 

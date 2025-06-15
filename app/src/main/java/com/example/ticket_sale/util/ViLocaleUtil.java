@@ -8,9 +8,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ViLocaleUtil {
     private static final DecimalFormat decimalFormat = new DecimalFormat("#,###");
@@ -81,6 +85,7 @@ public class ViLocaleUtil {
             return date;
         }
     }
+
     public static String formatToHHmm(String timeString){
         if (timeString == null || !timeString.matches("^\\d{1,2}:\\d{2}$"))
             return null;
@@ -93,5 +98,21 @@ public class ViLocaleUtil {
         }
 
         return String.format("%02d:%02d", hour, minute);
+    }
+
+
+    public static List<String> extractValuesFromHtml(String content, String key) {
+        List<String> results = new ArrayList<>();
+        String patternString = key + "\\s*(.*?)\\s*(<br>|</p>|\\n|$)";
+        Pattern pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(content);
+
+        while (matcher.find()) {
+            String value = matcher.group(1);
+            if(value != null){
+                results.add(value.trim());
+            }
+        }
+        return results;
     }
 }

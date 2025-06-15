@@ -137,13 +137,13 @@ public class HomeFragment extends Fragment {
         movieAdapter.setMovies(new ArrayList<>());
         pgbLoadMovies.setVisibility(View.VISIBLE);
         btnMoreMovies.setVisibility(View.GONE);
-        homeViewModel.getCurrentMovies().observe(getViewLifecycleOwner(), dataResult ->{
+        homeViewModel.getTop6CurrentMovies().observe(getViewLifecycleOwner(), dataResult ->{
             if(dataResult == null || dataResult.getStatusCode()!=200){
                 Log.e("MovieAPI", "Failed to get movies: " + dataResult);
                 Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
                 currentMovies = getExampleMovies();
             }else{
-                currentMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+                currentMovies = dataResult.getData().getContent().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
             }
             movieAdapter.setMovies(currentMovies);
             pgbLoadMovies.setVisibility(View.GONE);
@@ -155,13 +155,13 @@ public class HomeFragment extends Fragment {
         movieAdapter.setMovies(new ArrayList<>());
         btnMoreMovies.setVisibility(View.GONE);
         pgbLoadMovies.setVisibility(View.VISIBLE);
-        homeViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), dataResult ->{
+        homeViewModel.getTop6UpcomingMovies().observe(getViewLifecycleOwner(), dataResult ->{
             if(dataResult == null || dataResult.getStatusCode()!=200){
                 Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
                 upcomingMovies = getExampleUpcomingMovies();
 
             }else{
-                upcomingMovies = dataResult.getData().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
+                upcomingMovies = dataResult.getData().getContent().stream().map(MovieMapper::toMovie).collect(Collectors.toList());
             }
             movieAdapter.setMovies(upcomingMovies);
             pgbLoadMovies.setVisibility(View.GONE);
@@ -265,15 +265,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void openMovieDetail(Movie movie) {
+        showLoadingUI();
         Bundle bundle = new Bundle();
         bundle.putParcelable("movie", movie);
         MovieDetailFragment detailFragment = new MovieDetailFragment();
         detailFragment.setArguments(bundle);
-
+        Log.e("movie id",movie.getId());
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, detailFragment)
                 .addToBackStack(null)
                 .commit();
+        hideLoadingUI();
     }
 
 
@@ -301,6 +303,16 @@ public class HomeFragment extends Fragment {
         Movie mv5 = new Movie("MV5",R.drawable.mv_nu_tu_bong_toi,"Nữ tu bóng tối",114,16, 9.2F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
         Movie mv6 = new Movie("MV6",R.drawable.mv_the_bad_guys_2,"Băng đảng quái kiệt 2",131,16, 9.0F, "https://youtu.be/JvsRMNTV9is?si=Uc0WwR1RWtrjrsyu");
         return Arrays.asList(mv1,mv2,mv3,mv4,mv5,mv6);
+    }
+
+    private void showLoadingUI(){
+        viewOverlay.setVisibility(View.VISIBLE);
+        pgbLoadMovies.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingUI(){
+        viewOverlay.setVisibility(View.GONE);
+        pgbLoadMovies.setVisibility(View.GONE);
     }
 }
 
