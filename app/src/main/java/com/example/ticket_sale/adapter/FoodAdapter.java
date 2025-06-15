@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder>{
     private List<Food> foods;
-    private OnQuantityChangeListener onQuantityChangeListener;
+    private final OnQuantityChangeListener onQuantityChangeListener;
 
     public FoodAdapter(List<Food> foods, OnQuantityChangeListener listener) {
         this.foods = foods;

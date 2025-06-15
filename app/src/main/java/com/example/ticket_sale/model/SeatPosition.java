@@ -20,7 +20,9 @@ public class SeatPosition {
     public SeatPosition(int row, int column) {
         this.row = row;
         this.column = column;
+        this.title = getTitleByRowColumn(row, column);
     }
+
 
     private String getTitleByRowColumn(int row, int column){
         char rowChar = (char) ('A'+row);

@@ -19,7 +19,7 @@ public class RetrofitInstance {
     public static Retrofit getInstance(){
         if(retrofit == null) {
             logging = new HttpLoggingInterceptor(message -> Log.d("RetrofitNetworkLog", message));
-            logging.setLevel(HttpLoggingInterceptor.Level.HEADERS); // Có thể chọn BASIC, HEADERS, BODY
+            logging.setLevel(HttpLoggingInterceptor.Level.BODY); // Có thể chọn BASIC, HEADERS, BODY
 
             authInterceptor = new AuthInterceptor(TokenManager.getToken());
 

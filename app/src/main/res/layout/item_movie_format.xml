@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="5dp"
-        android:paddingVertical="6dp"
-        android:background="@color/theme_surface_variant">
+        android:paddingVertical="6dp">
     </androidx.recyclerview.widget.RecyclerView>
 </LinearLayout>

@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.example.ticket_sale.data.RetrofitInstance;
 
+import org.json.JSONObject;
+
 public class TokenManager {
     private static final String PREFS_NAME = "sale_ticket_pref";
     private static final String TOKEN_KEY = "accessToken";
@@ -41,7 +43,13 @@ public class TokenManager {
             RetrofitInstance.updateToken(null);
         }
     }
+    public static String getUserIdFromToken(){
+        String token = TokenManager.getToken();
+        JSONObject payload = JwtUtil.decodeJWT(token);
+        if(payload == null) return null;
+        return payload.optString("id");
 
+    }
     public static boolean isLoggedIn() {
         return getToken() != null && !getToken().isEmpty();
     }

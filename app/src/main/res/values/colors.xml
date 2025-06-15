@@ -4,12 +4,14 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#616161</color>
     <color name="dark_gray">#565656</color>
-
-    <color name="seat_selected">#217C25</color>
-    <color name="seat_sold">#928080</color>
-    <color name="seat_standard">#192340</color>
+    <color name="green">#00897B</color>
+    <color name="ticket_primary">#2B3238</color>
+    <color name="ticket_on_background">#979797</color>
+    <color name="seat_selected">#2CAF32</color>
+    <color name="seat_sold">#7A7E87</color>
+    <color name="seat_standard">#273A73</color>
     <color name="seat_vip">#E77715</color>
-    <color name="seat_couple">#1A237E</color>
+    <color name="seat_couple">#0D47A1</color>
 
 <!--    <color name="app_accent">#FFCD01</color>   &lt;!&ndash; màu nhấn &ndash;&gt;-->
 <!--    <color name="app_accent_text">#ED8E00</color>&lt;!&ndash; màu nhấn text &ndash;&gt;-->
@@ -25,7 +27,7 @@
     <color name="theme_primary_container">#EDF0F2</color>    <!-- Container chứa các thành phần như button, switch, ... -->
     <color name="theme_on_primary_container">#596A7A</color>
     <color name="theme_primary_variant">#273B4E</color>
-    <color name="theme_on_primary_variant">#F8F8F8</color>
+    <color name="theme_on_primary_variant">#CDC9CCDE</color>
     <!-- Màu thứ cấp (secondary) -->
     <color name="theme_secondary">#FFD301</color> <!-- Màu phụ dùng trong giao diện #CB40536F -->
     <color name="theme_secondary_pressed">#FFCF22</color> <!-- Màu phụ dùng trong giao diện #CB40536F -->

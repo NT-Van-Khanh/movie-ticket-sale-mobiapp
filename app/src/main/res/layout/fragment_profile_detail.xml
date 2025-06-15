@@ -1,14 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.ProfileDetailFragment">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:contentInsetStart="0dp"
+            android:paddingStart="0dp">
+        <TextView
+            android:id="@+id/txtGoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            app:backgroundTint="@null"
+            android:drawableLeft="@drawable/ic_go_back"
+            android:drawablePadding="-2dp"
+            android:gravity="center_vertical"
+            android:text="Quay lại"
+            android:textColor="@color/theme_tertiary"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+        </Toolbar>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cập nhật thông tin"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:textColor="@color/theme_primary"
+            android:layout_marginTop="65dp"/>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Họ và tên"
+            android:textSize="17sp"
+            android:paddingStart="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/theme_on_surface_variant"
+            android:layout_marginTop="65dp"/>
+
+        <EditText
+            android:id="@+id/edtFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nguyễn Văn An"
+            android:drawablePadding="8dp"
+            android:maxLength="100"
+            android:drawableStart="@drawable/ic_contact_page"
+            android:background="@drawable/bgd_edt_login"
+            android:singleLine="true"
+            android:paddingHorizontal="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="17sp"
+            android:paddingStart="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/theme_on_surface_variant"
+            android:layout_marginTop="15dp"/>
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="nguyen123@gmail.com"
+            android:drawablePadding="8dp"
+            android:maxLength="100"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/ic_email"
+            android:background="@drawable/bgd_edt_login"
+            android:paddingHorizontal="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="2dp"/>
+
+        <TextView
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại"
+            android:textSize="17sp"
+            android:fontFamily="sans-serif-medium"
+            android:paddingStart="16dp"
+            android:textColor="@color/theme_on_surface_variant"
+            android:layout_marginTop="15dp"/>
+        <EditText
+            android:id="@+id/edtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="0123456789"
+            android:drawablePadding="8dp"
+            android:maxLength="15"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/ic_phone"
+            android:background="@drawable/bgd_edt_login"
+            android:paddingHorizontal="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="2dp"/>
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="CẬP NHẬT"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-black"
+            app:backgroundTint="@null"
+            android:background="@drawable/bgd_btn_login"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="65dp"/>
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbLoadUpdateUser"
+        android:layout_width="40dp"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+    <View
+        android:id="@+id/viewOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+        android:layout_centerInParent="true"
+        android:background="@color/theme_loading"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
+</RelativeLayout>

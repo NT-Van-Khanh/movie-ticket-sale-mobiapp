@@ -24,7 +24,7 @@ public class MovieDTO {
     private String trailerLink;
 
     @SerializedName("typeFilms")
-    private List<MovieType> movieTypes;
+    private List<MovieTypeDTO> movieTypes;
 
     @SerializedName("sub")
     private List<MovieFormatDTO> format;
@@ -51,11 +51,11 @@ public class MovieDTO {
         this.format = format;
     }
 
-    public List<MovieType> getMovieTypes() {
+    public List<MovieTypeDTO> getMovieTypes() {
         return movieTypes;
     }
 
-    public void setMovieTypes(List<MovieType> movieTypes) {
+    public void setMovieTypes(List<MovieTypeDTO> movieTypes) {
         this.movieTypes = movieTypes;
     }
 

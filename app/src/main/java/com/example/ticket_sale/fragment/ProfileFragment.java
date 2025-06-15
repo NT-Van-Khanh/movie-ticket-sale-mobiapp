@@ -28,6 +28,7 @@ import com.example.ticket_sale.adapter.SettingAdapter;
 import com.example.ticket_sale.model.SettingItem;
 import com.example.ticket_sale.model.User;
 import com.example.ticket_sale.util.JwtUtil;
+import com.example.ticket_sale.util.ThemeManager;
 import com.example.ticket_sale.util.TokenManager;
 import com.example.ticket_sale.util.UserUtil;
 import com.example.ticket_sale.mapper.UserMapper;
@@ -115,6 +116,9 @@ public class ProfileFragment extends Fragment {
         if(TokenManager.isLoggedIn()){
             getUserFromAPI();
             settingItems = initSettingsItem();
+        }else{
+            pbLoadUser.setVisibility(View.GONE);
+            viewOverlay.setVisibility(View.GONE);
         }
     }
 
@@ -133,6 +137,7 @@ public class ProfileFragment extends Fragment {
         viewOverlay = v.findViewById(R.id.viewOverlay);
 
         swDarkMode = v.findViewById(R.id.swDarkMode);
+        swDarkMode.setChecked(ThemeManager.isDarkMode(requireContext()));
         swDarkMode.setOnCheckedChangeListener(this::changeThemeMode);
 
         rcViewSettings.setLayoutManager( new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -154,11 +159,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void changeThemeMode(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+        ThemeManager.setDarkMode(requireContext(), isChecked);
     }
 
     private void getUserFromAPI() {

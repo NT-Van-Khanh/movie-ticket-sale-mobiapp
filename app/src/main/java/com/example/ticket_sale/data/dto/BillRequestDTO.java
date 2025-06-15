@@ -6,31 +6,31 @@ public class BillRequestDTO {
     private Long totalPrice;//
     private String paymentMethodId;//
     private String transactionCode;
-    private List<ChairDTO> chairs;//id
-    private List<FoodResponseDTO> dishes;//id- dc null
+    private List<ChairRequestDTO> chairs;//id
+    private List<FoodOrderDTO> dishes;//id- dc null
     private Integer filmShowTimeId; //id
     private String roomId;//id
     private String filmId;
     private String userName;// ten khach hang - khong phai trong login
     private String email;
     private String numberPhone;
-
+//    private String customerId;
     public BillRequestDTO() {
     }
 
-    public List<ChairDTO> getChairs() {
+    public List<ChairRequestDTO> getChairs() {
         return chairs;
     }
 
-    public void setChairs(List<ChairDTO> chairs) {
+    public void setChairs(List<ChairRequestDTO> chairs) {
         this.chairs = chairs;
     }
 
-    public List<FoodResponseDTO> getDishes() {
+    public List<FoodOrderDTO> getDishes() {
         return dishes;
     }
 
-    public void setDishes(List<FoodResponseDTO> dishes) {
+    public void setDishes(List<FoodOrderDTO> dishes) {
         this.dishes = dishes;
     }
 

@@ -5,6 +5,12 @@
     <color name="gray">#616161</color>
     <color name="dark_gray">#565656</color>
 
+    <color name="seat_selected">#4CAF50</color>      <!-- Xanh lá nổi bật hơn trên nền tối -->
+    <color name="seat_sold">#808592</color>          <!-- Xám nhạt hơn để dễ thấy -->
+    <color name="seat_standard">#4DD0E1</color>      <!-- Xanh nhạt tạo cảm giác nhẹ nhàng -->
+    <color name="seat_vip">#E77715</color>           <!-- Cam sáng hơn để nổi bật -->
+    <color name="seat_couple">#0D47A1</color>        <!-- Xanh tím nhạt hơn -->
+
 <!--    <color name="app_accent">#FFCD01</color>&lt;!&ndash; màu nhấn &ndash;&gt;-->
 <!--    <color name="app_accent_text">#ED8E00</color>&lt;!&ndash; màu nhấn text &ndash;&gt;-->
 <!--    <color name="app_otp_text">#76705D</color>-->
@@ -21,7 +27,7 @@
     <color name="theme_on_primary">#131F2A</color>
     <color name="theme_primary_container">#1E2E3D</color>
     <color name="theme_on_primary_container">#D6E4F0</color>
-    <color name="theme_primary_variant">#F8F8F8</color>
+    <color name="theme_primary_variant">#CDC9CCDE</color>
     <color name="theme_on_primary_variant">#243749</color>
 
 
@@ -33,7 +39,7 @@
     <color name="theme_surface">#E6131F2A</color>
     <color name="theme_on_surface">#FFFFFF</color>
     <color name="theme_surface_variant">#E61A2A38</color>
-    <color name="theme_on_surface_variant">#FFBD6D</color>
+    <color name="theme_on_surface_variant">#B8884E</color>
     <color name="theme_surface_tint">#825500</color>
 
 

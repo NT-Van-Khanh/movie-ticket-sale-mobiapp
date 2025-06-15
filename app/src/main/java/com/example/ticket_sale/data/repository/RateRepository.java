@@ -3,6 +3,7 @@ package com.example.ticket_sale.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ticket_sale.data.dto.TotalRateDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.network.PageResponse;
@@ -19,12 +20,10 @@ public class RateRepository {
         this.rateAPI = rateAPI;
     }
 
-    public LiveData<ApiResponse<PageResponse<Rate>>> getRateByMovieId(String movieId, int page,
-                                                               int limit, String asc,
-                                                               String orderBy, String status){
-        MutableLiveData<ApiResponse<PageResponse<Rate>>> responseData = new MutableLiveData<>();
+    public LiveData<ApiResponse<PageResponse<TotalRateDTO>>> getRateByMovieId(String movieId, int page, int limit){
+        MutableLiveData<ApiResponse<PageResponse<TotalRateDTO>>> responseData = new MutableLiveData<>();
 
-        rateAPI.getRateByMovieId(movieId, page, limit, asc, orderBy,status)
+        rateAPI.getRateByMovieId(movieId, page, limit, "asc", "timeStamp","ACTIVE")
                 .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName()+"_getRateByMovieId"));
         return responseData;
     }
@@ -36,11 +35,11 @@ public class RateRepository {
         return responseData;
     }
 
-    public LiveData<ApiResponse<PageResponse<Rate>>> getRatesWithFilter(int page, int limit, String q,
+    public LiveData<ApiResponse<PageResponse<Rate>>> getCustomerRatesWithFilter(int page, int limit, String q,
                                                                  String asc, String orderBy, String status) {
         MutableLiveData<ApiResponse<PageResponse<Rate>>> responseData = new MutableLiveData<>();
-        rateAPI.getRatesWithFilter(page, limit, q, asc, orderBy, status)
-                .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getRates"));
+        rateAPI.getCustomerRatesWithFilter(page, limit, q, asc, orderBy, status)
+                .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_getCustomerRates"));
         return responseData;
     }
 
@@ -58,13 +57,6 @@ public class RateRepository {
         MutableLiveData<ApiResponse<Rate>> responseData = new MutableLiveData<>();
         rateAPI.addRate(movieId, userId, rate)
                 .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_addRate"));
-        return responseData;
-    }
-
-    public LiveData<ApiResponse<Void>> deleteRate(String rateId) {
-        MutableLiveData<ApiResponse<Void>> responseData = new MutableLiveData<>();
-        rateAPI.deleteRate(rateId)
-                .enqueue(new CustomerCallBack<>(responseData, getClass().getSimpleName() + "_deleteRate"));
         return responseData;
     }
 }

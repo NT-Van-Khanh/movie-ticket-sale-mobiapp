@@ -58,14 +58,29 @@ public class ViLocaleUtil {
 
     public static Date stringToDate(String dateString){
         try{
-            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             return outputFormat.parse(dateString);
         }catch (ParseException ex){
             Log.e("stringToDate","Lỗi chuyển chuỗi ký tự thành ngày: " + dateString,ex);
             return null;
         }
     }
+    public static String formatToddMMyyyy(String date) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
 
+            Date parsedDate = inputFormat.parse(date);
+            if (parsedDate != null) {
+                return outputFormat.format(parsedDate);
+            } else {
+                return date;
+            }
+        } catch (ParseException e) {
+            Log.e("ViLocaleUtil.parseDate", String.valueOf(e));
+            return date;
+        }
+    }
     public static String formatToHHmm(String timeString){
         if (timeString == null || !timeString.matches("^\\d{1,2}:\\d{2}$"))
             return null;

@@ -35,7 +35,7 @@ public interface ScreenAPI {
 
     @GET("/payment-service/api/billchair/{filmShowId}")
     Call<ApiResponse<List<ChairDTO>>> getSoldSeats(
-            @Path("filmShowId") String showtimeId);
+            @Path("filmShowId") Integer showtimeId);
 }
 //http://localhost:8888/payment-service/api/billchair/12
 //{

@@ -50,7 +50,7 @@ public class ScreenRepository {
         return responseData;
     }
 
-    public LiveData<ApiResponse<List<ChairDTO>>> getSoldSeats(String showtimeId){
+    public LiveData<ApiResponse<List<ChairDTO>>> getSoldSeats(Integer showtimeId){
         MutableLiveData<ApiResponse<List<ChairDTO>>> responseData = new MutableLiveData<>();
         screenAPI.getSoldSeats(showtimeId)
                 .enqueue( new CustomerCallBack<>(responseData,

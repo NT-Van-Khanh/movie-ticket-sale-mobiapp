@@ -3,6 +3,8 @@ package com.example.ticket_sale.mapper;
 import android.util.Log;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.data.dto.FoodOrderDTO;
+import com.example.ticket_sale.data.dto.FoodRequestDTO;
 import com.example.ticket_sale.data.dto.FoodResponseDTO;
 import com.example.ticket_sale.data.dto.FoodTypeDTO;
 import com.example.ticket_sale.model.Food;
@@ -23,6 +25,14 @@ public class FoodMapper {
         return f;
     }
 
+    public static FoodOrderDTO toFoodOrderDTO(Food food, Integer amount){
+        FoodOrderDTO foodOrderDTO = new FoodOrderDTO();
+        foodOrderDTO.setDishDto(new FoodRequestDTO(food.getId()));
+        foodOrderDTO.setAmount(amount);
+        foodOrderDTO.setPrice(food.getPrice() * amount);
+        return foodOrderDTO;
+    }
+
 //    public static FoodCombo toFoodCombo(FoodResponseDTO foodDTO){
 //        FoodCombo fc = new FoodCombo();
 //        fc.setId(foodDTO.getId());
@@ -34,7 +44,13 @@ public class FoodMapper {
 //    }
 
     public static FoodType toFoodType(FoodTypeDTO foodTypeDTO){
-//       List<Item> foods;
+        Log.e("foods", String.valueOf( foodTypeDTO.getDishes().size()));
+        List<Food> foods = foodTypeDTO.getDishes()
+                    .stream()
+                    .map(FoodMapper::toFood)
+                    .collect(Collectors.toList());
+        return new FoodType( foodTypeDTO.getId(), foodTypeDTO.getName(), foods);
+        //       List<Item> foods;
 
 //       if("COMBO".equals(foodTypeDTO.getName())){
 //            foods = foodTypeDTO.getDishes()
@@ -47,11 +63,5 @@ public class FoodMapper {
 //                    .map(FoodMapper::toFood)
 //                    .collect(Collectors.toList());
 //        }
-        Log.e("foods", String.valueOf( foodTypeDTO.getDishes().size()));
-        List<Food> foods = foodTypeDTO.getDishes()
-                    .stream()
-                    .map(FoodMapper::toFood)
-                    .collect(Collectors.toList());
-        return new FoodType( foodTypeDTO.getId(), foodTypeDTO.getName(), foods);
     }
 }

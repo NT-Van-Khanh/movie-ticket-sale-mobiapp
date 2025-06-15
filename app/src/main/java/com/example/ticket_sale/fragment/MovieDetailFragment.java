@@ -10,9 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -20,6 +24,7 @@ import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.MovieFormat;
 import com.example.ticket_sale.util.ViLocaleUtil;
+import com.example.ticket_sale.viewmodel.MovieDetailViewModel;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
@@ -42,8 +47,16 @@ public class MovieDetailFragment extends Fragment {
     private TextView txtMovieFormat; //movie format
     private TextView txtMovieContent;
     private Button btnRedirectToShowtime;
+
     private ProgressBar pbLoadMovieDetail;
     private  View viewOverlay;
+
+    private LinearLayout lnlComment;
+    private RatingBar ratingBar;
+    private EditText edtComment;
+    private Button btnAddComment;
+
+    private MovieDetailViewModel movieDetailViewModel;
 
 
 //    VideoView vidMovieTrailer;
@@ -87,7 +100,6 @@ public class MovieDetailFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_movie_detail, container, false);
         initView(root);
         setDataForView();
-
         return root;
     }
 
@@ -96,15 +108,22 @@ public class MovieDetailFragment extends Fragment {
         if(getArguments() == null) getParentFragmentManager().popBackStack();
         movie = getArguments().getParcelable("movie");
         if (movie == null) getParentFragmentManager().popBackStack();
-
-        imgMoviePoster.setImageResource(movie.getImageResId());
+        Glide.with(this)
+                .load(movie.getImageLink())
+                .placeholder(R.drawable.mv_elio)
+                .error(R.drawable.mv_elio)
+                .into(imgMoviePoster);
+//        imgMoviePoster.setImageResource(movie.getImageResId());
         txtMovieTitle.setText(movie.getTitle());
-        txtMovieAge.setText(String.format(Locale.getDefault(), "T%d",movie.getAge()));
-        txtMovieDuration.setText(String.format(Locale.getDefault(), "%d phút",movie.getDuration()));
-        txtMovieOpeningDate.setText(movie.getOpeningDate() == null ? "Đang chiếu" : movie.getOpeningDate().toString());
+        if(movie.getAge() != null){
 
-        txtMovieActor.setText(movie.getActor());
-        txtMovieDirector.setText(movie.getDirector());
+        }
+        txtMovieAge.setText( movie.getAge() == null ? "P" : String.format(Locale.getDefault(), "T%d",movie.getAge()));
+        txtMovieDuration.setText(movie.getDuration() == null ? " - " : String.format(Locale.getDefault(), "%d phút",movie.getDuration()));
+        txtMovieOpeningDate.setText(movie.getOpeningDate() == null ? "Đang chiếu" : movie.getOpeningDate().toString());
+        txtMovieRating.setText(movie.getRating() == null ? "Chưa có đánh giá" : String.format(Locale.getDefault(),"%f sao", movie.getRating()));
+        txtMovieActor.setText(movie.getActor() == null ? " - ": movie.getActor());
+        txtMovieDirector.setText(movie.getDirector() == null ? " - ":movie.getDirector());
 
         txtMovieContent.setText(movie.getDescription());
         vidMovieTrailer.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
@@ -116,21 +135,27 @@ public class MovieDetailFragment extends Fragment {
         });
         txtMovieGenre.setText(movie.getMovieTypesAsString());
         txtMovieFormat.setText(movie.getMovieFormatsAsString());
-//        List<MovieFormat> formats = movie.getMovieFormats();
-//        if(formats != null){
-//            StringBuilder formatString = new StringBuilder();
-//            for(MovieFormat format : movie.getMovieFormats()) {
-//                formatString.append(format.getName()).append(" ");
-//            }
-//            txtMovieFormat.setText(formatString);
-//        }
-        hideLoadingUI();
+        movieDetailViewModel = new MovieDetailViewModel();
+        checkCommented();
+    }
+
+    private void checkCommented(){
+        movieDetailViewModel.userCommented(movie.getId()).observe(getViewLifecycleOwner(), response ->{
+            if(response == null){
+                showAddComment(false);
+            }else if(response.getStatusCode() != 200){
+                showAddComment(false);
+            }else{
+                showAddComment(true);
+            }
+            hideLoadingUI();
+        });
     }
 
     private void initView(View root){
         txtGoBack = root.findViewById(R.id.txtGoBack);
         txtGoBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
-
+        txtMovieRating = root.findViewById(R.id.txtMovieRating);
         imgMoviePoster = root.findViewById(R.id.imgMoviePoster);
         txtMovieTitle = root.findViewById(R.id.txtMovieTitle);
         txtMovieAge = root.findViewById(R.id.txtMovieAge);
@@ -144,7 +169,10 @@ public class MovieDetailFragment extends Fragment {
         vidMovieTrailer = root.findViewById(R.id.vidMovieTrailer);
         pbLoadMovieDetail = root.findViewById(R.id.pbLoadMovie);
         viewOverlay = root.findViewById(R.id.viewOverlay);
-
+        btnAddComment = root.findViewById(R.id.btnAddComment);
+        edtComment = root.findViewById(R.id.edtComment);
+        ratingBar = root.findViewById(R.id.ratingBar);
+        lnlComment = root.findViewById(R.id.lnlComment);
 
         btnRedirectToShowtime = root.findViewById(R.id.btnRedirectToShowtime);
         btnRedirectToShowtime.setOnClickListener(v ->{
@@ -160,7 +188,27 @@ public class MovieDetailFragment extends Fragment {
                     .commit();
         });
         getLifecycle().addObserver(vidMovieTrailer);
+
+        btnAddComment.setOnClickListener(v -> addComment());
     }
+
+    private void addComment() {
+        showLoadingUI();
+        int rate = (int) ratingBar.getRating();
+        String comment = edtComment.getText().toString();
+        movieDetailViewModel.addRate(movie.getId(), rate, comment).observe( getViewLifecycleOwner(), response ->{
+            if(response == null){
+                Toast.makeText(requireContext(),"Lỗi khi thêm đánh giá, vui lòng thử lại.",Toast.LENGTH_LONG).show();
+            }else if(response.getStatusCode() != 0){
+                Toast.makeText(requireContext(),"Lỗi khi thêm đánh giá, vui lòng thử lại", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(requireContext(),"Thêm thành công", Toast.LENGTH_LONG).show();
+            }
+            hideLoadingUI();
+        });
+    }
+
+
     private String extractVideoIdFromUrl(String url) {
         if (url.contains("/embed/")) {
             return url.substring(url.lastIndexOf("/embed/") + 7, url.indexOf("?"));
@@ -179,5 +227,13 @@ public class MovieDetailFragment extends Fragment {
     private void hideLoadingUI(){
         pbLoadMovieDetail.setVisibility(View.GONE);
         viewOverlay.setVisibility(View.GONE);
+    }
+
+    private void showAddComment(boolean isShowed){
+        if(isShowed){
+            lnlComment.setVisibility(View.VISIBLE);
+        }else{
+            lnlComment.setVisibility(View.GONE);
+        }
     }
 }

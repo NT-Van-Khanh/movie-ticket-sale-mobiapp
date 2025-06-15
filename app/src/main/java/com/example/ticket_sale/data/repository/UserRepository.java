@@ -7,9 +7,16 @@ import com.example.ticket_sale.data.dto.UserDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
 import com.example.ticket_sale.data.CustomerCallBack;
 import com.example.ticket_sale.data.network.api.UserAPI;
+import com.example.ticket_sale.util.JwtUtil;
+import com.example.ticket_sale.util.TokenManager;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class UserRepository {
     private final UserAPI userApi;
@@ -33,21 +40,30 @@ public class UserRepository {
         data.put("email", email);
         data.put("userName", userName);
         data.put("password", password);
-        data.put("roleId",1073741824L);
-        data.put("status","DELETE");
+        data.put("roleId",1L);
+        data.put("status","ACTIVE");
+        data.put("provider", "LOCAL");
         MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
         userApi.addUser(data).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_addUser"));
         return responseData;
     }
 
-    public LiveData<ApiResponse<UserDTO>> updateUser(String id, String name,
-                                                     String phoneNumber, String email){
+    public LiveData<ApiResponse<UserDTO>> updateUser(String name, String phoneNumber, String email){
+        MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
+
+        JSONObject payload = JwtUtil.decodeJWT(TokenManager.getToken());
+        String id = payload != null ? payload.optString("id") : null;
+        if (id == null) {
+            responseData.setValue(ApiResponse.errorToken("Token không hợp lệ hoặc đã hết hạn"));
+            return responseData;
+        }
+
         Map<String, Object> data = new HashMap<>();
         data.put("name", name);
         data.put("phoneNumber",phoneNumber);
         data.put("email", email);
-        MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
+
         userApi.updateUser(id, data).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_updateUser"));
         return responseData;
@@ -55,7 +71,8 @@ public class UserRepository {
 
     public LiveData<ApiResponse<UserDTO>> resetPassword(String email, String otp, String newPassword){
         MutableLiveData<ApiResponse<UserDTO>> responseData = new MutableLiveData<>();
-        userApi.resetPasswordByEmail(otp,email, newPassword).enqueue(new CustomerCallBack<>(responseData,
+        RequestBody body = RequestBody.create(newPassword, MediaType.parse("text/plain"));
+        userApi.resetPasswordByEmail(otp,email, body).enqueue(new CustomerCallBack<>(responseData,
                 getClass().getSimpleName()+"_authEmail"));
         return responseData;
     }

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="3dp"
+    android:layout_marginHorizontal="3dp"
+    app:cardCornerRadius="8dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_primary_container">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvMovieImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            android:layout_centerVertical="true">
+            <ImageView
+                android:id="@+id/imgMovieImage"
+                android:layout_width="84dp"
+                android:layout_height="110dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/mv_elio"/>
+        </androidx.cardview.widget.CardView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="8dp"
+            android:layout_toRightOf="@id/cvMovieImage"
+            android:paddingVertical="3dp">
+            <TextView
+                android:id="@+id/txtMovieTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/theme_primary"
+                android:paddingVertical="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="17sp"
+                android:text="Elino - Cậu bé đến từ tương lai"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="2dp"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_location_outline"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:text="Rạp:  "/>
+            <TextView
+                android:id="@+id/txtTheaterAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:text="Quang Trung - Thủ Đức"/>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="19dp"
+                    android:src="@drawable/ic_history"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingTop="2dp"
+                    android:textSize="16sp"
+                    android:text="Suất:  "/>
+                <TextView
+                    android:id="@+id/txtMovieShowtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingTop="3dp"
+                    android:textSize="16sp"
+                    android:text="18:10 - 19:35, 12/6/2025"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="bottom">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="21dp"
+                    android:src="@drawable/ic_ticket" />
+
+                <TextView
+                    android:id="@+id/txtTheaterScreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingTop="2dp"
+                    android:maxLines="2"
+                    android:textSize="16sp"
+                    android:text="Screen 2 "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="16sp"
+                    android:text="  -  "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingTop="2dp"
+                    android:maxLines="2"
+                    android:textSize="16sp"
+                    android:text="Ghế:  "/>
+                <TextView
+                    android:id="@+id/txtTheaterSeats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:paddingTop="2dp"
+                    android:maxLines="1"
+                    android:textSize="16sp"
+                    android:text="H8, H9, H10"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

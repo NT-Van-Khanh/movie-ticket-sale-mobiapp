@@ -1,8 +1,7 @@
 package com.example.ticket_sale.data.dto;
 
-import retrofit2.http.Query;
 
-public class PageRequestDTO {
+public class PageRequest {
     private String page;
     private  String limit;
     private  String searchKey;
@@ -10,7 +9,16 @@ public class PageRequestDTO {
     private  String status;
     private  String orderBy;
 
-    public PageRequestDTO() {
+    public PageRequest() {
+    }
+
+    public PageRequest(String page, String limit, String searchKey, String sort, String status, String orderBy) {
+        this.limit = limit;
+        this.orderBy = orderBy;
+        this.page = page;
+        this.searchKey = searchKey;
+        this.sort = sort;
+        this.status = status;
     }
 
     public String getLimit() {

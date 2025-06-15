@@ -1,10 +1,9 @@
 package com.example.ticket_sale.data.dto;
 
 public class FoodOrderDTO {
-    private String id;
     private Long price;
     private Integer amount;
-    private FoodResponseDTO dishDto;
+    private FoodRequestDTO dishDto;
 
     public Integer getAmount() {
         return amount;
@@ -14,20 +13,12 @@ public class FoodOrderDTO {
         this.amount = amount;
     }
 
-    public FoodResponseDTO getDishDto() {
+    public FoodRequestDTO getDishDto() {
         return dishDto;
     }
 
-    public void setDishDto(FoodResponseDTO dishDto) {
+    public void setDishDto(FoodRequestDTO dishDto) {
         this.dishDto = dishDto;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public Long getPrice() {

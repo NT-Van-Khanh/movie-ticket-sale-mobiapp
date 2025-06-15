@@ -6,7 +6,7 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:paddingVertical="6dp">
+    android:paddingVertical="8dp">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -35,16 +35,16 @@
             android:paddingStart="10dp"
             android:layout_centerVertical="true"/>
     </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:paddingHorizontal="5dp">
-        <View
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="1dp"
-            android:background="@color/theme_outline"/>
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:paddingHorizontal="5dp">-->
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:background="@color/theme_outline"/>-->
+<!--    </LinearLayout>-->
 </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.ticket_sale.data.ApiServiceFactory;
 import com.example.ticket_sale.data.dto.BillRequestDTO;
 import com.example.ticket_sale.data.dto.BillResponseDTO;
+import com.example.ticket_sale.data.dto.PaymentDTO;
 import com.example.ticket_sale.util.TokenManager;
 import com.example.ticket_sale.data.repository.AuthRepository;
 import com.example.ticket_sale.data.repository.BillRepository;
@@ -110,7 +111,7 @@ public class ApiTester {
                 });
 
         // Test updateUser DONE
-        userRepository.updateUser("cd664219-042d-4ffc-b851-5bbba4005d8b", "John Smith", "0335723811", "CaoCuong1@gmail.com")
+        userRepository.updateUser( "John Smith", "0335723811", "CaoCuong1@gmail.com")
                 .observe(lifecycleOwner, data -> {
                     if (data != null && data.getStatusCode()==200) {
                         Log.d("testUserApi", "updateUser success: " + data.getData());
@@ -261,7 +262,8 @@ public class ApiTester {
         Map<String, Object> paymentData = new HashMap<>();
         paymentData.put("billId", "1");
         paymentData.put("amount", 100.0);
-        billRepository.payment(paymentData).observe(lifecycleOwner, data -> {
+        PaymentDTO payment = new PaymentDTO( "1",100000L,"VND","pm_djerhqodmcz....");
+        billRepository.payment(payment).observe(lifecycleOwner, data -> {
             if (data != null && data.getStatusCode()==200) {
                 Log.d("testBillApi", "payment: " + data.getData());
             } else {
@@ -391,8 +393,7 @@ public class ApiTester {
 
     private void testRateApi() {
         // Lấy đánh giá theo phim
-        rateRepository.getRateByMovieId("1", 0, 10,
-                        "asc", "timeStamp", "ACTIVE")
+        rateRepository.getRateByMovieId("1", 0, 10)
                 .observe(lifecycleOwner, data -> {
                     if (data != null &&data.getStatusCode()==200) {
                         Log.d("testRateApi", "getRateByMovieId: " + data.getData());
@@ -412,7 +413,7 @@ public class ApiTester {
                 });
 
         // Lọc đánh giá
-        rateRepository.getRatesWithFilter(0, 10, "", "asc", "timeStamp", "none")
+        rateRepository.getCustomerRatesWithFilter(0, 10, "", "asc", "timeStamp", "none")
                 .observe(lifecycleOwner, data -> {
                     if (data != null &&data.getStatusCode()==200) {
                         Log.d("testRateApi", "getRatesWithFilter: " + data.getData());
@@ -435,14 +436,14 @@ public class ApiTester {
                 });
 
         // Xoá đánh giá
-        rateRepository.deleteRate("rate-id")
-                .observe(lifecycleOwner, data -> {
-                    if (data != null &&data.getStatusCode()==200) {
-                        Log.d("testRateApi", "deleteRate success");
-                    } else {
-                        Log.e("testRateApi", "deleteRate failed: " + data);
-                    }
-                });
+//        rateRepository.deleteRate("rate-id")
+//                .observe(lifecycleOwner, data -> {
+//                    if (data != null &&data.getStatusCode()==200) {
+//                        Log.d("testRateApi", "deleteRate success");
+//                    } else {
+//                        Log.e("testRateApi", "deleteRate failed: " + data);
+//                    }
+//                });
     }
 
     private void testMovieShowtimeApi() {

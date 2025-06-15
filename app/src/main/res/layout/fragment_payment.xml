@@ -5,20 +5,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.PaymentFragment"
-    android:background="#f3f5f5">
+    android:background="@color/theme_surface_variant">
     <Toolbar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:contentInsetStart="0dp"
-        android:background="@color/white"
+        android:background="@color/theme_background"
         android:paddingStart="0dp"
         android:layout_alignParentTop="true">
         <TextView
             android:id="@+id/txtGoBack"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:paddingHorizontal="5dp"
+            android:paddingHorizontal="12dp"
             app:backgroundTint="@null"
             android:drawableLeft="@drawable/ic_go_back"
             android:drawablePadding="-2dp"
@@ -28,13 +28,48 @@
             android:textSize="18sp"
             android:textStyle="bold"/>
     </Toolbar>
+    <LinearLayout
+        android:id="@+id/lnlBookingCountdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/toolBar"
+        android:gravity="center_horizontal"
+        android:background="@color/theme_countdown_time">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text="Thời gian đặt vé còn "/>
+        <TextView
+            android:id="@+id/txtBookingCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text="7:00"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:background="@color/theme_countdown_time"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text=" phút"/>
+    </LinearLayout>
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nesScrollContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:overScrollMode="never"
-        android:layout_below="@id/toolBar"
+        android:layout_below="@id/lnlBookingCountdown"
         android:layout_above="@id/vMovieLine">
         <LinearLayout
             android:id="@+id/lnlContainer"
@@ -47,9 +82,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingVertical="8dp"
-                android:background="@color/white"
+                android:background="@color/theme_background"
                 android:paddingHorizontal="12dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="3dp">
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -101,8 +136,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingHorizontal="15dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/white">
+                android:layout_marginTop="3dp"
+                android:background="@color/theme_background">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -116,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@drawable/bgd_group_line_shadow"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="0.8dp"
                     android:layout_marginHorizontal="1dp"
                     android:layout_marginBottom="2dp"/>
                 <androidx.recyclerview.widget.RecyclerView
@@ -155,9 +190,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/white"
+                android:background="@color/theme_background"
                 android:paddingHorizontal="15dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="3dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,9 +232,9 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:paddingHorizontal="15dp"
-        android:paddingBottom="20dp"
+        android:paddingBottom="30dp"
         android:paddingTop="8dp"
-        android:background="@color/white"
+        android:background="@color/theme_background"
         android:elevation="2dp"
         android:translationZ="6dp">
         <LinearLayout
@@ -224,7 +259,7 @@
                 android:layout_weight="1"
                 android:textAlignment="textEnd"
                 android:textSize="18sp"
-                android:textColor="@color/dark_gray"
+                android:textColor="@color/theme_primary"
                 android:fontFamily="sans-serif-black"
                 android:text="0 đ"/>
         </LinearLayout>
@@ -240,4 +275,20 @@
             android:textColor="@color/theme_on_secondary"
             android:text=" Hoàn tất thanh toán (3/3)"/>
     </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbLoadAddBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+    <View
+        android:id="@+id/viewOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:background="@color/theme_loading"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
 </RelativeLayout>

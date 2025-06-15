@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.TheaterFragment">
     <Toolbar
         android:id="@+id/tbrMovieTheater"
@@ -20,12 +20,13 @@
             android:textStyle="bold"
             android:textColor="@color/theme_tertiary"/>
     </Toolbar>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/lnlAddressFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:layout_marginHorizontal="8dp"
         android:layout_below="@id/tbrMovieTheater">
         <Button
             android:id="@+id/btnChooseProvince"
@@ -38,13 +39,26 @@
             android:paddingStart="20dp"
             android:text="Chọn tỉnh thành"
             android:textColor="@color/theme_on_primary_container"
-            android:textSize="16.5sp" />
-    </LinearLayout>
+            android:textSize="16.5sp"
+            android:layout_toStartOf="@id/btnFindNearlyTheater"/>
+        <Button
+            android:id="@+id/btnFindNearlyTheater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/ic_my_location"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="2dp"
+            android:drawablePadding="0dp"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="Gần nhất"/>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewMovieTheaters"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="6dp"
+        android:paddingHorizontal="8dp"
         android:layout_marginTop="6dp"
         android:layout_below="@id/lnlAddressFilter">
     </androidx.recyclerview.widget.RecyclerView>

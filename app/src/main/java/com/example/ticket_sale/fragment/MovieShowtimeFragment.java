@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.activity.MainActivity;
 import com.example.ticket_sale.adapter.DateAdapter;
@@ -133,7 +134,11 @@ public class MovieShowtimeFragment extends Fragment {
         txtMovieDuration.setText(String.format(ViLocaleUtil.localeVN, "%d phút", movie.getDuration()));
         txtMovieRating.setText(String.valueOf(movie.getRating()));
         txtMovieAge.setText(String.format(ViLocaleUtil.localeVN, "T%d",movie.getAge()));
-        imgMovieImage.setImageResource(movie.getImageResId());
+        Glide.with(this)
+                .load(movie.getImageLink())
+                .placeholder(R.drawable.mv_elio)
+                .error(R.drawable.mv_elio)
+                .into(imgMovieImage);
 
         if(availableDates == null) return;
         dateAdapter = new DateAdapter(availableDates, this::onDateClick);
@@ -192,10 +197,6 @@ public class MovieShowtimeFragment extends Fragment {
                                 movieFormat.setShowtimes(showtimes);
                                 availableTheaters.add(theater);
                                 theaterShowtimeAdapter.setTheaters(availableTheaters);
-                            }else{
-//                                Toast.makeText(getContext(),
-//                                        String.format("Không thể lấy suất chiếu của phim tại rạp%s",theater.getName()),
-//                                        Toast.LENGTH_SHORT).show();
                             }
                             hideLoadingUI();
 
@@ -224,9 +225,9 @@ public class MovieShowtimeFragment extends Fragment {
             }else{
                 movie.setMovieFormats(getExampleMovieFormats());
                 theaters = getExampleTheaters();
+                theaterShowtimeAdapter.setTheaters(theaters);
                 Toast.makeText(getContext(), "Không thể lấy dữ liệu rạp hiện tại.", Toast.LENGTH_SHORT).show();
             }
-            theaterShowtimeAdapter.setTheaters(theaters);
             hideLoadingUI();
         });
     }
@@ -351,10 +352,10 @@ public class MovieShowtimeFragment extends Fragment {
     }
 
     private List<MovieFormat> getExampleMovieFormats(){
-        Showtime st1  = new Showtime(1,"20:10","21:32","RV1","MV1","07/03/2025");
-        Showtime st2  = new Showtime(2,"18:10","21:32","RV1","MV1","07/03/2025");
-        Showtime st3  = new Showtime(3,"16:10","21:32","RV1","MV1","07/03/2025");
-        Showtime st4  = new Showtime(4,"19:20","21:32","RV1","MV1","07/03/2025");
+        Showtime st1  = new Showtime(1,"20:10","21:32","RV1","MV1","21/03/2025");
+        Showtime st2  = new Showtime(2,"18:10","21:32","RV1","MV1","21/03/2025");
+        Showtime st3  = new Showtime(3,"16:10","21:32","RV1","MV1","21/03/2025");
+        Showtime st4  = new Showtime(4,"19:20","21:32","RV1","MV1","21/03/2025");
         List<Showtime> showtimes1 = Arrays.asList(st1, st2, st1, st2, st1, st2);
         List<Showtime> showtimes2 = Arrays.asList(st3, st4, st1, st2, st1, st2);
 

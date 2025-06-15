@@ -107,6 +107,14 @@ public class HomeFragment extends Fragment {
         pgbLoadMovies = root.findViewById(R.id.pbLoadMovies);
         viewOverlay = root.findViewById(R.id.viewOverlay);
 
+        btnSearch.setOnClickListener( v ->{
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SearchFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         posterAdapter = new PosterAdapter(currentPosters);
         bannerSlider.setAdapter(posterAdapter);
         setAnimationForSlider();
@@ -149,7 +157,6 @@ public class HomeFragment extends Fragment {
         pgbLoadMovies.setVisibility(View.VISIBLE);
         homeViewModel.getUpcomingMovies().observe(getViewLifecycleOwner(), dataResult ->{
             if(dataResult == null || dataResult.getStatusCode()!=200){
-                Log.e("MovieAPI", "Failed to get movies: " + dataResult);
                 Toast.makeText(getContext(), "Không thể lấy dữ liệu phim hiện tại", Toast.LENGTH_SHORT).show();
                 upcomingMovies = getExampleUpcomingMovies();
 

@@ -16,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticket_sale.R;
-import com.example.ticket_sale.activity.LoginActivity;
+import com.example.ticket_sale.viewmodel.EmailOTPViewModel;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +31,8 @@ public class ResetPasswordFragment extends Fragment {
     private Button btnNext;
     private ProgressBar pbLoadSendOTP;
     private View viewOverlay;
-//    private View.OnClickListener btnNextListener;
+
+    private EmailOTPViewModel emailOTPViewModel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,6 +75,7 @@ public class ResetPasswordFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_reset_password, container, false);
         initViews(root);
+        emailOTPViewModel = new EmailOTPViewModel();
         return root;
     }
 
@@ -84,40 +88,59 @@ public class ResetPasswordFragment extends Fragment {
 
         txtGoBack.setOnClickListener(v -> ResetPasswordFragment.this.requireActivity().finish());
 
-        btnNext.setOnClickListener(v -> {
-            showLoadingUI();
-            String phoneOrMail = edtPhoneOrMail.getText().toString();
-            if(phoneOrMail.trim().isEmpty()) {
-                Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
+        btnNext.setOnClickListener(v -> sendOTP());
+    }
+
+    private void sendOTP() {
+        showLoadingUI();
+        String phoneOrMail = edtPhoneOrMail.getText().toString();
+        if(phoneOrMail.trim().isEmpty()) {
+            Toast.makeText(getContext(), "Vui lòng nhập số điện thoại hoặc email.", Toast.LENGTH_SHORT).show();
+            hideLoadingUI();
+            return;
+        }
+
+        if(isPhone(phoneOrMail)){
+            navigateToPhoneOTPAuth(phoneOrMail);
+        } else if(isEmail(phoneOrMail)){
+            emailOTPViewModel.sendOtpToEmail(phoneOrMail).observe( getViewLifecycleOwner(), response ->{
+                if(response == null){
+                    Toast.makeText(getContext(), "Lỗi kết nối. Vui lòng thử lại!", Toast.LENGTH_SHORT).show();
+                }else if(response.getStatusCode() != 200){
+                    String message = String.format(Locale.getDefault(),"%s",response.getMessage());
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                }else{
+                    navigateToEmailOTPAuth(phoneOrMail);
+                }
                 hideLoadingUI();
-                return;
-            }
-
-            Bundle bundle = new Bundle();
-            if(isPhone(phoneOrMail)){
-                bundle.putString("phone",phoneOrMail);
-                PhoneOTPAuthFragment phoneOTPAuthFragment= new PhoneOTPAuthFragment();
-                phoneOTPAuthFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, phoneOTPAuthFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return;
-            }
-            if(isEmail(phoneOrMail)){
-                bundle.putString("email",phoneOrMail);
-                EmailOTPAuthFragment emailOTPAuthFragment= new EmailOTPAuthFragment();
-                emailOTPAuthFragment.setArguments(bundle);
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, emailOTPAuthFragment)
-                        .addToBackStack(null)
-                        .commit();
-                return;
-            }
-
+            });
+        }else{
             hideLoadingUI();
             Toast.makeText(getContext(), "Email hoặc số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
-        });
+        }
+
+    }
+
+    private void navigateToEmailOTPAuth(String email) {
+        Bundle bundle = new Bundle();
+        bundle.putString("email",email);
+        OtpNewPasswordFragment otpNewPasswordFragment= new OtpNewPasswordFragment();
+        otpNewPasswordFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, otpNewPasswordFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private void navigateToPhoneOTPAuth(String phone) {
+        Bundle bundle = new Bundle();
+        bundle.putString("phone",phone);
+        PhoneOTPAuthFragment phoneOTPAuthFragment= new PhoneOTPAuthFragment();
+        phoneOTPAuthFragment.setArguments(bundle);
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, phoneOTPAuthFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     private boolean isPhone(String input) {

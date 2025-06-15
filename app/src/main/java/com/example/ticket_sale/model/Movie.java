@@ -39,11 +39,14 @@ public class Movie implements Parcelable {
 
     public String getMovieTypesAsString(){
         if(movieTypes == null) return "";
-        StringBuilder formatString = new StringBuilder();
-        for(MovieType type: movieTypes) {
-            formatString.append(type.getName()).append(" ");
+        StringBuilder movieTypeString = new StringBuilder();
+        for (MovieType type : movieTypes) {
+            if (movieTypeString.length() > 0) {
+                movieTypeString.append(", ");
+            }
+            movieTypeString.append(type.getName());
         }
-        return formatString.toString().trim();
+        return movieTypeString.toString();
     }
 
     public Movie() {
@@ -297,4 +300,28 @@ public class Movie implements Parcelable {
         dest.writeTypedList(movieFormats);
         dest.writeTypedList(movieTypes);
     }
+
+//    public String getMovieFormatString(){
+//        if(movieFormats == null) return "";
+//        StringBuilder movieFormatString = new StringBuilder();
+//        for (MovieFormat format : movieFormats) {
+//            if (movieFormatString.length() > 0) {
+//                movieFormatString.append(", ");
+//            }
+//            movieFormatString.append(format.getName());
+//        }
+//        return movieFormatString.toString();
+//    }
+
+//    public String getMovieTypesAsString(){
+//        if(movieTypes == null) return "";
+//        StringBuilder movieTypeString = new StringBuilder();
+//        for (MovieType type : movieTypes) {
+//            if (movieTypeString.length() > 0) {
+//                movieTypeString.append(", ");
+//            }
+//            movieTypeString.append(type.getName());
+//        }
+//        return movieTypeString.toString();
+//    }
 }

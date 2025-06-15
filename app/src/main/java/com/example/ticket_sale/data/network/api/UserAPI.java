@@ -5,6 +5,7 @@ import com.example.ticket_sale.data.network.ApiResponse;
 
 import java.util.Map;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,6 +23,22 @@ public interface UserAPI {
     @GET(BASE_PATH+"/{id}")
     Call<ApiResponse<UserDTO>> getUserById(@Path("id") String id);
 
+//    Curl
+//    curl -X 'POST' \
+//            'http://localhost:8888/user-service/api/customer/add' \
+//            -H 'accept: */*' \
+//            -H 'Content-Type: application/json' \
+//            -d '{
+//            "name": "Nguyen Khanh",
+//            "phoneNumber": "0823321321",
+//            "email": "ntdh137@gmail.com",
+//            "userName": "vankhanh127",
+//            "password": "123123123",
+//            "roleId": 100,
+//            "status": "ACTIVE",
+//            "provider": "LOCAL"
+//  Request URL
+//  http://localhost:8888/user-service/api/customer/add
     @POST(BASE_PATH + "/add")
     Call<ApiResponse<UserDTO>> addUser(@Body Map<String, Object> user);
 
@@ -36,8 +53,17 @@ public interface UserAPI {
     @POST(BASE_PATH +"/forget/customer")
     Call<ApiResponse<Void>> sendOTPToEmail(@Query("email") String email);
 
-    @POST(BASE_PATH + "/change/{opt}/{email}")
+//    Curl
+//
+//    curl -X 'POST' \
+//            'http://localhost:8888/user-service/api/customer/change/customer/703491/ntvk137%40gmail.com' \
+//            -H 'accept: */*' \
+//            -H 'Content-Type: application/json' \
+//            -d 'string123'
+//    Request URL
+//    http://localhost:8888/user-service/api/customer/change/customer/703491/nt***37%40gmail.com
+    @POST(BASE_PATH + "/change/customer/{opt}/{email}")
     Call<ApiResponse<UserDTO>> resetPasswordByEmail(@Path("opt") String otp,
                                                     @Path("email") String email,
-                                                    @Body String newPassword);
+                                                    @Body RequestBody newPassword);
 }

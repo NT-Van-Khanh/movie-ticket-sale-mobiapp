@@ -31,15 +31,15 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
     private List<MovieFormat> movieFormats;
     private final ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener;
     private int movieIndex;
-    private final Drawable arrowRight;
-    private final Drawable arrowDown;
+//    private final Drawable arrowRight;
+//    private final Drawable arrowDown;
     public MovieFormatAdapter(List<MovieFormat> movieFormats,int movieIndex, Context context,
                               ShowtimeAdapter.OnShowtimeClickListener onShowtimeClickListener) {
         this.movieFormats = movieFormats;
         this.onShowtimeClickListener = onShowtimeClickListener;
         this.movieIndex = movieIndex;
-        this.arrowDown = ContextCompat.getDrawable(context, R.drawable.ic_arrow_down);
-        this.arrowRight = ContextCompat.getDrawable(context, R.drawable.ic_arrow_right);
+//        this.arrowDown = ContextCompat.getDrawable(context, R.drawable.ic_arrow_down);
+//        this.arrowRight = ContextCompat.getDrawable(context, R.drawable.ic_arrow_right);
     }
 
     @NonNull
@@ -80,7 +80,7 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
 //                    setMovieFormatsVisibility(true);
 //                }
 //            });
-            txtMovieFormatName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, arrowRight, null);
+//            txtMovieFormatName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, arrowRight, null);
         }
 
         void bind(MovieFormat movieFormat ){
@@ -106,10 +106,10 @@ public class MovieFormatAdapter extends RecyclerView.Adapter<MovieFormatAdapter.
             TransitionManager.beginDelayedTransition(parent, transition);
 
             if(status){
-                txtMovieFormatName.setCompoundDrawablesWithIntrinsicBounds(null, null,arrowDown, null );
+//                txtMovieFormatName.setCompoundDrawablesWithIntrinsicBounds(null, null,arrowDown, null );
                 rcViewMovieShowtimes.setVisibility(View.VISIBLE);
             }else{
-                txtMovieFormatName.setCompoundDrawablesWithIntrinsicBounds(null, null,arrowRight, null );
+//                txtMovieFormatName.setCompoundDrawablesWithIntrinsicBounds(null, null,arrowRight, null );
                 rcViewMovieShowtimes.setVisibility(View.GONE);
             }
         }

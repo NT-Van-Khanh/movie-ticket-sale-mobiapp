@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.ticket_sale.util.ViLocaleUtil;
+
 public class Showtime implements Parcelable {
     private int id;
     private String timeStart;
@@ -17,7 +19,7 @@ public class Showtime implements Parcelable {
     }
 
     public Showtime( int id, String timeStart, String timeEnd,String screenId, String movieId, String date) {
-        this.date = date;
+        this.date = ViLocaleUtil.formatToddMMyyyy(date);
         this.id = id;
         this.movieId = movieId;
         this.screenId = screenId;
@@ -51,7 +53,7 @@ public class Showtime implements Parcelable {
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.date = ViLocaleUtil.formatToddMMyyyy(date);
     }
 
     public int getId() {

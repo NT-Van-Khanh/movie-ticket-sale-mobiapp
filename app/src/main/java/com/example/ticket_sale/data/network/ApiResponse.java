@@ -8,7 +8,7 @@ public class ApiResponse <T>{
     public ApiResponse() {
     }
 
-    public ApiResponse(T data, String message, int statusCode) {
+    public ApiResponse(int statusCode, String message,T data) {
         this.data = data;
         this.message = message;
         this.statusCode = statusCode;
@@ -18,11 +18,15 @@ public class ApiResponse <T>{
         return data;
     }
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(data, null, 200);
+        return new ApiResponse<>(200, null, data);
     }
 
     public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(null, message, 400);
+        return new ApiResponse<>(400, message, null);
+    }
+
+    public static <T> ApiResponse<T> errorToken(String message) {
+        return new ApiResponse<>(401, message,null); // 401: Unauthorized (token invalid)
     }
 
     public String getMessage() {

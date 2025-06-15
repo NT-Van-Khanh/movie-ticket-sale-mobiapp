@@ -1,11 +1,11 @@
 package com.example.ticket_sale.data.dto;
 
-public class MovieType {
+public class MovieTypeDTO {
     private String id;
     private String name;
     private String active;
 
-    public MovieType() {
+    public MovieTypeDTO() {
     }
 
     public String getActive() {

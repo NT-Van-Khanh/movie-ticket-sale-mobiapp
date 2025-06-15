@@ -3,6 +3,7 @@ package com.example.ticket_sale.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.ticket_sale.activity.LoginActivity;
 import com.example.ticket_sale.R;
@@ -23,11 +25,11 @@ import com.example.ticket_sale.model.User;
 import com.example.ticket_sale.viewmodel.RegisterViewModel;
 
 public class RegisterUserFragment extends Fragment {
-    private View.OnClickListener btnNextListener;
     private TextView txtGoBack;
     private Button btnNext;
     private Button btnRedirectLogin;
-
+    private Toolbar toolbar;
+    private NestedScrollView scrollView;
     private EditText edtFullName;
     private EditText edtPhone;
     private EditText edtEmail;
@@ -90,6 +92,9 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private void initView(View root){
+        scrollView = root.findViewById(R.id.nesScrollContainer); // cập nhật ID nếu có
+        toolbar = root.findViewById(R.id.toolbar);
+
         txtGoBack = root.findViewById(R.id.txtGoBack);
         edtFullName = root.findViewById(R.id.edtFullName);
         edtEmail = root.findViewById(R.id.edtEmail);
@@ -111,15 +116,26 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
-        if (btnNextListener != null) {
-            btnNext.setOnClickListener(btnNextListener);
-        }else{
-            Log.e("btnNext.setOnClickListener", "btnNext OnClickListener is null");
-        }
+
+
         btnRedirectLogin.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent);
         });
+
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    // Kéo lên -> Ẩn Toolbar
+                    toolbar.animate().translationY(-toolbar.getHeight()).setDuration(200);
+                } else if (scrollY < oldScrollY) {
+                    // Kéo xuống -> Hiện Toolbar
+                    toolbar.animate().translationY(0).setDuration(200);
+                }
+            }
+        });
+
     }
 
     private void registerAccount() {
@@ -160,7 +176,8 @@ public class RegisterUserFragment extends Fragment {
     private void navigateToAuthEmailFragment() {
         String password =edtPassword.getText().toString().trim();
         Bundle b = new Bundle();
-        b.putParcelable("user",user);
+//        b.putParcelable("user",user);
+        b.putString("email",user.getEmail());
         b.putString("password", password);
         EmailOTPAuthFragment emailOTPAuthFragment = new EmailOTPAuthFragment();
         emailOTPAuthFragment.setArguments(b);
@@ -176,9 +193,6 @@ public class RegisterUserFragment extends Fragment {
         return new RegisterUserFragment();
     }
 
-    public void setBtnNextListener(View.OnClickListener listener) {
-        this.btnNextListener = listener;
-    }
 
     private User getUserFromView() {
         String fullName = edtFullName.getText().toString().trim();
@@ -233,6 +247,7 @@ public class RegisterUserFragment extends Fragment {
             cbAgreeTerms.requestFocus();
             return null;
         }
+        Log.e("test", fullName + " "+ phone +" "+email +" "+username);
         return new User(fullName, phone, email, username);
     }
 

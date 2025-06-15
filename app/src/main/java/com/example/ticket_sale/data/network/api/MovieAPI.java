@@ -2,7 +2,8 @@ package com.example.ticket_sale.data.network.api;
 
 import com.example.ticket_sale.data.dto.MovieDTO;
 import com.example.ticket_sale.data.network.ApiResponse;
-import com.example.ticket_sale.data.dto.MovieType;
+import com.example.ticket_sale.data.dto.MovieTypeDTO;
+import com.example.ticket_sale.data.network.PageResponse;
 
 import java.util.List;
 
@@ -28,20 +29,20 @@ public interface MovieAPI {
     Call<ApiResponse<List<MovieDTO>>> getMoviesByStatus(@Path("status") String status);//"ACTIVE","COMMING_SOON", "DELETE"
 
     //http://localhost:8888/film-service/api/film/get/custom?page=0&limit=10&q=NhaBaNu&asc=asc&status=none&orderBy=name
-    @GET(BASE_PATH + "film/get/custom")
-    Call<ApiResponse<List<MovieDTO>>> getMoviesCustom(@Query("page") String page,
-                                                      @Query("limit") String limit,
-                                                      @Query("q") String searchKey,
-                                                      @Query("asc") String sort,
-                                                      @Query("status") String status,
-                                                      @Query("orderBy") String orderBy);
+    @GET(BASE_PATH + "/film/get/custom")
+    Call<ApiResponse<PageResponse<MovieDTO>>> getMoviesCustom(@Query("page") String page,
+                                                                    @Query("limit") String limit,
+                                                                    @Query("q") String searchKey,
+                                                                    @Query("asc") String sort,
+                                                                    @Query("status") String status,
+                                                                    @Query("orderBy") String orderBy);
 
 
     @GET(BASE_PATH + "/typefilm/get/{id}")
-    Call<ApiResponse<MovieType>> getMovieTypeById(@Path("id") String id);
+    Call<ApiResponse<MovieTypeDTO>> getMovieTypeById(@Path("id") String id);
 
     @GET(BASE_PATH + "/typefilm/get/all")
-    Call<ApiResponse<List<MovieType>>> getAllMovieTypes();
+    Call<ApiResponse<List<MovieTypeDTO>>> getAllMovieTypes();
 }
 //        {
 //        "id": "1",

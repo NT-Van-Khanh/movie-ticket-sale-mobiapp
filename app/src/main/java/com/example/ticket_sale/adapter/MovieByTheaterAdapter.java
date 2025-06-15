@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 
+import com.bumptech.glide.Glide;
 import com.example.ticket_sale.R;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.util.ViLocaleUtil;
@@ -75,7 +76,11 @@ public class MovieByTheaterAdapter extends Adapter<MovieByTheaterAdapter.MovieBy
         }
 
         public void bind(Movie movie) {
-            imgMovieImage.setImageResource(movie.getImageResId());
+            Glide.with(itemView.getContext())
+                    .load(movie.getImageLink())
+                    .placeholder(R.drawable.mv_dai_chien_nguoi_khong_lo)
+                    .error(movie.getImageResId())
+                    .into(imgMovieImage);
             txtMovieTitle.setText(movie.getTitle());
             txtMovieAge.setText(String.valueOf(movie.getAge()));
             txtMovieRating.setText(String.valueOf(movie.getRating()));

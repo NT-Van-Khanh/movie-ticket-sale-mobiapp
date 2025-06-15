@@ -2,6 +2,7 @@ package com.example.ticket_sale.data.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class BillResponseDTO {
@@ -13,12 +14,12 @@ public class BillResponseDTO {
     private String active;
     private List<ChairDTO> chairs;//id
     private List<FoodResponseDTO> dishes;//id
-    private LocalDateTime timestamp;//"2025-04-20T11:50:53.599Z"
+    private String timestamp;//"2025-04-20T11:50:53.599Z"
     private String status;
-    private Long filmShowTimeId; //id
-    private LocalDateTime timeStart;// "2025-04-20T11:50:53.599Z",
-    private LocalDateTime timeEnd;// "2025-04-20T11:50:53.599Z"
-    private LocalDate timeStampSee;//   "timeStampSee": "2025-04-20"
+    private Integer filmShowTimeId; //id
+    private String timeStart;// "2025-04-20T11:50:53.599Z",
+    private String timeEnd;// "2025-04-20T11:50:53.599Z"
+    private String timeStampSee;//   "timeStampSee": "2025-04-20"
     private String roomId;//id
     private String nameRoom;
     private String nameBranch;
@@ -28,6 +29,9 @@ public class BillResponseDTO {
     private String userName;
     private String email;
     private String numberPhone;
+    private String qrCode;
+    private String customerId;
+
 
 //    private String id;
 //    private String paymentMethodId;
@@ -93,11 +97,11 @@ public class BillResponseDTO {
         this.filmId = filmId;
     }
 
-    public Long getFilmShowTimeId() {
+    public Integer getFilmShowTimeId() {
         return filmShowTimeId;
     }
 
-    public void setFilmShowTimeId(Long filmShowTimeId) {
+    public void setFilmShowTimeId(Integer filmShowTimeId) {
         this.filmShowTimeId = filmShowTimeId;
     }
 
@@ -173,35 +177,52 @@ public class BillResponseDTO {
         this.status = status;
     }
 
-    public LocalDateTime getTimeEnd() {
-        return timeEnd;
-    }
 
-    public void setTimeEnd(LocalDateTime timeEnd) {
-        this.timeEnd = timeEnd;
-    }
-
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    public LocalDate getTimeStampSee() {
+    public String getTimeStampSee() {
         return timeStampSee;
     }
 
-    public void setTimeStampSee(LocalDate timeStampSee) {
+    public void setTimeStampSee(String timeStampSee) {
         this.timeStampSee = timeStampSee;
     }
 
-    public LocalDateTime getTimeStart() {
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public String getTimeStart() {
         return timeStart;
     }
 
-    public void setTimeStart(LocalDateTime timeStart) {
+    public void setTimeStart(String timeStart) {
         this.timeStart = timeStart;
     }
 

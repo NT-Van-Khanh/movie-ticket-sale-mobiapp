@@ -27,23 +27,49 @@
             android:textSize="18dp"
             android:textStyle="bold"/>
     </Toolbar>
-    <TextView
-        android:id="@+id/txtTimeLine"
+    <LinearLayout
+        android:id="@+id/lnlBookingCountdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@color/theme_on_secondary"
-        android:background="@color/theme_countdown_time"
-        android:fontFamily="sans-serif"
-        android:text="Thời gian đặt vé còn 7:00 phút"
-        android:layout_below="@id/toolBar"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/toolBar"
+        android:gravity="center_horizontal"
+        android:background="@color/theme_countdown_time">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text="Thời gian đặt vé còn "/>
+        <TextView
+            android:id="@+id/txtBookingCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text="7:00"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/theme_on_secondary"
+            android:background="@color/theme_countdown_time"
+            android:fontFamily="sans-serif"
+            android:paddingVertical="1dp"
+            android:text=" phút"/>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/lnlTheaterInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="10dp"
-        android:layout_below="@id/txtTimeLine"
+        android:layout_below="@id/lnlBookingCountdown"
         android:paddingTop="10dp">
         <TextView
             android:id="@+id/txtTheaterName"
@@ -156,69 +182,77 @@
         android:paddingHorizontal="2dp"
         android:background="@drawable/bgd_group_line_shadow"
         android:layout_above="@id/lnlMovieInfo"/>
+
     <LinearLayout
         android:id="@+id/lnlMovieInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="1dp"
+        android:orientation="vertical"
         android:paddingHorizontal="15dp"
-        android:paddingBottom="20dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp">
 
         <TextView
             android:id="@+id/txtMovieName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tên phim"
-            android:textSize="18dp"
             android:fontFamily="sans-serif-black"
-            android:paddingVertical="1dp"/>
+            android:paddingVertical="1dp"
+            android:text="Tên phim"
+            android:textSize="18dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingVertical="1dp">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="2dp"
-                android:text="Ghế"/>
+                android:text="Ghế"
+                android:textSize="16dp" />
+
             <TextView
                 android:id="@+id/txtSeatSelected"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
-                android:textAlignment="textEnd"
                 android:fontFamily="sans-serif"
+                android:singleLine="true"
                 android:text="K8, K9"
-                android:textSize="16sp"
-                android:singleLine="true"/>
+                android:textAlignment="textEnd"
+                android:textSize="16sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingVertical="1dp">
+
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:fontFamily="sans-serif-medium"
                 android:paddingStart="2dp"
-                android:text="Bắp &amp; nước"/>
+                android:text="Bắp &amp; nước"
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/txtFoodSelected"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
                 android:fontFamily="sans-serif"
+                android:singleLine="true"
                 android:text="0"
-                android:textSize="16dp"
-                android:singleLine="true"/>
+                android:textAlignment="textEnd"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -226,36 +260,40 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingVertical="5dp">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="18sp"
                 android:fontFamily="sans-serif-black"
-                android:text="Tổng tiền"/>
+                android:text="Tổng tiền"
+                android:textSize="18sp" />
+
             <TextView
                 android:id="@+id/txtTotalCost"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:textAlignment="textEnd"
-                android:textSize="18sp"
-                android:singleLine="true"
                 android:fontFamily="sans-serif-black"
-                android:text="0"/>
+                android:singleLine="true"
+                android:text="0"
+                android:textAlignment="textEnd"
+                android:textSize="18sp" />
         </LinearLayout>
+
         <Button
             android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:fontFamily="sans-serif-black"
-            android:background="@drawable/bgd_btn_accept"
-            app:backgroundTint="@null"
-            android:textColor="@color/theme_on_secondary"
             android:layout_marginTop="5dp"
-            android:text=" Hoàn tất thanh toán (2/3)"/>
+            android:background="@drawable/bgd_btn_accept"
+            android:fontFamily="sans-serif-black"
+            android:text=" Hoàn tất thanh toán (2/3)"
+            android:textColor="@color/theme_on_secondary"
+            android:textSize="17sp"
+            app:backgroundTint="@null" />
     </LinearLayout>
+
     <View
         android:id="@+id/viewOverlay"
         android:layout_width="match_parent"

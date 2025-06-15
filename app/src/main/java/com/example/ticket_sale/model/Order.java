@@ -21,6 +21,8 @@ public class Order implements Parcelable {
     private MovieFormat movieFormat;
     private Showtime showtime;
     private Screen screen;
+    private String paymentMethodId;
+    private String imageQRCodeLink;
 //    private OrderStatus orderStatus;
 
     protected Order(Parcel in) {
@@ -62,6 +64,15 @@ public class Order implements Parcelable {
     public Order() {
     }
 
+    public Order( String id, Movie movie,Showtime showtime, Screen screen,
+                  List<SeatPosition> seats,  User user) {
+        this.id = id;
+        this.movie = movie;
+        this.screen = screen;
+        this.selectedSeats = seats;
+        this.showtime = showtime;
+        this.user = user;
+    }
 //    public Order( Map<Item, Integer> foods, String id, Movie movie, OrderStatus orderStatus,
 //                 Screen screen, List<Seat> seats, Showtime showtime, User user) {
 //
@@ -96,6 +107,14 @@ public class Order implements Parcelable {
             totalCost += foodEntry.getKey().getPrice() * foodEntry.getValue();
         }
         return totalCost;
+    }
+
+    public String getImageQRCodeLink() {
+        return imageQRCodeLink;
+    }
+
+    public void setImageQRCodeLink(String imageQRCodeLink) {
+        this.imageQRCodeLink = imageQRCodeLink;
     }
 
     public List<SeatPosition> getSelectedSeats() {
@@ -169,12 +188,7 @@ public class Order implements Parcelable {
     public List<SeatPosition> getSeats() {
         return selectedSeats;
     }
-    public String getSelectedSeatsString(){
-        if(selectedSeats == null|| selectedSeats.isEmpty()) return "";
-        String stringSeats = selectedSeats.stream()
-                .map(seat -> " "+ seat.getTitle()).collect(Collectors.joining());
-        return stringSeats;
-    }
+
 
     public void setSeats(List<SeatPosition> seats) {
         this.selectedSeats = seats;
@@ -196,10 +210,42 @@ public class Order implements Parcelable {
         this.user = user;
     }
 
+    public String getPaymentMethodId() {
+        return paymentMethodId;
+    }
+
+    public void setPaymentMethodId(String paymentMethodId) {
+        this.paymentMethodId = paymentMethodId;
+    }
+
+    public String getSelectedSeatsString(){
+        if(selectedSeats == null|| selectedSeats.isEmpty()) return "";
+        String stringSeats = selectedSeats.stream()
+                .map(seat -> " "+ seat.getTitle()).collect(Collectors.joining());
+        return stringSeats;
+    }
+
     public Long calculateTotalCost() {
         Long totalFoodCosts = getTotalCostOfFoods();
         Long totalTicketCosts = getTotalCostOfSeats();
         return totalFoodCosts + totalTicketCosts;
+    }
+
+    public String getSeletecFoodsString() {
+        if (foods == null || foods.isEmpty()) return "";
+        StringBuilder builder = new StringBuilder();
+        for(Map.Entry<Food, Integer> entry : foods.entrySet()){
+            Food food =entry.getKey();
+            Integer quantity = entry.getValue();
+            if(food != null && quantity != null){
+                builder.append("x")
+                        .append(quantity)
+                        .append("  -  ")
+                        .append(food.getTitle())
+                        .append("\n");
+            }
+        }
+        return builder.toString().trim();
     }
 
 //    public Long calculateTotalCost() {

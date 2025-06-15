@@ -46,14 +46,21 @@ dependencies {
 
 
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
+
     implementation (libs.retrofit)
     implementation (libs.logging.interceptor)
     implementation (libs.converter.gson)
     implementation (libs.gson)
 
     implementation(libs.glide)
-    implementation (libs.core)
 
-    implementation (libs.androidx.navigation.fragment.ktx)
-    implementation (libs.androidx.navigation.ui.ktx)
+    implementation (libs.core)
+    implementation (libs.flexbox)
+
+    implementation (libs.stripe.android)
+
+    implementation(libs.play.services.maps)
+    implementation (libs.play.services.location)
 }

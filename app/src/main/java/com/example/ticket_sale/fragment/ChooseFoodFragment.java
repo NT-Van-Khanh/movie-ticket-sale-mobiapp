@@ -1,13 +1,17 @@
 package com.example.ticket_sale.fragment;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +28,7 @@ import com.example.ticket_sale.model.FoodType;
 import com.example.ticket_sale.model.Item;
 import com.example.ticket_sale.model.Movie;
 import com.example.ticket_sale.model.SeatPosition;
+import com.example.ticket_sale.model.SharedBookingViewModel;
 import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.model.Order;
 import com.example.ticket_sale.model.Screen;
@@ -37,10 +42,14 @@ import com.example.ticket_sale.viewmodel.ChooseFoodViewModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ChooseFoodFragment extends Fragment {
+    private final int COUNTDOWN_MINUTES = 7;
+    private TextView txtGoBack;
+    private TextView txtBookingCountdown;
     private TextView txtTheaterName;
     private TextView txtScreen;
     private TextView txtTimeFrame;
@@ -49,7 +58,6 @@ public class ChooseFoodFragment extends Fragment {
     private TextView txtTotalCost;
     private Button btnNext;
     private TextView txtFoodsSelected;
-    private TextView txtGoBack;
     private ProgressBar pbLoadFoods;
     private ProgressBar pbLoadCombos;
     private View viewOverlay;
@@ -67,15 +75,65 @@ public class ChooseFoodFragment extends Fragment {
     private FoodAdapter foodAdapter;
     private FoodComboAdapter foodComboAdapter;
 
-    private int maxQuantity = 20;
+    private int countdownTime;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    private final int MAX_QUANTITY = 20;
     private int availableQuantity = 10;
+
     private ChooseFoodViewModel chooseFoodViewModel;
+    private SharedBookingViewModel sharedBookingViewModel;
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+//    private void startCountdown(){
+//        countdownTime = COUNTDOWN_MINUTES*60;
+//        handler.post(countdownRunnable);
+//    }
+    private void startCountdown(){
+        sharedBookingViewModel.getCountdownTime().observe(getViewLifecycleOwner(), time -> {
+            if (time != null) {
+                txtBookingCountdown.setText(String.format(Locale.getDefault(), "%02d:%02d", time / 60, time % 60));
+            }
+        });
+        handler.post(countdownRunnable);
+    }
+
+    private final Runnable countdownRunnable = new Runnable(){
+        @Override
+        public void run() {
+            Integer countdownTime = sharedBookingViewModel.getCountdownTime().getValue();
+            if(countdownTime != null && countdownTime >= 0){
+//                txtBookingCountdown.setText(String.format(Locale.getDefault(), "%02d : %02d", countdownTime/60, countdownTime%60));
+                sharedBookingViewModel.decreaseCountdown();
+                handler.postDelayed(this, 1000);
+            }else{
+                handleCountdownTimeout();
+            }
+        }
+    };
+
+    private void handleCountdownTimeout() {
+        AlertDialog dialog = new AlertDialog.Builder(requireContext())
+                .setTitle("Hết thời gian")
+                .setMessage("Thời gian đặt vé đã hết. Bạn sẽ được quay lại màn hình trước.")
+                .setCancelable(true)
+                .setPositiveButton("OK", (d, which) -> {
+                    getParentFragmentManager().popBackStack();
+                })
+                .create();
+
+        dialog.setOnCancelListener(d -> {
+            getParentFragmentManager().popBackStack();
+        });
+
+        dialog.show();
+    }
 
     public ChooseFoodFragment() {
         // Required empty public constructor
@@ -107,6 +165,22 @@ public class ChooseFoodFragment extends Fragment {
         initData();
         setDataForViews();
         return v;
+    }
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            handler.removeCallbacks(countdownRunnable);
+        } else {
+            handler.post(countdownRunnable);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("onPause","onPause");
+        handler.removeCallbacks(countdownRunnable);
     }
 
     private void setDataForViews() {
@@ -146,6 +220,7 @@ public class ChooseFoodFragment extends Fragment {
     }
 
     private void initViews(View root){
+        txtBookingCountdown = root.findViewById(R.id.txtBookingCountdown);
         txtFoodsSelected = root.findViewById(R.id.txtFoodSelected);
         txtSeatsSelected = root.findViewById(R.id.txtSeatSelected);
         txtScreen = root.findViewById(R.id.txtScreen);
@@ -165,7 +240,9 @@ public class ChooseFoodFragment extends Fragment {
         });
 
         txtGoBack = root.findViewById(R.id.txtGoBack);
-        txtGoBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        txtGoBack.setOnClickListener(v -> {
+            getParentFragmentManager().popBackStack();
+        });
 
         foods = new ArrayList<>();
         foodAdapter = new FoodAdapter(foods, new FoodAdapter.OnQuantityChangeListener() {
@@ -177,7 +254,7 @@ public class ChooseFoodFragment extends Fragment {
             @Override
             public void onQuantityChanged(Food food, int quantity) {
                 handleQuantityChanged(food, quantity);
-                availableQuantity = availableFoodsQuantity(maxQuantity);
+                availableQuantity = availableFoodsQuantity(MAX_QUANTITY);
             }
         });
 
@@ -195,7 +272,7 @@ public class ChooseFoodFragment extends Fragment {
             @Override
             public void onQuantityChanged(Food food, int quantity) {
                 handleQuantityChanged(food, quantity);
-                availableQuantity = availableFoodsQuantity(maxQuantity);
+                availableQuantity = availableFoodsQuantity(MAX_QUANTITY);
             }
         });
         rcViewCombos = root.findViewById(R.id.rcViewCombo);
@@ -213,6 +290,8 @@ public class ChooseFoodFragment extends Fragment {
         chooseFoodViewModel = new ChooseFoodViewModel();
         getFoodsFromAPI();
 
+        sharedBookingViewModel = new ViewModelProvider(requireActivity()).get(SharedBookingViewModel.class);
+        sharedBookingViewModel.setCountdownTime(COUNTDOWN_MINUTES * 60);
 //        foods = getExampleFoods();
 //        combos = getExampleFoodCombos();
 //        theater = new TheaterDTO();
@@ -221,6 +300,7 @@ public class ChooseFoodFragment extends Fragment {
 //        movie = getArguments().getParcelable("movieByTheater");
 //        showtime = getArguments().getParcelable("movieShowtime");
     }
+
     private void navigateToPayment() {
         PaymentFragment paymentFragment = new PaymentFragment();
         Bundle b = new Bundle();
@@ -231,6 +311,7 @@ public class ChooseFoodFragment extends Fragment {
         getParentFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .add(R.id.fragment_container, paymentFragment)
+                .hide(this)
                 .addToBackStack(null)
                 .commit();
     }
@@ -263,6 +344,7 @@ public class ChooseFoodFragment extends Fragment {
             viewOverlay.setVisibility(View.GONE);
             pbLoadFoods.setVisibility(View.GONE);
             pbLoadCombos.setVisibility(View.GONE);
+            startCountdown();
         });
     }
 
@@ -307,7 +389,7 @@ public class ChooseFoodFragment extends Fragment {
             selectedFoods.remove(food);
         }
         showTotalCost();
-        availableQuantity = availableFoodsQuantity(maxQuantity);
+        availableQuantity = availableFoodsQuantity(MAX_QUANTITY);
         selectedFoods.forEach((fd, integer)
                 -> Log.e("selectedFoods", fd.getTitle() + "-" + integer +"\n"));
     }

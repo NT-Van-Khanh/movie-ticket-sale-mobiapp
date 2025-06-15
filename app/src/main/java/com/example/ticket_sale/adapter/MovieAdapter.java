@@ -72,12 +72,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             if(rating != null) txtMovieRating.setText(String.valueOf(rating));
             Glide.with(itemView.getContext())
                     .load(movie.getImageLink())
-                    .placeholder(movie.getImageResId())
+                    .placeholder(R.drawable.mv_dai_chien_nguoi_khong_lo)
                     .error(movie.getImageResId())
                     .into(imgMovieImage);
-            if (listener == null) {
-                Log.e("MovieAdapter", "Listener is null!");
-            }
+
             itemView.setOnClickListener(v -> {
                 if (listener != null) {
                     listener.onItemClick(movie);

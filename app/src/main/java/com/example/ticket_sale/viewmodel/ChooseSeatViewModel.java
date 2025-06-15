@@ -33,7 +33,7 @@ public class ChooseSeatViewModel extends ViewModel {
         this.seatClasses = seatRepository.getAllSeats();
     }
 
-    private void fetchSoldSeats(String showtimeId){
+    private void fetchSoldSeats(Integer showtimeId){
         this.soldSeats = screenRepository.getSoldSeats(showtimeId);
     }
 
@@ -47,7 +47,7 @@ public class ChooseSeatViewModel extends ViewModel {
         return seatClasses;
     }
 
-    public LiveData<ApiResponse<List<ChairDTO>>> getSoleSeats(String showtimeId){
+    public LiveData<ApiResponse<List<ChairDTO>>> getSoleSeats(Integer showtimeId){
         fetchSoldSeats(showtimeId);
         return soldSeats;
     }

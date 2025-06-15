@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,7 +146,7 @@ public class ChooseSeatFragment extends Fragment {
 //    }
 
     private void getSoldSeatFromAPI(){
-        chooseSeatViewModel.getSoleSeats(this.order.getShowtime().getScreenId()).observe(getViewLifecycleOwner(),response ->{
+        chooseSeatViewModel.getSoleSeats(this.order.getShowtime().getId()).observe(getViewLifecycleOwner(),response ->{
             if(response!=null && response.getStatusCode() == 200){
                 List<SeatPosition> soldSeats = response.getData().stream()
                         .map(SeatMapper::toSeatPosition)
@@ -179,8 +180,6 @@ public class ChooseSeatFragment extends Fragment {
 
         if(order.getMovieFormat() == null) return;
         showSelectedSeats();
-//        initSeatRowName(screen.getSeats().length);
-//        initSeatViews(screen.getSeats());
     }
 
     private void initViews(View root){
@@ -216,29 +215,25 @@ public class ChooseSeatFragment extends Fragment {
         txtSeatsSelected.setText(stringSeats);
     }
 
-    private Screen getExampleScreen() {
-        Screen s = new Screen("SC2","Phòng 2", new Theater("TH1","Rạp", "address", R.drawable.cinema2));
-        Integer[][] seats = getSeats(10, 14);
-        s.setSeatPositions(seats);
-        return s;
-    }
-
-
     private Integer[][] getSeats(int row, int column){
         Integer[][] seats = new Integer[row][column];
         for (int seatRow = 0; seatRow < seats.length; seatRow++) {
             for (int seatColumn = 0; seatColumn < seats[seatRow].length; seatColumn++) {
-                seats[seatRow][seatColumn] = 1;
-//                seats[seatRow][seatColumn] = new Seat("C1",
-//                        String.format(ViLocaleUtil.localeVN,"%s%d",(char)('A'+ seatRow), seatColumn),
-//                        "", 1, SeatType.STANDARD, 60000L);
+                if(seatColumn ==0){
+                    seats[seatRow][seatColumn] = 2;
+                }else if(seatColumn == 1){
+                    seats[seatRow][seatColumn] = 0;
+                }else{
+                    seats[seatRow][seatColumn] = 1;
+                }
             }
         }
         return seats;
     }
+
     private void initSeatRowName(int numberOfRows){
         lnlSeatRowName.removeAllViews();
-        for( char rowCharacter = 'A'; rowCharacter < 'A' + numberOfRows; ++rowCharacter ){
+        for(char rowCharacter = (char) ('A' + numberOfRows -1); rowCharacter >= 'A'; --rowCharacter ){
             TextView txtRow = new TextView(getContext());
             txtRow.setText(String.valueOf(rowCharacter));
             txtRow.setLayoutParams( new LinearLayout.LayoutParams(
@@ -264,72 +259,131 @@ public class ChooseSeatFragment extends Fragment {
 //        return imgSeatIcon;
 //    }
 
-    private ImageView initSeatImageIcon(SeatPosition seatPosition) {
-        if(seatPosition == null) return null;
-        ImageView imgSeatIcon = new ImageView(getContext());
-        imgSeatIcon.setImageResource(R.drawable.ic_chair);
-        GridLayout.LayoutParams param = new GridLayout.LayoutParams();
-        param.width = dpToPx(24);
-        param.height = dpToPx(24);
-        param.rowSpec = GridLayout.spec(seatPosition.getRow());
-        param.columnSpec = GridLayout.spec(seatPosition.getColumn());
-        imgSeatIcon.setLayoutParams(param);
-        imgSeatIcon.setTag(seatPosition);
+    private void initSeatViews(Integer[][] seatPositions, List<SeatPosition> soldSeats){
+        if(soldSeats != null){
+            int SOLD_SEAT_ID = -1;
+            for(SeatPosition position : soldSeats){
+                Integer seatTypeId =  seatPositions[position.getRow()][position.getColumn()];
+                SeatPosition seatPosition = new SeatPosition(position.getRow(), position.getColumn(), String.valueOf(SOLD_SEAT_ID));
+                if(seatTypeId == 2){
+                    Log.e("add", "couple seat");
+                    addCoupleSeatImage(seatPosition, seatPositions.length );
+                }else{
+                    addSeatImage(seatPosition, seatPositions.length );
+                }
+                seatPositions[position.getRow()][position.getColumn()] = SOLD_SEAT_ID;
+            }
+        }
 
+        for(int row = 0; row <  seatPositions.length; ++ row) {
+            for(int column = 0; column <  seatPositions[row].length; ++ column) {
+                Integer seatTypeId =  seatPositions[row][column];
+                if(seatTypeId == null) continue;
+                if(seatTypeId == -1) continue;
+                if(seatTypeId == -2) continue;
+                if(seatTypeId == 0){
+                    intSeatSpace(row, column);
+                }else if((seatTypeId == 2) && (column < seatPositions[row].length)){
+                    seatPositions[row][column + 1] = -2;
+                    addCoupleSeatImage(new SeatPosition(row, column, String.valueOf(seatTypeId)), seatPositions.length );
+                }else{
+                    addSeatImage(new SeatPosition(row, column, String.valueOf(seatTypeId)), seatPositions.length );
+                }
+            }
+        }
+    }
+
+    private void intSeatSpace(int row, int column){
+        Space space = new Space(getContext());
+        space.setLayoutParams(initLayoutParams(row, column));
+        gdlSeats.addView(space);
+    }
+
+    private void addSeatImage(SeatPosition seatPosition, int length) {
+        ImageView imgSeat = createSeatImageViewWithType(length, seatPosition, R.drawable.ic_chair);
         SeatType seatType = seatPosition.getSeatType();
-        imgSeatIcon.setColorFilter(seatType.getTypeOfSeat(getContext()));
-        if(seatType != SeatType.SOLD && seatType != SeatType.NONE){
-            imgSeatIcon.setOnClickListener(v -> {
+        if(seatType != SeatType.SOLD && seatType != SeatType.NONE) {
+            imgSeat.setTag(seatPosition);
+            imgSeat.setOnClickListener(v -> {
                 SeatPosition clickedSeat = (SeatPosition) v.getTag();
                 if (selectedSeats.contains(clickedSeat)) {
                     selectedSeats.remove(clickedSeat);
-                    imgSeatIcon.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                    imgSeat.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
                 } else {
                     selectedSeats.add(clickedSeat);
-                    imgSeatIcon.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                    imgSeat.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
                 }
                 showSelectedSeats();
                 showTotalCost();
             });
         }
+        gdlSeats.addView(imgSeat);
+    }
+
+    private void addCoupleSeatImage(SeatPosition seatPosition, int length) {
+        ImageView imgLeftSeat = createSeatImageViewWithType(length, seatPosition, R.drawable.ic_chair_left);
+        SeatType seatType = seatPosition.getSeatType();
+        SeatPosition rightSeatPosition = new SeatPosition(seatPosition.getRow(), seatPosition.getColumn()+1, seatPosition.getSeatTypeId());
+        ImageView imgRightSeat = createSeatImageViewWithType(length,rightSeatPosition , R.drawable.ic_chair_right);
+        if(seatType != SeatType.SOLD && seatType != SeatType.NONE){
+            imgLeftSeat.setTag(seatPosition);
+            imgLeftSeat.setOnClickListener(v -> {
+                SeatPosition clickedSeat = (SeatPosition) v.getTag();
+                if (selectedSeats.contains(clickedSeat)) {
+                    selectedSeats.remove(clickedSeat);
+                    imgLeftSeat.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                    imgRightSeat.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                } else {
+                    selectedSeats.add(clickedSeat);
+                    imgLeftSeat.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                    imgRightSeat.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                }
+                showSelectedSeats();
+                showTotalCost();
+            });
+            imgRightSeat.setTag(seatPosition);
+            imgRightSeat.setOnClickListener(v -> {
+                SeatPosition clickedSeat = (SeatPosition) v.getTag();
+                if (selectedSeats.contains(clickedSeat)) {
+                    selectedSeats.remove(clickedSeat);
+                    imgLeftSeat.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                    imgRightSeat.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+                } else {
+                    selectedSeats.add(clickedSeat);
+                    imgLeftSeat.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                    imgRightSeat.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+                }
+                showSelectedSeats();
+                showTotalCost();
+            });
+        }
+
+        gdlSeats.addView(imgLeftSeat);
+        gdlSeats.addView(imgRightSeat);
+    }
+
+
+    private ImageView createSeatImageViewWithType(int length, SeatPosition seatPosition, int resId){
+        ImageView imgSeatIcon = new ImageView(requireContext());
+        imgSeatIcon.setLayoutParams(initLayoutParams(length - 1 - seatPosition.getRow(), seatPosition.getColumn()));
+        imgSeatIcon.setImageResource(resId);
+        imgSeatIcon.setColorFilter(seatPosition.getSeatType().getTypeOfSeat(requireContext()));
         return imgSeatIcon;
     }
 
-    private Space intSeatSpace(int row, int column){
-        Space space = new Space(getContext());
+
+    private GridLayout.LayoutParams initLayoutParams(int row, int column){
         GridLayout.LayoutParams param = new GridLayout.LayoutParams();
         param.width = dpToPx(24);
         param.height = dpToPx(24);
         param.rowSpec = GridLayout.spec(row);
         param.columnSpec = GridLayout.spec(column);
-        space.setLayoutParams(param);
-        return space;
+        return param;
     }
 
-    private void initSeatViews(Integer[][] seatPositions, List<SeatPosition> soldSeats){
-        if(soldSeats != null){
-            for(SeatPosition position : soldSeats){
-                seatPositions[position.getRow()][position.getColumn()] = -1;
-            }
-        }
-        for(int row = 0; row <  seatPositions.length; ++ row) {
-            for(int column = 0; column <  seatPositions[row].length; ++ column) {
-                Integer seatTypeId =  seatPositions[row][column];
-                if(seatTypeId == null) continue;
-                if(seatTypeId == 0){
-                    Space space = intSeatSpace(row, column);
-                    gdlSeats.addView(space);
-                    continue;
-                }
-                SeatPosition seatPosition = new SeatPosition(row, column, String.valueOf(seatTypeId));
-                ImageView imgSeatIcon = initSeatImageIcon(seatPosition);
-                gdlSeats.addView(imgSeatIcon);
-            }
-        }
-    }
 
     private void  btnNextListener(){
-        if(selectedSeats == null || selectedSeats.size()<1){
+        if(selectedSeats == null || selectedSeats.isEmpty()){
             Toast.makeText(getContext(),"Vui lòng Chọn vị trí ghế ngồi!",Toast.LENGTH_LONG).show();
             return;
         }
@@ -349,35 +403,6 @@ public class ChooseSeatFragment extends Fragment {
         }
     }
 
-//    private void initSeatViews(Seat[][] seats){
-//        for(int row = 0; row < seats.length; ++ row) {
-//            for(int column = 0; column < seats[row].length; ++ column) {
-//                Seat seat = seats[row][column];
-//                if(seat == null) continue;
-//                ImageView imgSeatView = initImgSeatView(seat);
-//                imgSeatView.setOnClickListener(v -> {
-//                    Seat clickedSeat = (Seat) v.getTag();
-//                    if (selectedSeats.contains(clickedSeat)) {
-//                        selectedSeats.remove(clickedSeat);
-//                        imgSeatView.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
-//                    } else {
-//                        selectedSeats.add(clickedSeat);
-//                        imgSeatView.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
-//                    }
-//                    showSelectedSeats();
-//                    showTotalCost();
-//                });
-//                gdlSeats.addView(imgSeatView);
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        ((MainActivity) requireActivity()).hideBottomNav();
-//    }
-
     private int dpToPx(int dp) {
         return (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
@@ -389,7 +414,7 @@ public class ChooseSeatFragment extends Fragment {
 //        for(Seat s : selectedSeats){
 //            totalCost += s.getPrice();
 //        }
-        Long totalCost = selectedSeats.size() * order.getSelectedTicket().getPrice();
+        long totalCost = selectedSeats.size() * order.getSelectedTicket().getPrice();
         txtTotalCost.setText(ViLocaleUtil.formatLocalCurrency(totalCost));
     }
 
@@ -403,6 +428,14 @@ public class ChooseSeatFragment extends Fragment {
         viewOverlay.setVisibility(View.GONE);
     }
 
+
+
+    private Screen getExampleScreen() {
+        Screen s = new Screen("SC2","Phòng 2", new Theater("TH1","Rạp", "address", R.drawable.cinema2));
+        Integer[][] seats = getSeats(10, 14);
+        s.setSeatPositions(seats);
+        return s;
+    }
 }
 
 //    private void initSeatViews(int[][] seatMatrix, List<Seat> seats){
@@ -479,4 +512,34 @@ public class ChooseSeatFragment extends Fragment {
 //                gdlSeats.addView(seatView);
 //            }
 //        }
+//    }
+
+
+//    private void initSeatViews(Seat[][] seats){
+//        for(int row = 0; row < seats.length; ++ row) {
+//            for(int column = 0; column < seats[row].length; ++ column) {
+//                Seat seat = seats[row][column];
+//                if(seat == null) continue;
+//                ImageView imgSeatView = initImgSeatView(seat);
+//                imgSeatView.setOnClickListener(v -> {
+//                    Seat clickedSeat = (Seat) v.getTag();
+//                    if (selectedSeats.contains(clickedSeat)) {
+//                        selectedSeats.remove(clickedSeat);
+//                        imgSeatView.setColorFilter(clickedSeat.getSeatType().getTypeOfSeat(getContext()));
+//                    } else {
+//                        selectedSeats.add(clickedSeat);
+//                        imgSeatView.setColorFilter(SeatType.SELECTED.getTypeOfSeat(getContext()));
+//                    }
+//                    showSelectedSeats();
+//                    showTotalCost();
+//                });
+//                gdlSeats.addView(imgSeatView);
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        ((MainActivity) requireActivity()).hideBottomNav();
 //    }

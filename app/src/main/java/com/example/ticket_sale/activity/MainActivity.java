@@ -19,10 +19,13 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.ticket_sale.R;
+import com.example.ticket_sale.fragment.HistoryFragment;
 import com.example.ticket_sale.fragment.HomeFragment;
 import com.example.ticket_sale.fragment.MovieFragment;
+import com.example.ticket_sale.fragment.PaymentMethodFragment;
 import com.example.ticket_sale.fragment.TheaterFragment;
 import com.example.ticket_sale.fragment.ProfileFragment;
+import com.example.ticket_sale.util.ThemeManager;
 import com.example.ticket_sale.util.TokenManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeManager.applyTheme(this);
         TokenManager.init(this);
 
         EdgeToEdge.enable(this);

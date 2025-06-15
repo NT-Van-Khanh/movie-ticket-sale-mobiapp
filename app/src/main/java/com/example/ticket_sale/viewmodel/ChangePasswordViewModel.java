@@ -29,6 +29,7 @@ public class ChangePasswordViewModel extends ViewModel {
 
     private void fetchChangePassword( String password){
         JSONObject payload = JwtUtil.decodeJWT(TokenManager.getToken());
+        assert payload != null;
         String id = payload.optString("id");
         this.changePasswordResponse = userRepository.updatePassword(id, password);
     }
@@ -40,7 +41,7 @@ public class ChangePasswordViewModel extends ViewModel {
 
     private void fetchAuth( String password){
         JSONObject payload = JwtUtil.decodeJWT(TokenManager.getToken());
-        JSONObject account = payload.optJSONObject("account");
+        JSONObject account = payload != null ? payload.optJSONObject("account") : null;
         if (account != null) {
             String username = account.optString("username");
             this.authResponse = authRepository.auth(username, password);

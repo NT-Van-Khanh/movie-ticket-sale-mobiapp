@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tag_left_seat_position" type="id" />
+    <item name="tag_right_seat_position" type="id"/>
+</resources>

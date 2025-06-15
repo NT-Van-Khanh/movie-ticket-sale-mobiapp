@@ -193,11 +193,12 @@ public class TheaterShowtimeFragment extends Fragment {
                             mFormat.setShowtimes(showtimes);
                             visibleMovies.add(mv);
                             movieByTheaterAdapter.setMovies(visibleMovies);
-                        }else{
-                            Toast.makeText(getContext(),
-                                    String.format("Không thể lấy suất chiếu của phim %s",mv.getTitle()),
-                                    Toast.LENGTH_SHORT).show();
                         }
+//                        else{
+//                            Toast.makeText(getContext(),
+//                                    String.format("Không thể lấy suất chiếu của phim %s",mv.getTitle()),
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
                         hideLoadingUI();
                     });
                 }

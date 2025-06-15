@@ -1,8 +1,14 @@
 package com.example.ticket_sale.fragment;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,7 +27,11 @@ import com.example.ticket_sale.adapter.TheaterAdapter;
 import com.example.ticket_sale.model.Theater;
 import com.example.ticket_sale.mapper.TheaterMapper;
 import com.example.ticket_sale.viewmodel.TheaterViewModel;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +39,7 @@ import java.util.stream.Collectors;
 
 
 public class TheaterFragment extends Fragment {
+    private Button btnFindNearlyTheater;
     private Button btnChooseProvince;
     private RecyclerView rcViewMovieTheaters;
     private TheaterAdapter theaterAdapter;
@@ -36,7 +48,7 @@ public class TheaterFragment extends Fragment {
     private View viewOverlay;
     private List<Theater> movieTheaters;
     private TheaterViewModel theaterViewModel;
-
+    private FusedLocationProviderClient fusedLocationClient;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -80,6 +92,7 @@ public class TheaterFragment extends Fragment {
         showLoadingUI();
         theaterViewModel = new TheaterViewModel();
         getMovieTheatersFromAPI();
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext());
     }
 
     private void getMovieTheatersFromAPI() {
@@ -112,11 +125,103 @@ public class TheaterFragment extends Fragment {
         rcViewMovieTheaters.setLayoutManager(new GridLayoutManager(getContext(), 1));
         pbLoadTheaters  = root.findViewById(R.id.pbLoadTheaters);
         viewOverlay = root.findViewById(R.id.viewOverlay);
+        btnFindNearlyTheater = root.findViewById(R.id.btnFindNearlyTheater);
 
         initBtnChooseProvince();
+        initBtnFindNearlyTheater();
         movieTheaters = new ArrayList<>();
         theaterAdapter = new TheaterAdapter(movieTheaters, this::onItemClick);
         rcViewMovieTheaters.setAdapter(theaterAdapter);
+    }
+
+    private void initBtnFindNearlyTheater() {
+        btnFindNearlyTheater.setOnClickListener(v -> {
+            showLoadingUI();
+            navigationToTheaterLocation();
+//            showNearestLocation();
+            hideLoadingUI();
+        });
+    }
+
+    private void showNearestLocation() {
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                return;
+            }
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(location -> {
+                        if (location != null) {
+                            Theater nearest = findNearestTheater(location.getLatitude(), location.getLongitude());
+                            if (nearest != null) {
+                                new AlertDialog.Builder(requireContext())
+                                        .setTitle("Rạp gần bạn nhất")
+                                        .setMessage("Bạn có muốn chọn rạp \"" + nearest.getName() + "\" không?")
+                                        .setPositiveButton("Có", (dialog, which) -> {
+                                            navigationToTheaterShowtime(nearest);
+                                        })
+                                        .setNegativeButton("Không", (dialog, which) -> {
+                                            dialog.dismiss();
+                                        })
+                                        .show();
+                                Toast.makeText(requireContext(), "Rạp gần nhất: " + nearest.getName(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+    }
+
+    private void navigationToTheaterLocation() {
+        TheaterMapFragment theaterLocationFragment = new TheaterMapFragment();
+        Bundle bundle  = new Bundle();
+        bundle.putParcelableArrayList("theaters",new ArrayList<>(movieTheaters));
+        theaterLocationFragment.setArguments(bundle);
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container,theaterLocationFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private Theater findNearestTheater(double userLat, double userLng) {
+        double minDistance = Double.MAX_VALUE;
+        Theater nearest = null;
+
+        for (Theater theater : movieTheaters) {
+            LatLng theaterLatLng = getLocationFromAddress(theater.getAddress());
+            if (theaterLatLng == null) continue;
+            float[] results = new float[1];
+            Location.distanceBetween(userLat, userLng,
+                                        theaterLatLng.latitude,
+                                        theaterLatLng.longitude,
+                                        results);
+            if (results[0] < minDistance) {
+                minDistance = results[0];
+                nearest = theater;
+            }
+        }
+
+        return nearest;
+    }
+
+    private LatLng getLocationFromAddress(String strAddress) {
+        Geocoder coder = new Geocoder(requireContext());
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null || address.isEmpty()) {
+                return null;
+            }
+
+            Address location = address.get(0);
+            p1 = new LatLng(location.getLatitude(), location.getLongitude());
+
+        } catch (IOException ex) {
+            Log.e("getLocationFromAddress",String.valueOf(ex));
+        }
+
+        return p1;
     }
 
     private void initBtnChooseProvince(){
@@ -145,13 +250,16 @@ public class TheaterFragment extends Fragment {
             theaterAdapter.setTheaters(filteredTheater);
         }
     }
+
     private void onItemClick(int position) {
         Theater movieTheater = movieTheaters.get(position);
-        TheaterShowtimeFragment movieShowtimeFragment = new TheaterShowtimeFragment();
+        navigationToTheaterShowtime(movieTheater);
+    }
 
+    private void navigationToTheaterShowtime(Theater movieTheater) {
+        TheaterShowtimeFragment movieShowtimeFragment = new TheaterShowtimeFragment();
         Bundle bundle  = new Bundle();
         bundle.putParcelable("theater",movieTheater);
-//      bundle.putString("theaterId",movieTheater.getId());
         movieShowtimeFragment.setArguments(bundle);
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
